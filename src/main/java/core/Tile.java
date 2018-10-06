@@ -1,12 +1,10 @@
 package core;
 
 public class Tile {
-	private int colour;
+	private char colour;
 	private int rank;
-	private static final char[] colours = {'R', 'B', 'G', 'O'};
-    private static final int[] ranks = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-    
-	public Tile(int colour, int rank) {
+
+	public Tile(char colour, int rank) {
 		this.colour = colour;
 		this.rank = rank;
 	}
@@ -15,7 +13,7 @@ public class Tile {
 		return rank;
 	}
 	
-	public int getColour() {
+	public char getColour() {
 		return colour;
 	}
 }
