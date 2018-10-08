@@ -6,7 +6,11 @@ public class AIPlayer extends Player{
 		super();
 	}
 	
-	public AIPlayer(String name) {
-		super(name);
+	public AIPlayer(String name, Game game) {
+		super(name, game);
+	}
+	
+	public void PlayTurn() {
+		//...
 	}
 }

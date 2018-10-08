@@ -6,7 +6,11 @@ public class UserPlayer extends Player{
 		super();
 	}
 	
-	public UserPlayer(String name) {
-		super(name);
+	public UserPlayer(String name, Game game) {
+		super(name, game);
+	}
+	
+	public void PlayTurn() {
+		//...
 	}
 }
