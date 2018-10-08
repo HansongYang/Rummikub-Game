@@ -33,4 +33,7 @@ public class Hand {
 		return false;
 	}
 	
+	public int size() {
+		return hands.size();
+	}
 }
