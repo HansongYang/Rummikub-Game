@@ -126,7 +126,7 @@ public class Hand {
 		return tiles;
 	}
 	
-	//Discard the redundant tile.
+	//Discard the redundant tile which is a helper function of getMeldSets()
 	public void discardRedundantTiles() {
 		ArrayList<Tile> deck = new ArrayList<Tile>();
 		for(Tile tile : this.getTiles()){
@@ -136,7 +136,7 @@ public class Hand {
 		this.hands = deck;
 	}
 	
-	//Separate all tiles of the same number into an arraylist
+	//Separate all tiles of the same number into an arraylist which is a helper function of getMeldSets()
 	public ArrayList<Meld> getSets(){
 		ArrayList<Meld> groups = new ArrayList<Meld>();;
 		ArrayList<Tile> tiles; 
