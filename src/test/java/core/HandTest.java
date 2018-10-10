@@ -86,8 +86,8 @@ public class HandTest extends TestCase{
 		
 		assertTrue(3 == set.size());
 		assertTrue(3 == set.get(0).getTile(0).getRank() && 'G' == set.get(0).getTile(0).getColour());
-		assertTrue(3 == set.get(0).getTile(1).getRank() && 'B' == set.get(0).getTile(0).getColour());
-		assertTrue(3 == set.get(0).getTile(2).getRank() && 'O' == set.get(0).getTile(0).getColour());
+		assertTrue(3 == set.get(0).getTile(1).getRank() && 'B' == set.get(1).getTile(0).getColour());
+		assertTrue(3 == set.get(0).getTile(2).getRank() && 'O' == set.get(2).getTile(0).getColour());
 	}
 	
 	public void testGetMeldRuns() {
