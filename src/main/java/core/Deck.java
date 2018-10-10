@@ -31,7 +31,14 @@ public class Deck {
     }
 
     public Tile drawTile() {
-        return deck.remove(0);
+        return deck.remove(deck.size()-1);
+    }
+
+    public void dealCards(Player player) {
+        Hand playerHand = player.getHand();
+        for (int i = 0; i < 14; i++) {
+            playerHand.add(this.drawTile());
+        }
     }
 
     public int getDeckSize() {

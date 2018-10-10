@@ -10,7 +10,7 @@ public class UserPlayer extends Player{
 		super(name, game);
 	}
 	
-	public void PlayTurn() {
+	public void playTurn() {
 		//...
 	}
 }

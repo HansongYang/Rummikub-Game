@@ -3,8 +3,11 @@ package core;
 public class Game {
 
     private enum Players { USER, P1, P2, P3 }
+    private enum GameStates { PLAY, END }
     private Deck deck;
     private Board board;
+    private GameStates gameState;
+    private Player currentPlayer;
 
     public static void main(String[] arg) {
         Game game = new Game();
@@ -13,5 +16,34 @@ public class Game {
 
     public void start() {
         deck = new Deck();
+        board = new Board();
+
+        UserPlayer userPlayer = new UserPlayer("USER", this);
+        AIPlayer aiPlayer = new AIPlayer("AI1", this);
+        deck.dealCards(userPlayer);
+        deck.dealCards(aiPlayer);
+
+        gameState = GameStates.PLAY;
+        currentPlayer = userPlayer;
+        gameLoop();
     }
+
+    public void gameLoop() {
+        while(gameState == GameStates.PLAY) {
+            System.out.println("Player " + currentPlayer.name + "'s turn");
+
+            if (currentPlayer instanceof UserPlayer) {
+                currentPlayer.getHand().sortTilesByColour();
+                currentPlayer.getHand().printHand();
+                ((UserPlayer) currentPlayer).playTurn();
+            } else {
+                ((AIPlayer) currentPlayer).playTurn();
+            }
+
+            break;
+            // call gamewin check
+        }
+    }
+
+    // create seperate gamewin check
 }

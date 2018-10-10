@@ -19,37 +19,37 @@ public class Player {
 		this.game = game;
 	}
 	
-	public Hand GetHand() {
+	public Hand getHand() {
 		return this.hand;
 	}
 	
-	public void PlayMeld(Board board, ArrayList<Tile> potentialMeld) {
+	public void playMeld(Board board, ArrayList<Tile> potentialMeld) {
 		
-		if(IsValidMeld(potentialMeld)) {
+		if(isValidMeld(potentialMeld)) {
 			Meld meld = new Meld();
 			
 			for(int i = 0; i < potentialMeld.size();i++) {
 				meld.add(potentialMeld.get(i));
 			}
 			
-			board.AddMeld(meld);
+			board.addMeld(meld);
 		}
 		
 	}
 	
-	public boolean IsValidMeld(ArrayList<Tile> tiles) {
+	public boolean isValidMeld(ArrayList<Tile> tiles) {
 		
 		if(tiles.size() < 3) {
 			return false;
 		}
 		
-		boolean validSet = IsValidSet(tiles);
-		boolean validRun = IsValidRun(tiles);
+		boolean validSet = isValidSet(tiles);
+		boolean validRun = isValidRun(tiles);
 				
 		return validSet || validRun;
 	}
 	
-	private boolean IsValidSet(ArrayList<Tile> tiles) {
+	private boolean isValidSet(ArrayList<Tile> tiles) {
 		
 		ArrayList<Character> colours = new ArrayList<Character>();
 		ArrayList<Integer> ranks = new ArrayList<Integer>();
@@ -80,7 +80,7 @@ public class Player {
 		return true;
 	}
 	
-	private boolean IsValidRun(ArrayList<Tile> tiles) {
+	private boolean isValidRun(ArrayList<Tile> tiles) {
 		
 		char color = ' ';
 		ArrayList<Integer> ranks = new ArrayList<Integer>();
@@ -112,5 +112,5 @@ public class Player {
 		
 		return true;
 	}
-	
+
 }

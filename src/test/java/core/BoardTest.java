@@ -1,7 +1,5 @@
 package core;
 
-import java.util.ArrayList;
-
 import junit.framework.TestCase;
 
 public class BoardTest extends TestCase {
@@ -14,7 +12,7 @@ public class BoardTest extends TestCase {
 		meld.add(new Tile('G',7));
 		meld.add(new Tile('B',7));
 		
-		board.AddMeld(meld);
+		board.addMeld(meld);
 		
 		assertEquals(1, board.currentMelds.size());
 		

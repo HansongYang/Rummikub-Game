@@ -10,7 +10,7 @@ public class AIPlayer extends Player{
 		super(name, game);
 	}
 	
-	public void PlayTurn() {
+	public void playTurn() {
 		//...
 	}
 }

@@ -62,7 +62,7 @@ public class Hand {
 				if(hands.get(i).getColour() == 'O') {
 					colour = "Orange";
 				}
-				System.out.print(colour + hands.get(i).getRank() + " ");
+				System.out.print("(" + i + ")" + colour + hands.get(i).getRank() + " ");
 			}
 			System.out.println();
 		}

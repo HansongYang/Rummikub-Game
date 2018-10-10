@@ -10,7 +10,9 @@ public class Board {
 
     }
     
-    public void AddMeld(Meld meld) {
+    public void addMeld(Meld meld) {
     	currentMelds.add(meld);
     }
+
+    // Add print board
 }
