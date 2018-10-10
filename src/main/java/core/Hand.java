@@ -138,35 +138,34 @@ public class Hand {
 	
 	//Separate all tiles of the same number into an arraylist which is a helper function of getMeldSets()
 	public ArrayList<Meld> getSets(){
-		ArrayList<Meld> groups = new ArrayList<Meld>();;
+		ArrayList<Meld> sets = new ArrayList<Meld>();;
 		ArrayList<Tile> tiles; 
 		
 		if(hands.size() > 2) {
-			groups.add(new Meld(this.getTiles()));
+			sets.add(new Meld(this.getTiles()));
 		}
 		
 		if(hands.size() > 3){
 			for(Tile removedTile : this.getTiles()){
 				tiles = new ArrayList<Tile>(this.getTiles());
 				tiles.remove(removedTile);
-				groups.add(new Meld(tiles));
+				sets.add(new Meld(tiles));
 			}
 		}
 		
-		return groups;
+		return sets;
 	}
 	
 	//Find all of the possible meld of sets that this hand can get
 	public ArrayList<Meld> getMeldSets() {
 		ArrayList<Hand> tiles = separateTilesByNumber();
-		ArrayList<Meld> groups = new ArrayList<Meld>(); 
+		ArrayList<Meld> sets = new ArrayList<Meld>(); 
 		
 		for(Hand currentSet : tiles){
 			currentSet.discardRedundantTiles();
-			groups.addAll(currentSet.getSets());
+			sets.addAll(currentSet.getSets());
 		}
-		
-		return groups;
+		return sets;
 	}
 	
 	//Find all of the possible meld of runs that this hand can get
@@ -198,6 +197,27 @@ public class Hand {
 		}
 		return runs;
 	}
+	
+	//Find the initial 30 points for a player, if there is no set or run, it will return null.
+	public ArrayList<Meld> getInitialTiles() {
+		ArrayList<Meld> runs = getMeldRuns();
+		ArrayList<Meld> sets = getMeldSets();
+		ArrayList<Meld> initial = new ArrayList<Meld>();
+		
+		if(runs.size() > 0 && sets.size() > 0) {
+			initial.addAll(runs);
+			initial.addAll(sets);
+		}else if(runs.size() > 0 && sets.size() == 0) {
+			initial.addAll(runs);
+		}else if(runs.size() == 0 && sets.size() > 0) {
+			initial.addAll(sets);
+		}else {
+			return null;
+		}
+		
+		return initial;
+	}
+	
 	
 	class SortByNumber implements Comparator<Tile> {
 		public int compare(Tile t1, Tile t2) {
