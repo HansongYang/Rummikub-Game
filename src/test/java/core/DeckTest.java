@@ -28,4 +28,13 @@ public class DeckTest extends TestCase {
 
         assertEquals(2, numOfBlueFive);
     }
+
+    public void testDealTiles() {
+        Player player = new Player();
+        Deck deck = new Deck();
+
+        deck.dealTiles(player);
+
+        assertEquals(14, player.getHand().size());
+    }
 }

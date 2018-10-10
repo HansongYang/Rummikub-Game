@@ -34,7 +34,7 @@ public class Deck {
         return deck.remove(deck.size()-1);
     }
 
-    public void dealCards(Player player) {
+    public void dealTiles(Player player) {
         Hand playerHand = player.getHand();
         for (int i = 0; i < 14; i++) {
             playerHand.add(this.drawTile());
