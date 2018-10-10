@@ -12,7 +12,7 @@ public class Meld {
 	}
 	
 	public Meld(ArrayList<Tile> melds) {
-		this.melds =  melds;
+		this.melds = melds;
 	}
 	
 	public Tile getTile(int i) {
@@ -44,7 +44,7 @@ public class Meld {
 			System.out.println("Meld is empty.");
 		} else {
 			System.out.print("Meld's tile: ");
-			for(int i = 0; i < count; i++) {
+			for(int i = 0; i < melds.size(); i++) {
 				String colour = "";
 				if(melds.get(i).getColour() == 'R') {
 					colour = "Red";
@@ -58,9 +58,17 @@ public class Meld {
 				if(melds.get(i).getColour() == 'O') {
 					colour = "Orange";
 				}
-				System.out.print(colour + melds.get(i).getRank() + " ");
+				System.out.print("(" + i + ")" + colour + melds.get(i).getRank() + " ");
 			}
 			System.out.println();
 		}
+	}
+	
+	public int totalValue() {
+		int value = 0;
+		for(int i = 0; i < melds.size(); i++) {
+			value += melds.get(i).getRank();
+		}
+		return value;
 	}
 }

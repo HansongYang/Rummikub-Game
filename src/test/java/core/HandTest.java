@@ -116,9 +116,9 @@ public class HandTest extends TestCase{
 		Tile t3 = new Tile('R', 8);
 		Tile t2 = new Tile('R', 9);
 		Tile t1 = new Tile('R', 10);
-		Tile t5 = new Tile('O', 10);
-		Tile t6 = new Tile('B', 10);
-		Tile t7 = new Tile('G', 10);
+		Tile t5 = new Tile('O', 11);
+		Tile t6 = new Tile('B', 11);
+		Tile t7 = new Tile('G', 11);
 		Tile t8 = new Tile('R', 1);
 		
 		hand.add(t4);
@@ -132,8 +132,8 @@ public class HandTest extends TestCase{
 		ArrayList<Meld> initial = hand.getInitialTiles();
 		
 		assertTrue(1 == initial.size());
-		assertTrue(10 == initial.get(0).getTile(0).getRank() && 'O' == initial.get(0).getTile(0).getColour());
-		assertTrue(10 == initial.get(0).getTile(1).getRank() && 'B' == initial.get(0).getTile(1).getColour());
-		assertTrue(10 == initial.get(0).getTile(2).getRank() && 'G' == initial.get(0).getTile(2).getColour());
+		assertTrue(11 == initial.get(0).getTile(0).getRank() && 'O' == initial.get(0).getTile(0).getColour());
+		assertTrue(11 == initial.get(0).getTile(1).getRank() && 'B' == initial.get(0).getTile(1).getColour());
+		assertTrue(11 == initial.get(0).getTile(2).getRank() && 'G' == initial.get(0).getTile(2).getColour());
 	}
 }

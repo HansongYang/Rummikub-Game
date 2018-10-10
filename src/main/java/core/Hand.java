@@ -204,20 +204,24 @@ public class Hand {
 		ArrayList<Meld> sets = getMeldSets();
 		ArrayList<Meld> initial = new ArrayList<Meld>();
 		
-		if(runs.size() > 0 && sets.size() > 0) {
-			initial.addAll(runs);
-			initial.addAll(sets);
-		}else if(runs.size() > 0 && sets.size() == 0) {
-			initial.addAll(runs);
-		}else if(runs.size() == 0 && sets.size() > 0) {
-			initial.addAll(sets);
-		}else {
-			return null;
+		if(runs.size() > 0) {
+			for(int i = 0; i < runs.size(); i++) {
+				if(runs.get(i).totalValue() >= 30) {
+					initial.add(runs.get(i));
+				}
+			}
+		}
+		
+		if(sets.size() > 0) {
+			for(int i = 0; i < sets.size(); i++) {
+				if(sets.get(i).totalValue() >= 30) {
+					initial.add(sets.get(i));
+				}
+			}
 		}
 		
 		return initial;
 	}
-	
 	
 	class SortByNumber implements Comparator<Tile> {
 		public int compare(Tile t1, Tile t2) {
