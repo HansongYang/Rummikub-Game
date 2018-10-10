@@ -20,8 +20,8 @@ public class Game {
 
         UserPlayer userPlayer = new UserPlayer("USER", this);
         AIPlayer aiPlayer = new AIPlayer("AI1", this);
-        deck.dealCards(userPlayer);
-        deck.dealCards(aiPlayer);
+        deck.dealTiles(userPlayer);
+        deck.dealTiles(aiPlayer);
 
         gameState = GameStates.PLAY;
         currentPlayer = userPlayer;
