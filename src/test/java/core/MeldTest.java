@@ -16,7 +16,6 @@ public class MeldTest extends TestCase {
 	}
 	
 	public void testRemoveTile() {
-		Deck deck = new Deck();
 		Meld meld = new Meld();
 		Tile t1 = new Tile('R', 4);
 		Tile t2 = new Tile('R', 3);
@@ -30,7 +29,6 @@ public class MeldTest extends TestCase {
 	}
 	
 	public void testGetTile() {
-		Deck deck = new Deck();
 		Meld meld = new Meld();
 		Tile t1 = new Tile('R', 4);
 		Tile t2 = new Tile('R', 3);
@@ -39,5 +37,21 @@ public class MeldTest extends TestCase {
 		meld.add(t2);
 		
 		assertEquals(3, meld.getTile(1).getRank());
+	}
+	
+	public void testTotalValue() {
+		Meld meld = new Meld();
+		Tile t1 = new Tile('R', 1);
+		Tile t2 = new Tile('R', 2);
+		Tile t3 = new Tile('R', 3);
+		
+		meld.add(t1);
+		meld.add(t2);
+		meld.add(t3);
+	
+		assertEquals(6, meld.totalValue());
+		
+		meld.add(new Tile('R', 4));
+		assertEquals(10, meld.totalValue());
 	}
 }
