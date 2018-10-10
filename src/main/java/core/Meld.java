@@ -15,12 +15,20 @@ public class Meld {
 		this.melds =  melds;
 	}
 	
+	public Tile getTile(int i) {
+		return this.melds.get(i);
+	}
+	
+	public ArrayList<Tile> getTiles() {
+		return this.melds;
+	}
+	
 	public void add(Tile t) {
 		melds.add(count++, t);
 	}
 	
 	public void remove(Tile t) {
-		for(int i = 0; i < count; i++) {
+		for(int i = 0; i < melds.size(); i++) {
 			if(melds.get(i).getRank() == t.getRank() && melds.get(i).getColour() == t.getColour()) {
 				melds.remove(i);
 			}
