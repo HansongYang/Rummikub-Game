@@ -25,7 +25,7 @@ public class Hand {
 	}
 	
 	public void remove(Tile t) {
-		for(int i = 0; i < count; i++) {
+		for(int i = 0; i < hands.size(); i++) {
 			if(hands.get(i).getRank() == t.getRank() && hands.get(i).getColour() == t.getColour()) {
 				hands.remove(i);
 			}
@@ -48,7 +48,7 @@ public class Hand {
 			System.out.println("Player doesn't have any tile.");
 		} else {
 			System.out.print("Player's tile: ");
-			for(int i = 0; i < count; i++) {
+			for(int i = 0; i < hands.size(); i++) {
 				String colour = "";
 				if(hands.get(i).getColour() == 'R') {
 					colour = "Red";
@@ -96,7 +96,7 @@ public class Hand {
 			colouredTiles.add(new Hand());
 		}
 		
-		for(int i = 0; i < count; i++){
+		for(int i = 0; i < hands.size(); i++){
 			current = this.getTile(i);
 			
 			if(current.getColour() == 'R') {
@@ -120,7 +120,7 @@ public class Hand {
 		for(int i = 0; i < 13; i++)
 			tiles.add(new Hand());
 		
-		for(int i = 0; i < count; i++)
+		for(int i = 0; i < hands.size(); i++)
 			tiles.get(this.getTile(i).getRank()).add(this.getTile(i));
 		
 		return tiles;
@@ -141,11 +141,11 @@ public class Hand {
 		ArrayList<Meld> groups = new ArrayList<Meld>();;
 		ArrayList<Tile> tiles; 
 		
-		if(count > 2) {
+		if(hands.size() > 2) {
 			groups.add(new Meld(this.getTiles()));
 		}
 		
-		if(count > 3){
+		if(hands.size() > 3){
 			for(Tile removedTile : this.getTiles()){
 				tiles = new ArrayList<Tile>(this.getTiles());
 				tiles.remove(removedTile);
@@ -179,16 +179,17 @@ public class Hand {
 			hand.discardRedundantTiles();
 			hand.sortTilesByNumber();
 			
-			for(int i = 0; i < count; i++){
+			for(int i = 0; i < hand.size(); i++){
 				possibleRun = new ArrayList<Tile>();
 				possibleRun.add(hand.getTile(i));
 				
-				for(int j = i+1; j < count; j++){
+				for(int j = i+1; j < hand.size(); j++){
 					if(hand.getTile(j-1).getRank() == hand.getTile(j).getRank() -1) {
 						possibleRun.add(hand.getTile(j));
 					}
-					else 
+					else {
 						break;
+					}
 					
 					if(possibleRun.size() > 2)
 						runs.add(new Meld(possibleRun));
