@@ -4,8 +4,8 @@ public class Game {
 
     private enum Players { USER, P1, P2, P3 }
     private enum GameStates { PLAY, END }
-    private Deck deck;
-    private Board board;
+    private Deck deck = new Deck();
+    private Board board = new Board();
     private GameStates gameState;
     private Player currentPlayer;
 
@@ -15,8 +15,8 @@ public class Game {
     }
 
     public void start() {
-        deck = new Deck();
-        board = new Board();
+        //deck = new Deck();
+        //board = new Board();
 
         UserPlayer userPlayer = new UserPlayer("USER", this);
         AIPlayer aiPlayer = new AIPlayer("AI1", this);
@@ -43,6 +43,14 @@ public class Game {
             break;
             // call gamewin check
         }
+    }
+    
+    public Deck getDeck() {
+    	return deck;
+    }
+    
+    public Board getBoard() {
+    	return board;
     }
 
     // create seperate gamewin check

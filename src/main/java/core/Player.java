@@ -6,17 +6,21 @@ import java.util.Collections;
 public class Player {
 
 	public String name = "Default";
-	private Hand hand;
-	private Game game;
+	protected Hand hand;
+	public Game game;
+	public boolean inital30Played = false;
+	protected ArrayList<Meld> meldsInHand;
 		
 	public Player() {
 		this.hand = new Hand();
+		this.meldsInHand = new ArrayList<Meld>();
 	}
 	
 	public Player(String name, Game game) {
 		this.name = name;
 		this.hand = new Hand();
 		this.game = game;
+		this.meldsInHand = new ArrayList<Meld>();
 	}
 	
 	public Hand getHand() {
@@ -35,6 +39,12 @@ public class Player {
 			board.addMeld(meld);
 		}
 		
+	}
+	
+	public void playMelds(Board board, ArrayList<Meld> melds) {
+		for(int i = 0; i < melds.size(); i++) {
+			board.addMeld(melds.get(i));
+		}
 	}
 	
 	public boolean isValidMeld(ArrayList<Tile> tiles) {
