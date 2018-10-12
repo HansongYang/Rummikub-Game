@@ -21,6 +21,21 @@ public class PlayerTest extends TestCase {
 		
 	}
 	
+	public void testPlayMelds() {
+		
+		ArrayList<Meld> melds = new ArrayList<Meld>();
+		Player player = new Player();
+		Board board = new Board();
+		
+		melds.add(new Meld());
+		melds.add(new Meld());
+		melds.add(new Meld());
+		
+		player.playMelds(board, melds);
+		
+		assertEquals(3, board.currentMelds.size());
+	}
+	
 	public void testIsValidMeld() {
 		
 		Player player = new Player();
