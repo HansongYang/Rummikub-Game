@@ -7,41 +7,53 @@ public class Game {
     private Deck deck = new Deck();
     private Board board = new Board();
     private GameStates gameState;
-    private Player currentPlayer;
+    private UserPlayer userPlayer;
+    private AIPlayer aiPlayer;
+    private Player gameWinner;
 
     public static void main(String[] arg) {
         Game game = new Game();
         game.start();
     }
 
+    // Start function which initializes players, deals tiles, and begins main game loop
     public void start() {
-        //deck = new Deck();
-        //board = new Board();
-
-        UserPlayer userPlayer = new UserPlayer("USER", this);
-        AIPlayer aiPlayer = new AIPlayer("AI1", this);
+        createGamePlayers();
         deck.dealTiles(userPlayer);
         deck.dealTiles(aiPlayer);
-
         gameState = GameStates.PLAY;
-        currentPlayer = userPlayer;
         gameLoop();
     }
 
-    public void gameLoop() {
-        while(gameState == GameStates.PLAY) {
-            System.out.println("Player " + currentPlayer.name + "'s turn");
+    public void createGamePlayers() {
+        userPlayer = new UserPlayer("USER", this);
+        aiPlayer = new AIPlayer("AI1", this);
+    }
 
-            if (currentPlayer instanceof UserPlayer) {
-                currentPlayer.getHand().sortTilesByColour();
-                currentPlayer.getHand().printHand();
-                ((UserPlayer) currentPlayer).playTurn();
-            } else {
-                ((AIPlayer) currentPlayer).playTurn();
+    public void gameLoop() {
+        int currentPlayerCheck = 0;
+
+        while(gameState == GameStates.PLAY) {
+
+            if (currentPlayerCheck > 3) currentPlayerCheck = 0;
+
+            if (currentPlayerCheck == 0) {
+                System.out.println("Player " + userPlayer.name + "'s turn");
+                userPlayer.getHand().sortTilesByColour();
+                userPlayer.getHand().printHand();
+                userPlayer.playTurn();
+                board.printBoard();
+            } else if (currentPlayerCheck == 1) {
+                System.out.println("Player " + aiPlayer.name + "'s turn");
+                aiPlayer.playTurn();
+            } else if (currentPlayerCheck == 2) {
+
+            } else if (currentPlayerCheck == 3) {
+
             }
 
-            break;
-            // call gamewin check
+            currentPlayerCheck++;
+            if (gameWinCheck()) System.out.println(gameWinner.name + " wins the game!");
         }
     }
     
@@ -53,5 +65,15 @@ public class Game {
     	return board;
     }
 
-    // create seperate gamewin check
+    public boolean gameWinCheck() {
+        if (userPlayer.hand.size() == 0) {
+            gameWinner = userPlayer;
+            return true;
+        } else if (aiPlayer.hand.size() == 0) {
+            gameWinner = aiPlayer;
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
