@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class Hand {
-	public int count = 0;
 	private ArrayList<Tile> hands;
 	
 	public Hand() {
@@ -21,7 +20,7 @@ public class Hand {
 	}
 	
 	public void add(Tile t) {
-		hands.add(count++, t);
+		hands.add(t);
 	}
 	
 	public void remove(Tile t) {
@@ -117,7 +116,7 @@ public class Hand {
 		ArrayList<Hand> tiles = new ArrayList<Hand>();
 		this.sortTilesByNumber();
 		
-		for(int i = 0; i < 13; i++)
+		for(int i = 0; i < 14; i++)
 			tiles.add(new Hand());
 		
 		for(int i = 0; i < hands.size(); i++)
