@@ -25,7 +25,7 @@ public class AIPlayer extends Player{
 			
 			//Discard used tiles from hand
 			for(int i = 0; i < meldsInHand.size(); i++) {
-				for(int j = 0; j < meldsInHand.get(i).size(); i++) {					
+				for(int j = 0; j < meldsInHand.get(i).size(); j++) {					
 					hand.remove(meldsInHand.get(i).getTile(j));
 				}
 			}			
