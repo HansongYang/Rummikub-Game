@@ -3,7 +3,6 @@ package core;
 import java.util.ArrayList;
 
 public class Meld {
-	public int count = 0;
 	private ArrayList<Tile> melds;
 	public boolean run = false;
 	
@@ -24,8 +23,10 @@ public class Meld {
 	}
 	
 	public void add(Tile t) {
-		melds.add(count++, t);
+		melds.add(t);
 	}
+
+	public void add(int index, Tile t) { melds.add(index, t); }
 	
 	public void remove(Tile t) {
 		for(int i = 0; i < melds.size(); i++) {
@@ -60,7 +61,6 @@ public class Meld {
 				}
 				System.out.print("(" + i + ")" + colour + melds.get(i).getRank() + " ");
 			}
-			System.out.println();
 		}
 	}
 	

@@ -76,7 +76,7 @@ public class UserPlayer extends Player{
 	
 	public Meld createMeld(ArrayList<Tile> selectedTiles, Hand availableTiles) {
 		
-		if(isValidMeld(selectedTiles)) {
+		if(meldValidatorService.isValidMeld(selectedTiles)) {
 			Meld meld = new Meld();
 			
 			for(int i = 0; i < selectedTiles.size();i++) {
