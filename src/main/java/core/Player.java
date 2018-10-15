@@ -8,7 +8,7 @@ public class Player {
 	public String name = "Default";
 	protected Hand hand;
 	public Game game;
-	public boolean inital30Played = false;
+	public boolean initial30Played = false;
 	protected ArrayList<Meld> meldsInHand;
 		
 	public Player() {
@@ -121,6 +121,16 @@ public class Player {
 		
 		
 		return true;
+	}
+	
+	public int totalAllMelds(ArrayList<Meld> melds) {
+		int total = 0;
+		
+		for(int i = 0; i < melds.size(); i++) {
+			total += melds.get(i).totalValue();
+		}
+		
+		return total;
 	}
 
 }

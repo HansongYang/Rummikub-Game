@@ -56,13 +56,13 @@ public class UserPlayer extends Player{
 				
 			}
 			
-			if(!inital30Played) {
+			if(!initial30Played) {
 				if(totalAllMelds(meldsInHand) < 30){
 					System.out.println("The total of all your melds does not exceed 30");
 				}
 				else {
-					System.out.println("PLAYEDMELDS");
 					playMelds(game.getBoard(), meldsInHand);
+					initial30Played = true;
 				}
 			}
 			else {
@@ -131,15 +131,5 @@ public class UserPlayer extends Player{
 		}
 	}
 	
-	public int totalAllMelds(ArrayList<Meld> melds) {
-		int total = 0;
-		
-		for(int i = 0; i < melds.size(); i++) {
-			for(int j = 0; j < melds.get(i).size(); j++) {
-				total += melds.get(i).getTile(j).getRank();
-			}
-		}
-		
-		return total;
-	}
+	
 }
