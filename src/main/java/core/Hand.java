@@ -166,8 +166,12 @@ public class Hand {
 			currentSet.discardRedundantTiles();
 			sets.addAll(currentSet.getSets());
 		}
+		if(sets.size() == 0) {
+			return sets;
+		}
 
-		for(int i = 0; i < sets.size(); i++) {
+		int i = 0;
+		while(true) {
 			for(int j = 0; j < sets.get(i).size(); j++) {
 				for(int k = j+1; k < sets.get(i).size(); k++) {
 					if(sets.get(i).getTile(j).getColour() == sets.get(i).getTile(k).getColour()) {
@@ -179,6 +183,15 @@ public class Hand {
 				if(duplicate) {
 					break;
 				}
+			}
+			if(duplicate) {
+				duplicate = false;
+				i = 0;
+			}else {
+				i++;
+			}
+			if(i == sets.size()) {
+				break;
 			}
 		}
 		return sets;
