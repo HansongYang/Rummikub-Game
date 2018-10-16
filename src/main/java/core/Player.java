@@ -41,6 +41,10 @@ public class Player {
 		
 	}
 	
+	public void playMeld(Board board, Meld meld) {
+		board.addMeld(meld);
+	}
+	
 	public void playMelds(Board board, ArrayList<Meld> melds) {
 		for(int i = 0; i < melds.size(); i++) {
 			board.addMeld(melds.get(i));

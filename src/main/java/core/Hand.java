@@ -10,7 +10,7 @@ public class Hand {
 	public Hand() {
 		hands = new ArrayList<Tile>();
 	}
-	
+
 	public Tile getTile(int i) {
 		return this.hands.get(i);
 	}
@@ -116,8 +116,9 @@ public class Hand {
 		ArrayList<Hand> tiles = new ArrayList<Hand>();
 		this.sortTilesByNumber();
 		
-		for(int i = 0; i < 14; i++)
+		for(int i = 0; i < 14; i++) {
 			tiles.add(new Hand());
+		}
 		
 		for(int i = 0; i < hands.size(); i++)
 			tiles.get(this.getTile(i).getRank()).add(this.getTile(i));
@@ -137,7 +138,7 @@ public class Hand {
 	
 	//Separate all tiles of the same number into an arraylist which is a helper function of getMeldSets()
 	public ArrayList<Meld> getSets(){
-		ArrayList<Meld> sets = new ArrayList<Meld>();;
+		ArrayList<Meld> sets = new ArrayList<Meld>();
 		ArrayList<Tile> tiles; 
 		
 		if(hands.size() > 2) {
@@ -159,10 +160,26 @@ public class Hand {
 	public ArrayList<Meld> getMeldSets() {
 		ArrayList<Hand> tiles = separateTilesByNumber();
 		ArrayList<Meld> sets = new ArrayList<Meld>(); 
-		
+		boolean duplicate = false;
+	
 		for(Hand currentSet : tiles){
 			currentSet.discardRedundantTiles();
 			sets.addAll(currentSet.getSets());
+		}
+
+		for(int i = 0; i < sets.size(); i++) {
+			for(int j = 0; j < sets.get(i).size(); j++) {
+				for(int k = j+1; k < sets.get(i).size(); k++) {
+					if(sets.get(i).getTile(j).getColour() == sets.get(i).getTile(k).getColour()) {
+						sets.remove(i);
+						duplicate = true;
+						break;
+					}
+				}
+				if(duplicate) {
+					break;
+				}
+			}
 		}
 		return sets;
 	}

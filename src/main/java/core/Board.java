@@ -64,10 +64,11 @@ public class Board {
 //	}
 
     public void printBoard() {
+    	System.out.println("Board: ");
         for (int i = 0; i < currentMelds.size(); i++) {
             System.out.print(i + ": " + "{ ");
             currentMelds.get(i).printMeld();
-            System.out.print("}\n");
+            System.out.print("}\n\n");
         }
     }
 }

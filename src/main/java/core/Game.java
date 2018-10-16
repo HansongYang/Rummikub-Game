@@ -46,6 +46,7 @@ public class Game {
             } else if (currentPlayerCheck == 1) {
                 System.out.println("Player " + aiPlayer.name + "'s turn");
                 aiPlayer.playTurn();
+                board.printBoard();
             } else if (currentPlayerCheck == 2) {
 
             } else if (currentPlayerCheck == 3) {
