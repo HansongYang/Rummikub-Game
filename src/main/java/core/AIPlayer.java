@@ -20,29 +20,34 @@ public class AIPlayer extends Player{
 			if(initial.size() == 0) {
 				Tile newTile = game.getDeck().drawTile();
 				hand.add(newTile);
-			}else {
+			}
+			else {
 				initial30Played = true;
 				for(int i = 0; i < initial.get(0).size(); i++) {
 					hand.remove(initial.get(0).getTile(i));
 				}
 				playMeld(game.getBoard(), initial.get(0));
 			}			
-		}else {
+		}
+		else {
+			ArrayList<Meld> noDuplication = new ArrayList<Meld>();;
 			ArrayList<Meld> runsThenSets = meldRunsFirst();
 			ArrayList<Meld> setsThenRuns = meldSetsFirst();
 				
 			meldsInHand = findBestPlay(runsThenSets, setsThenRuns);
 		
 			if(meldsInHand != null && meldsInHand.size() > 0) {
-	
-				//Discard used tiles from hand
-				for(int i = 0; i < meldsInHand.size(); i++) {
-					for(int j = 0; j < meldsInHand.get(i).size(); j++) {					
-						hand.remove(meldsInHand.get(i).getTile(j));
+				while(meldsInHand.size() != 0) {
+					noDuplication.add(meldsInHand.get(0));
+				    //Discard used tiles from hand
+					for(int i = 0; i < meldsInHand.get(0).size(); i++) {					
+						hand.remove(meldsInHand.get(0).getTile(i));
 					}
-				}			
-			
-				playMelds(game.getBoard(), meldsInHand);
+					runsThenSets = meldRunsFirst();
+					setsThenRuns = meldSetsFirst();
+					meldsInHand = findBestPlay(runsThenSets, setsThenRuns);
+				}
+				playMelds(game.getBoard(), noDuplication);
 			}
 			else {
 				//Draw tile
@@ -67,7 +72,6 @@ public class AIPlayer extends Player{
 		}
 
 		setMelds = newHand.getMeldSets();
-		
 		runMelds.addAll(setMelds);
 		
 		return runMelds;
@@ -88,7 +92,6 @@ public class AIPlayer extends Player{
 		}
 		
 		runMelds = newHand.getMeldRuns();
-		
 		setMelds.addAll(runMelds);
 		
 		return setMelds;
@@ -96,7 +99,6 @@ public class AIPlayer extends Player{
 	
 	//Determine the best set of melds to play based on strategy 1
 	public ArrayList<Meld> findBestPlay(ArrayList<Meld> melds1, ArrayList<Meld> melds2){
-		
 		int totalTiles1 = 0;
 		int totalTiles2 = 0;
 		
