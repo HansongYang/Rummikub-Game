@@ -109,7 +109,7 @@ public class AIPlayer extends Player{
 		for(int i = 0; i < melds2.size();i++) {
 			totalTiles2 += melds2.get(i).size();
 		}
-	
+		
 		if(totalTiles1 > totalTiles2) {
 			return melds1;
 		}

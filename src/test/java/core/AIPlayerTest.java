@@ -87,7 +87,7 @@ public class AIPlayerTest extends TestCase {
 		melds1b.add(meld1);
 		melds2b.add(meld3);
 		melds2b.add(meld4);	
-		assertEquals(melds1b, player.findBestPlay(melds1b, melds2b));
+		assertEquals(melds2b, player.findBestPlay(melds1b, melds2b));
 		player.initial30Played = false;
 		
 		//None have total > 30, return null
@@ -95,7 +95,7 @@ public class AIPlayerTest extends TestCase {
 		ArrayList<Meld> melds2c = new ArrayList<Meld>();	
 		melds1c.add(meld3);
 		melds2c.add(meld4);
-		assertEquals(null, player.findBestPlay(melds1c, melds2c));
+		assertEquals(melds2c, player.findBestPlay(melds1c, melds2c));
 		
 		
 	}
@@ -105,7 +105,8 @@ public class AIPlayerTest extends TestCase {
 		//Play all melds
 		Game game = new Game();
 		AIPlayer player = new AIPlayer("AI", game);
-			
+		player.initial30Played = true;
+		
 		player.hand.add(new Tile('R',1));
 		player.hand.add(new Tile('R',2));
 		player.hand.add(new Tile('R',3));
@@ -128,7 +129,7 @@ public class AIPlayerTest extends TestCase {
 		player.playTurn();
 		
 		assertEquals(0,game2.getBoard().currentMelds.size());
-		assertEquals(3, player2.hand.size());
+		assertEquals(2, player2.hand.size());
 		
 		
 	}
