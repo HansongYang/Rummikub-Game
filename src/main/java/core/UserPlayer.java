@@ -4,74 +4,20 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserPlayer extends Player{
+	
+	PlayerStrategy<? super UserPlayer> strategy;
 
 	public UserPlayer() {
 		super();
 	}
 	
-	public UserPlayer(String name, Game game) {
+	public UserPlayer(String name, Game game, PlayerStrategy<? super UserPlayer> strategy) {
 		super(name, game);
+		this.strategy = strategy;
 	}
 	
 	public void playTurn() {
-		Scanner reader = new Scanner(System.in);
-		int choice = -1;
-		
-		
-		System.out.println("(1)Draw Tile, (2)Create Meld");
-		choice = reader.nextInt();
-		
-		while(choice != 1 && choice != 2) {
-			System.out.println("Invalid input, try again");
-			System.out.println("(1)Draw Tile, (2)Create Meld");
-			choice = reader.nextInt();
-		}
-		
-		
-		if(choice == 1) {//Draw tile
-			Tile newTile = game.getDeck().drawTile();
-			System.out.println("You drew: " + newTile.getColour() + ", " + newTile.getRank());		
-			hand.add(newTile);
-			
-			return;
-		}
-		else if(choice == 2) {//Play Meld
-		
-			int createAdditionalMelds;
-			
-			Hand availableTiles = hand;
-			
-			tileSelectionInput(reader, availableTiles);
-			
-			System.out.println("Create another meld? (1)Yes (2)No");
-			createAdditionalMelds = reader.nextInt();
-			
-			while(createAdditionalMelds == 1) {
-				System.out.println("Available Tiles:");
-				availableTiles.printHand();
-				tileSelectionInput(reader, availableTiles);
-				
-				System.out.println("Create another meld? (1)Yes (2)No");
-				createAdditionalMelds = reader.nextInt();
-				
-			}
-			
-			if(!initial30Played) {
-				if(totalAllMelds(meldsInHand) < 30){
-					System.out.println("The total of all your melds does not exceed 30");
-				}
-				else {
-					playMelds(game.getBoard(), meldsInHand);
-					initial30Played = true;
-				}
-			}
-			else {
-				playMelds(game.getBoard(), meldsInHand);
-			}
-			
-		}
-
-		
+		strategy.executeStrategy(this);	
 	}
 	
 	public Meld createMeld(ArrayList<Tile> selectedTiles, Hand availableTiles) {

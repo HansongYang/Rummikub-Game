@@ -104,7 +104,7 @@ public class AIPlayerTest extends TestCase {
 		
 		//Play all melds
 		Game game = new Game();
-		AIPlayer player = new AIPlayer("AI", game);
+		AIPlayer player = new AIPlayer("AI", game, new AIStrategyOne());
 		player.initial30Played = true;
 		
 		player.hand.add(new Tile('R',1));
@@ -121,7 +121,7 @@ public class AIPlayerTest extends TestCase {
 		
 		//Can't play, draw tile
 		Game game2 = new Game();
-		AIPlayer player2 = new AIPlayer("AI", game2);
+		AIPlayer player2 = new AIPlayer("AI", game2, new AIStrategyOne());
 			
 		player2.hand.add(new Tile('R',1));
 		player2.hand.add(new Tile('R',2));

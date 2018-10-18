@@ -31,7 +31,12 @@ public class Deck {
     }
 
     public Tile drawTile() {
-        return deck.remove(deck.size()-1);
+    	if(deck.size() > 0) {
+    		return deck.remove(deck.size()-1);
+    	}
+    	else {
+    		return null;
+    	}
     }
 
     public void dealTiles(Player player) {
