@@ -8,8 +8,4 @@ public class GameTest extends TestCase {
         Game game = new Game();
         game.start();
     }
-
-    public void testGameWinCheck() {
-
-    }
 }
