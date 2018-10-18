@@ -5,56 +5,19 @@ import java.util.ArrayList;
 public class AIPlayer extends Player{
 	
 	public int tilesUsedOnTurn = 0;
+	PlayerStrategy<? super AIPlayer> strategy;
 	
 	public AIPlayer() {
 		super();
 	}
 	
-	public AIPlayer(String name, Game game) {
+	public AIPlayer(String name, Game game, PlayerStrategy<? super AIPlayer> strategy) {
 		super(name, game);
+		this.strategy = strategy;
 	}
 	
 	public void playTurn() {
-		if(!initial30Played) {
-			ArrayList<Meld> initial = hand.getInitialTiles();
-			if(initial.size() == 0) {
-				Tile newTile = game.getDeck().drawTile();
-				hand.add(newTile);
-			}
-			else {
-				initial30Played = true;
-				for(int i = 0; i < initial.get(0).size(); i++) {
-					hand.remove(initial.get(0).getTile(i));
-				}
-				playMeld(game.getBoard(), initial.get(0));
-			}			
-		}
-		else {
-			ArrayList<Meld> noDuplication = new ArrayList<Meld>();;
-			ArrayList<Meld> runsThenSets = meldRunsFirst();
-			ArrayList<Meld> setsThenRuns = meldSetsFirst();
-				
-			meldsInHand = findBestPlay(runsThenSets, setsThenRuns);
-		
-			if(meldsInHand != null && meldsInHand.size() > 0) {
-				while(meldsInHand.size() != 0) {
-					noDuplication.add(meldsInHand.get(0));
-				    //Discard used tiles from hand
-					for(int i = 0; i < meldsInHand.get(0).size(); i++) {					
-						hand.remove(meldsInHand.get(0).getTile(i));
-					}
-					runsThenSets = meldRunsFirst();
-					setsThenRuns = meldSetsFirst();
-					meldsInHand = findBestPlay(runsThenSets, setsThenRuns);
-				}
-				playMelds(game.getBoard(), noDuplication);
-			}
-			else {
-				//Draw tile
-				Tile newTile = game.getDeck().drawTile();
-				hand.add(newTile);
-			}
-		}
+		strategy.executeStrategy(this);		
 	}
 	
 	//Find all possible melds with runs as priority 
