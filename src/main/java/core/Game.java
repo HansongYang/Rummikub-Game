@@ -41,13 +41,13 @@ public class Game {
             if (currentPlayerCheck > 3) currentPlayerCheck = 0;
 
             if (currentPlayerCheck == 0) {
-                System.out.println("Player " + userPlayer.name + "'s turn");
+                System.out.println("\nPlayer " + userPlayer.name + "'s turn");
                 userPlayer.getHand().sortTilesByColour();
                 userPlayer.getHand().printHand();
                 userPlayer.playTurn();
                 board.printBoard();
             } else if (currentPlayerCheck == 1) {
-                System.out.println("Player " + aiPlayer.name + "'s turn");
+                System.out.println("\nPlayer " + aiPlayer.name + "'s turn");
                 aiPlayer.playTurn();
                 board.printBoard();
             } else if (currentPlayerCheck == 2) {

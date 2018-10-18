@@ -14,6 +14,12 @@ public class DeckTest extends TestCase {
         assertTrue(deck.drawTile() instanceof Tile);
     }
 
+    public void testDeckSizeDecreasesWhenRemoveFromDeck() {
+        Deck deck = new Deck();
+        Tile tile = deck.drawTile();
+        assertEquals(103, deck.getDeckSize());
+    }
+
     public void testCheckForValidDuplicateTiles() {
         Deck deck = new Deck();
 

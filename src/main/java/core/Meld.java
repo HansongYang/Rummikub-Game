@@ -3,8 +3,10 @@ package core;
 import java.util.ArrayList;
 
 public class Meld {
-	private ArrayList<Tile> melds;
 	public boolean run = false;
+	private ArrayList<Tile> melds;
+	private boolean justPlayedFlag = false;
+	private boolean movedToFormNewFlag = false;
 	
 	public Meld() {
 		melds = new ArrayList<Tile>();
@@ -35,6 +37,11 @@ public class Meld {
 			}
 		}
 	}
+
+	public Tile remove(int i) {
+		if (i > melds.size()) return null;
+		return melds.remove(i);
+	}
 	
 	public int size() {
 		return melds.size();
@@ -46,21 +53,10 @@ public class Meld {
 		} else {
 			System.out.print("Meld's tile: ");
 			for(int i = 0; i < melds.size(); i++) {
-				String colour = "";
-				if(melds.get(i).getColour() == 'R') {
-					colour = "Red";
-				}
-				if(melds.get(i).getColour() == 'B') {
-					colour = "Blue";
-				}
-				if(melds.get(i).getColour() == 'G') {
-					colour = "Green";
-				}
-				if(melds.get(i).getColour() == 'O') {
-					colour = "Orange";
-				}
-				System.out.print("(" + i + ")" + colour + melds.get(i).getRank() + " ");
+				System.out.print("(" + i + ")");
+				melds.get(i).printTile(justPlayedFlag, movedToFormNewFlag);
 			}
+			resetAllFlags();
 		}
 	}
 	
@@ -70,5 +66,18 @@ public class Meld {
 			value += melds.get(i).getRank();
 		}
 		return value;
+	}
+
+	public void setJustPlayedFlagTrue() {
+		justPlayedFlag = true;
+	}
+
+	public void setMovedToFormNewFlagTrue() {
+		movedToFormNewFlag = true;
+	}
+
+	public void resetAllFlags() {
+		movedToFormNewFlag = false;
+		justPlayedFlag = false;
 	}
 }

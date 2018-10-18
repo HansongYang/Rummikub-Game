@@ -48,20 +48,8 @@ public class Hand {
 		} else {
 			System.out.print("Player's tile: ");
 			for(int i = 0; i < hands.size(); i++) {
-				String colour = "";
-				if(hands.get(i).getColour() == 'R') {
-					colour = "Red";
-				}
-				if(hands.get(i).getColour() == 'B') {
-					colour = "Blue";
-				}
-				if(hands.get(i).getColour() == 'G') {
-					colour = "Green";
-				}
-				if(hands.get(i).getColour() == 'O') {
-					colour = "Orange";
-				}
-				System.out.print("(" + i + ")" + colour + hands.get(i).getRank() + " ");
+				System.out.print("(" + i + ")");
+				hands.get(i).printTile();
 			}
 			System.out.println();
 		}
