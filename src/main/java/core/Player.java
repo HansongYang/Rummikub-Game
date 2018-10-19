@@ -60,5 +60,14 @@ public class Player {
 		
 		return total;
 	}
+	
+	public int totalTilesFromMelds(ArrayList<Meld> melds) {
+		int totalTiles = 0;
+		
+		for(int i = 0; i < melds.size(); i++) {
+			totalTiles += melds.get(i).size();
+		}
+		return totalTiles;
+	}
 
 }

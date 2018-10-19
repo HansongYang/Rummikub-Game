@@ -59,28 +59,6 @@ public class UserPlayerTest extends TestCase {
 		
 	}
 	
-	public void testTotalAllMelds() {
-		
-		UserPlayer player = new UserPlayer();
-		
-		Meld meld = new Meld();
-		meld.add(new Tile('G',7));
-		meld.add(new Tile('R',7));
-		meld.add(new Tile('B',7));
-		player.meldsInHand.add(meld);
-			
-		assertEquals(player.totalAllMelds(player.meldsInHand), 21);
-		
-		Meld meld2 = new Meld();
-		meld2.add(new Tile('B',1));
-		meld2.add(new Tile('B',2));
-		meld2.add(new Tile('B',3));
-		meld2.add(new Tile('B',4));
-		player.meldsInHand.add(meld2);
-		
-		assertEquals(player.totalAllMelds(player.meldsInHand), 31);
-		
-	}
 	
 	public void testTileSelectionInput() {
 		UserPlayer player = new UserPlayer();
