@@ -252,6 +252,26 @@ public class Hand {
 		return initial;
 	}
 	
+	//Return tiles in hand that are not part of the specified melds
+	public ArrayList<Tile> getRemainingTiles(ArrayList<Meld> melds){
+		ArrayList<Tile> remainingTiles = new ArrayList<Tile>();
+		
+		for(int i = 0; i < hands.size(); i++) {
+			Tile tile = hands.get(i);
+			boolean contains = false;
+			
+			for(int j = 0; j < melds.size(); j++) {
+				if(melds.get(j).getTiles().contains(tile)) {
+					contains = true;
+				}
+			}		
+			if(!contains) {
+				remainingTiles.add(tile);
+			}			
+		}		
+		return remainingTiles;
+	}
+	
 	class SortByNumber implements Comparator<Tile> {
 		public int compare(Tile t1, Tile t2) {
 			return t1.getRank() - t2.getRank();

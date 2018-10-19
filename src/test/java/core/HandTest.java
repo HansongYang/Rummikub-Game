@@ -136,4 +136,47 @@ public class HandTest extends TestCase{
 		assertTrue(11 == initial.get(0).getTile(1).getRank() && 'B' == initial.get(0).getTile(1).getColour());
 		assertTrue(11 == initial.get(0).getTile(2).getRank() && 'G' == initial.get(0).getTile(2).getColour());
 	}
+	
+	public void testGetRemainingTiles() {
+		Hand hand = new Hand();
+		
+		hand.add(new Tile('R',1));
+		hand.add(new Tile('R',2));
+		hand.add(new Tile('R',3));
+		hand.add(new Tile('R',8));
+		hand.add(new Tile('R',9));
+		hand.add(new Tile('R',10));
+		hand.add(new Tile('B',7));
+		hand.add(new Tile('G',5));
+		
+		Meld meld1 = new Meld();
+		meld1.add(hand.getTile(0));
+		meld1.add(hand.getTile(1));
+		meld1.add(hand.getTile(2));
+		
+		Meld meld2 = new Meld();
+		meld2.add(hand.getTile(3));
+		meld2.add(hand.getTile(4));
+		meld2.add(hand.getTile(5));
+		
+		ArrayList<Meld> melds = new ArrayList<Meld>();
+		
+		melds.add(meld1);
+		melds.add(meld2);
+		
+		ArrayList<Tile> remaining = hand.getRemainingTiles(melds);
+		
+		assertEquals(remaining.get(0).getColour(), 'B');
+		assertEquals(remaining.get(0).getRank(), 7);
+		assertEquals(remaining.get(1).getColour(), 'G');
+		assertEquals(remaining.get(1).getRank(), 5);
+		
+		hand.remove(hand.getTile(hand.size()-1));
+		hand.remove(hand.getTile(hand.size()-1));
+		
+		ArrayList<Tile> remaining2 = hand.getRemainingTiles(melds);
+		
+		assertEquals(remaining2.size(), 0);
+		
+	}
 }

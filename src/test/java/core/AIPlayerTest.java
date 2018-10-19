@@ -44,7 +44,7 @@ public class AIPlayerTest extends TestCase {
 		
 	}
 	
-	public void testFindBestPlay() {
+	/*public void testFindBestPlay() {
 		
 		AIPlayer player = new AIPlayer();
 		
@@ -98,7 +98,7 @@ public class AIPlayerTest extends TestCase {
 		assertEquals(melds2c, player.findBestPlay(melds1c, melds2c));
 		
 		
-	}
+	}*/
 	
 	public void testPlayTurn() {
 		
