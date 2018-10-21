@@ -54,9 +54,9 @@ public class Meld {
 			System.out.print("Meld's tile: ");
 			for(int i = 0; i < melds.size(); i++) {
 				System.out.print("(" + i + ")");
-				melds.get(i).printTile(justPlayedFlag, movedToFormNewFlag);
+				melds.get(i).printTile();
 			}
-			resetAllFlags();
+			resetAllJustPlayedFlag();
 		}
 	}
 	
@@ -68,16 +68,15 @@ public class Meld {
 		return value;
 	}
 
-	public void setJustPlayedFlagTrue() {
-		justPlayedFlag = true;
+	public void allTilesJustPlayedFlag() {
+		for (Tile tile : melds) {
+			tile.setJustPlayedFlag();
+		}
 	}
 
-	public void setMovedToFormNewFlagTrue() {
-		movedToFormNewFlag = true;
-	}
-
-	public void resetAllFlags() {
-		movedToFormNewFlag = false;
-		justPlayedFlag = false;
+	public void resetAllJustPlayedFlag() {
+		for (Tile tile : melds) {
+			tile.resetJustPlayedFlag();
+		}
 	}
 }
