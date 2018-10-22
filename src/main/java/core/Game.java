@@ -45,6 +45,9 @@ public class Game {
                 userPlayer.getHand().sortTilesByColour();
                 userPlayer.getHand().printHand();
                 userPlayer.playTurn();
+                if(gameState == GameStates.END) {
+                	break;
+                }
                 board.printBoard();
             } else if (currentPlayerCheck == 1) {
                 System.out.println("\nPlayer " + aiPlayer.name + "'s turn");
@@ -79,5 +82,9 @@ public class Game {
         } else {
             return false;
         }
+    }
+    
+    public void endGame() {
+    	 gameState = GameStates.END;
     }
 }
