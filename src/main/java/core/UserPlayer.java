@@ -51,7 +51,6 @@ public class UserPlayer extends Player{
 		
 		ArrayList<Integer> tileIndices = new ArrayList<Integer>();
 		
-		
 		//Select tiles to create meld
 		while(true) {
 			System.out.println("Enter the index of the Tile you want to select. (-1) to stop selecting");
@@ -63,6 +62,7 @@ public class UserPlayer extends Player{
 			else if(tileSelected == -1) {//Finished selecting
 				Meld meld = createMeld(selectTiles(tileIndices, availableTiles), availableTiles);
 				if(meld != null) {
+					meldsInHand.clear();
 					meldsInHand.add(meld);
 				}else {
 					System.out.println("Invalid Meld");
