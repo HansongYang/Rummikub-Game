@@ -5,9 +5,7 @@ import java.util.ArrayList;
 public class Meld {
 	public boolean run = false;
 	private ArrayList<Tile> melds;
-	private boolean justPlayedFlag = false;
-	private boolean movedToFormNewFlag = false;
-	
+
 	public Meld() {
 		melds = new ArrayList<Tile>();
 	}
