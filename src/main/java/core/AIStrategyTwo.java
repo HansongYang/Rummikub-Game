@@ -29,26 +29,26 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 				player.playMeld(player.game.getBoard(), initial.get(0));
 			}	
 		}else {
+			int initialHandSize = player.hand.size();
 			ArrayList<Meld> runsThenSets = player.meldRunsFirst();
 			ArrayList<Meld> setsThenRuns = player.meldSetsFirst();
 						
-			if(tryToWin(player, runsThenSets)) {
-				return;
-			}else if(tryToWin(player, setsThenRuns)) {
-				return;
-			}else {//Draw tile
-				Tile newTile = player.game.getDeck().drawTile();
-				player.hand.add(newTile);
-				return;
+			tryToWin(player, runsThenSets);
+			if(player.hand.size() == initialHandSize) {//Played 0 tiles
+				tryToWin(player,setsThenRuns);
+				if(player.hand.size() == initialHandSize) {//Played 0 tiles
+					//Draw tile
+					Tile newTile = player.game.getDeck().drawTile();
+					player.hand.add(newTile);
+					return;
+				}
 			}		
-			
-		}
-		
+		}	
 	}
 	
 	//Make winning play if possible, using melds in hand and playing remaining tiles to melds on board
-	public boolean tryToWin(AIPlayer player, ArrayList<Meld> meldsInHand) {
-		
+	//If it can't make a winning play it plays tiles to existing melds on board if possible
+	public void tryToWin(AIPlayer player, ArrayList<Meld> meldsInHand) {
 		
 		if(player.totalTilesFromMelds(meldsInHand) == player.hand.size()) {
 			//Player can empty hand with just melds in hand
@@ -60,18 +60,23 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 				}
 			}
 			player.playMelds(player.game.getBoard(), player.meldsInHand);
-			return true;
 		}
 		else {
-			//Check if player can empty hand by playing remaining tiles to board
 			ArrayList<Tile> remainingTiles = player.hand.getRemainingTiles(meldsInHand);
+						
+			int nTilesPlayedToBoard = playWithTableTiles(player, remainingTiles);
 			
-			//TODO check if remainingTiles can be played to board
-		
-			//If all tiles can be played, play them and return true
+			if(nTilesPlayedToBoard == remainingTiles.size()) {
+				//All remaining tiles played, proceed to play melds from hand to win
+				player.meldsInHand = meldsInHand;
+				for(int i = 0; i < meldsInHand.size(); i++) {
+					for(int j = 0; j < meldsInHand.get(i).size();j++) {
+						player.hand.remove(meldsInHand.get(i).getTile(j));
+					}
+				}
+				player.playMelds(player.game.getBoard(), player.meldsInHand);		
+			}		
 		}
-		
-		return false;
 	}
 
 	public int playWithTableTiles(AIPlayer player, ArrayList<Tile> remainingTiles) {
