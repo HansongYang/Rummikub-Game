@@ -2,7 +2,9 @@ package core;
 
 import java.util.ArrayList;
 
-public class AIStrategyTwo implements PlayerStrategy<AIPlayer>{
+public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
+
+	private MeldValidatorService meldValidatorService = new MeldValidatorService();
 
 	public void executeStrategy(AIPlayer player) {
 		
@@ -70,6 +72,40 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer>{
 		}
 		
 		return false;
+	}
+
+	public int playWithTableTiles(AIPlayer player, ArrayList<Tile> remainingTiles) {
+		int tilesPlayed = 0;
+
+		for (Tile tile : remainingTiles) {
+			Meld meldToAdd = new Meld();
+			meldToAdd.add(tile);
+
+			for (int i = 0; i < player.game.getBoard().currentMelds.size(); i++) {
+				Meld meldTempA = player.game.getBoard().currentMelds.get(i);   // Meld for testing tile add to back
+				Meld meldTempB = player.game.getBoard().currentMelds.get(i);   // Meld for testing tile add to front
+				meldTempA.add(tile);
+				meldTempB.add(0, tile);
+				if (meldValidatorService.isValidMeld(meldTempA.getTiles())) {
+					player.game.getBoard().addTileToMeldEnd(i, meldToAdd);
+					tilesPlayed++;
+				} else if (meldValidatorService.isValidMeld(meldTempB.getTiles())) {
+					player.game.getBoard().addTileToMeldBeginning(i, meldToAdd);
+					tilesPlayed++;
+				}
+			}
+		}
+
+		return tilesPlayed;
+	}
+
+	public void makeMeldFromBoardTile() {
+		// look through remaining tiles
+		// look through boards tiles
+		// pick a board tile
+		// can it make a set or run with the addition of the tile
+		// if so remove tile from current meld and add as new meld with addition of other tiles from hand
+		// continue loop if not
 	}
 }
 

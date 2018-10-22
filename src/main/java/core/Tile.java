@@ -3,13 +3,15 @@ package core;
 public class Tile {
 	private char colour;
 	private int rank;
+	private boolean movedToFormNewFlag = false;
+	private boolean justPlayedFlag = false;
 
 	public Tile(char colour, int rank) {
 		this.colour = colour;
 		this.rank = rank;
 	}
 
-	public void printTile(boolean justPlayedFlag, boolean movedToFormNewFlag) {
+	public void printTile() {
 		String colourTemp = "";
 		switch (this.colour) {
 			case 'R': colourTemp = "Red"; break;
@@ -27,18 +29,6 @@ public class Tile {
 		}
 	}
 
-	public void printTile() {
-		String colourTemp = "";
-		switch (this.colour) {
-			case 'R': colourTemp = "Red"; break;
-			case 'B': colourTemp = "Blue"; break;
-			case 'G': colourTemp = "Green"; break;
-			case 'O': colourTemp = "Orange"; break;
-		}
-
-		System.out.print(colourTemp  + rank + " ");
-	}
-
 	public int getRank() {
 		return rank;
 	}
@@ -46,4 +36,11 @@ public class Tile {
 	public char getColour() {
 		return colour;
 	}
+
+	public void setMovedToFormNewFlagTrue() { movedToFormNewFlag = true; }
+
+	public void setJustPlayedFlag() { justPlayedFlag = true; }
+
+	public void resetJustPlayedFlag() { justPlayedFlag = false; }
+
 }

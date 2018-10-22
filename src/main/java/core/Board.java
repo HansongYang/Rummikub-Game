@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Board {
 
@@ -11,7 +10,7 @@ public class Board {
     public Board() { }
     
     public void addMeld(Meld meld) {
-    	meld.setJustPlayedFlagTrue();
+    	meld.allTilesJustPlayedFlag();
         currentMelds.add(meld);
     }
 
@@ -27,13 +26,14 @@ public class Board {
 
         for (int i = 0; i < meld.size(); i++) {
             checkMeld.add(meld.getTile(i));
+            meld.allTilesJustPlayedFlag();
         }
 
         if (meldValidatorService.isValidMeld(checkMeld.getTiles())) {
-            checkMeld.setMovedToFormNewFlagTrue();
             currentMelds.set(rowLocation, checkMeld);
             return true;
         } else {
+            meld.resetAllJustPlayedFlag();
             return false; // Invalid meld created
         }
     }
@@ -53,7 +53,6 @@ public class Board {
         }
 
         if (meldValidatorService.isValidMeld(checkMeld.getTiles())) {
-            checkMeld.setMovedToFormNewFlagTrue();
             currentMelds.set(rowLocation, checkMeld);
             return true;
         } else {
@@ -85,7 +84,7 @@ public class Board {
             }
 
             if (meldValidatorService.isValidMeld(newMeld.getTiles())) {
-                newMeld.setMovedToFormNewFlagTrue();
+                removedTile.setMovedToFormNewFlagTrue();
                 currentMelds.add(newMeld);
                 return true;
             } else {
