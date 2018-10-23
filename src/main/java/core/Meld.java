@@ -10,8 +10,11 @@ public class Meld {
 		melds = new ArrayList<Tile>();
 	}
 	
-	public Meld(ArrayList<Tile> melds) {
-		this.melds = melds;
+	public Meld(ArrayList<Tile> tiles) {
+		melds = new ArrayList<Tile>();
+		for(int i = 0; i < tiles.size(); i++) {
+			this.add(tiles.get(i));
+		}
 	}
 	
 	public Tile getTile(int i) {
