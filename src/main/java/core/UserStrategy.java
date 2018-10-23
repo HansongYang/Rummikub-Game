@@ -12,7 +12,7 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 		boolean pass = false;
 		while(true) {
 			if(numOfTiles > player.getHand().size()) {
-				System.out.println("(1) Draw Tile, (2) Create Meld, (3) Play tiles on the table, (4) Pass. Enter -1 to quit.");
+				System.out.println("(1) Pass, (2) Create Meld, (3) Play tiles on the table. Enter -1 to quit.");
 				pass = true;
 			}else {
 				System.out.println("(1) Draw Tile, (2) Create Meld, (3) Play tiles on the table.  Enter -1 to quit.");
@@ -25,6 +25,10 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 			}
 		
 			if(choice == 1) {//Draw tile
+				if(pass) {
+					pass = false;
+					break;
+				}
 				Tile newTile = player.game.getDeck().drawTile();
 				System.out.println("You drew: " + newTile.getColour() + ", " + newTile.getRank());		
 				player.hand.add(newTile);
@@ -74,14 +78,14 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 				Hand availableTiles = player.hand;
 				
 				while(true) {
-					System.out.println("Choose an option: 1. Add a tile to the end of a meld. 2. Add a tile to the beginning of a meld. 3. Add a tile to create a new meld. Enter -1 to quit.");
+					System.out.println("Choose an option: 1. Add a tile to the end of a meld. 2. Add a tile to the beginning of a meld. 3. Add a tile to create a new meld. Enter -1 to go back.");
 					int option = reader.nextInt();
 					if(option == -1) {
 						break;
 					}
 					if(option == 1) {
 						while(true) {
-							System.out.println("Enter the index of the Tile you want to select to add the end of a meld. One tile at each time. Enter -1 to quit.");
+							System.out.println("Enter the index of the Tile you want to select to add the end of a meld. One tile at each time. Enter -1 to go back.");
 							int tileSelected = reader.nextInt();
 							if(tileSelected == -1) {
 								break;
@@ -114,7 +118,7 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 						}
 					}else if(option == 2) {
 						while(true) {
-							System.out.println("Enter the index of the Tile you want to select to add the beginning of a meld. One tile at each time. Enter -1 to quit.");
+							System.out.println("Enter the index of the Tile you want to select to add the beginning of a meld. One tile at each time. Enter -1 to go back.");
 							int tileSelected = reader.nextInt();
 							if(tileSelected == -1) {
 								break;
@@ -148,7 +152,7 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 					}else if(option == 3) {
 							Meld meld = new Meld();
 							while(true) {
-								System.out.println("Enter the index of the Tile you want to select to create a new meld. One tile at each time. Enter -1 to quit.");
+								System.out.println("Enter the index of the Tile you want to select to create a new meld. One tile at each time. Enter -1 to go back.");
 								int tileSelected = reader.nextInt();
 								if(tileSelected == -1) {
 									break;
@@ -162,7 +166,7 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 							}
 							while(true) {
 								player.game.getBoard().printBoard();
-								System.out.println("Enter the index of the meld you want to select. Enter -1 to quit.");
+								System.out.println("Enter the index of the meld you want to select. Enter -1 to go back.");
 								int meldSelected = reader.nextInt();
 								if(meldSelected == -1) { break;}
 								if(meldSelected >= player.game.getBoard().currentMelds.size() || meldSelected < 0) {//Invalid Tile
@@ -170,14 +174,14 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 								}else {
 									while(true) {
 										player.game.getBoard().currentMelds.get(meldSelected).printMeld();
-										System.out.println("\nEnter the index of a tile in your selected meld that you want to choose. Enter -1 to quit.");
+										System.out.println("\nEnter the index of a tile in your selected meld that you want to choose. Enter -1 to go back.");
 										int tileOfMeld = reader.nextInt();
 										if(tileOfMeld == -1) { break;}
 										if(tileOfMeld >= player.game.getBoard().currentMelds.get(meldSelected).size() || tileOfMeld < 0) {
 											System.out.println("Invalid input, please try again.");
 										}else {
 											while(true) {
-												System.out.println("Enter the index position that you want to put the tile in the new meld. Enter -1 to quit.");
+												System.out.println("Enter the index position that you want to put the tile in the new meld. Enter -1 to go back.");
 												int positionOfMeld = reader.nextInt();
 												if(positionOfMeld == -1) { break;}
 												if(positionOfMeld < 0 || positionOfMeld >= meld.size()) {
@@ -203,13 +207,6 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 					 }else {
 					   	 System.out.println("Invalid input, please enter again!!!");
 					 }
-				}
-			}else if(choice == 4) {
-				if(pass) {
-					pass = false;
-					break;
-				}else {
-					System.out.println("Invalid input, please enter again!!!");
 				}
 			}
 			else {

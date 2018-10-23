@@ -34,6 +34,7 @@ public class Board {
             return true;
         } else {
             meld.resetAllJustPlayedFlag();
+            checkMeld.remove(checkMeld.size()-1); 
             return false; // Invalid meld created
         }
     }
@@ -47,17 +48,20 @@ public class Board {
      */
     public boolean addTileToMeldBeginning(int rowLocation, Meld meld) {
         Meld checkMeld = currentMelds.get(rowLocation);
-
         for (int i = 0; i < meld.size(); i++) {
             checkMeld.add(i, meld.getTile(i));
+            meld.allTilesJustPlayedFlag();
         }
 
         if (meldValidatorService.isValidMeld(checkMeld.getTiles())) {
             currentMelds.set(rowLocation, checkMeld);
             return true;
         } else {
+        	meld.resetAllJustPlayedFlag(); 
+        	checkMeld.remove(0); 
             return false; // Invalid meld created
         }
+        
     }
 
 
