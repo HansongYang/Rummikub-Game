@@ -27,7 +27,7 @@ public class Game {
 
     public void createGamePlayers() {
     	PlayerStrategy<? super UserPlayer> userStrategy = new UserStrategy();
-    	PlayerStrategy<? super AIPlayer> aiStrategyOne = new AIStrategyOne();
+    	PlayerStrategy<? super AIPlayer> aiStrategyOne = new AIStrategyTwo();
     	
         userPlayer = new UserPlayer("USER", this, userStrategy);
         aiPlayer = new AIPlayer("AI1", this, aiStrategyOne);

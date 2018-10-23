@@ -87,15 +87,18 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 			meldToAdd.add(tile);
 
 			for (int i = 0; i < player.game.getBoard().currentMelds.size(); i++) {
-				Meld meldTempA = player.game.getBoard().currentMelds.get(i);   // Meld for testing tile add to back
-				Meld meldTempB = player.game.getBoard().currentMelds.get(i);   // Meld for testing tile add to front
+				Meld meldTempA = new Meld(player.game.getBoard().currentMelds.get(i).getTiles());  // Meld for testing tile add to back
+				Meld meldTempB = new Meld(player.game.getBoard().currentMelds.get(i).getTiles());   // Meld for testing tile add to front
+				
 				meldTempA.add(tile);
 				meldTempB.add(0, tile);
 				if (meldValidatorService.isValidMeld(meldTempA.getTiles())) {
 					player.game.getBoard().addTileToMeldEnd(i, meldToAdd);
+					player.hand.remove(tile);
 					tilesPlayed++;
 				} else if (meldValidatorService.isValidMeld(meldTempB.getTiles())) {
 					player.game.getBoard().addTileToMeldBeginning(i, meldToAdd);
+					player.hand.remove(tile);
 					tilesPlayed++;
 				}
 			}

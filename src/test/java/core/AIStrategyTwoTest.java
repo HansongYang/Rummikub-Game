@@ -36,20 +36,16 @@ public class AIStrategyTwoTest extends TestCase {
 		aiPlayer.hand.add(new Tile('R',9));
 		
 		//Board is not empty, play initial 30	
-		aiPlayer.strategy.executeStrategy(aiPlayer);		
+		aiPlayer.strategy.executeStrategy(aiPlayer);	
 		assertEquals(game.getBoard().currentMelds.size(), 2);
 		
 		aiPlayer.hand.add(new Tile('O',13));
 		
-		//Play O13 to existing meld on board
-		aiPlayer.strategy.executeStrategy(aiPlayer);		
-		assertEquals(game.getBoard().currentMelds.size(), 2);
-		assertEquals(aiPlayer.hand.size(),3);
-		
-		//Play other melds in hand to win
+		//Play O13 to existing meld on board and play final meld from hand
 		aiPlayer.strategy.executeStrategy(aiPlayer);		
 		assertEquals(game.getBoard().currentMelds.size(), 3);
-
+		assertEquals(aiPlayer.hand.size(),0);
+		
 	}
 	
 	
