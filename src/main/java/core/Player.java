@@ -1,8 +1,9 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class Player {
+public class Player implements Observer {
 
 	public String name = "Default";
 	protected Hand hand;
@@ -10,7 +11,8 @@ public class Player {
 	public boolean initial30Played = false;
 	protected ArrayList<Meld> meldsInHand;
 	protected MeldValidatorService meldValidatorService = new MeldValidatorService();
-		
+	public HashMap<String, Integer> playerHandCount;
+
 	public Player() {
 		this.hand = new Hand();
 		this.meldsInHand = new ArrayList<Meld>();
@@ -70,4 +72,7 @@ public class Player {
 		return totalTiles;
 	}
 
+	public void update(HashMap<String, Integer> playerData) {
+		this.playerHandCount = playerData;
+	}
 }
