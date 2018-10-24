@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AIPlayer extends Player{
 	
@@ -59,6 +60,5 @@ public class AIPlayer extends Player{
 		
 		return setMelds;
 	}
-	
 
 }

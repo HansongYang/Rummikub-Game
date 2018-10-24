@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class UserPlayer extends Player{
@@ -76,6 +77,5 @@ public class UserPlayer extends Player{
 			}
 		}
 	}
-	
-	
+
 }
