@@ -1,10 +1,12 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
-public class UserPlayer extends Player{
+public class UserPlayer extends Player implements Observer {
 	
+	public HashMap<String, Integer> playerHandCount;
 	PlayerStrategy<? super UserPlayer> strategy;
 
 	public UserPlayer() {
@@ -76,6 +78,8 @@ public class UserPlayer extends Player{
 			}
 		}
 	}
-	
-	
+
+	public void update(HashMap playerData) {
+		this.playerHandCount = playerData;
+	}
 }

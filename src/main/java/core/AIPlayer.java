@@ -1,10 +1,12 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class AIPlayer extends Player{
+public class AIPlayer extends Player implements Observer {
 	
 	public int tilesUsedOnTurn = 0;
+	public HashMap<String, Integer> playerHandCount;
 	PlayerStrategy<? super AIPlayer> strategy;
 	
 	public AIPlayer() {
@@ -59,6 +61,8 @@ public class AIPlayer extends Player{
 		
 		return setMelds;
 	}
-	
 
+	public void update(HashMap<String, Integer> playerData) {
+		this.playerHandCount = playerData;
+	}
 }
