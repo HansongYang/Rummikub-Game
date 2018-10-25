@@ -13,7 +13,9 @@ public class Game implements Observable{
     private GameStates gameState;
     private Player gameWinner;
 
-    public AIPlayer aiPlayer;
+    public AIPlayer aiPlayer1;
+    public AIPlayer aiPlayer2;
+    public AIPlayer aiPlayer3;
     public UserPlayer userPlayer;
 
     public static void main(String[] arg) {
@@ -25,7 +27,9 @@ public class Game implements Observable{
     public void start() {
         createGamePlayers();
         deck.dealTiles(userPlayer);
-        deck.dealTiles(aiPlayer);
+        deck.dealTiles(aiPlayer1);
+        deck.dealTiles(aiPlayer2);
+        deck.dealTiles(aiPlayer3);
         gameState = GameStates.PLAY;
         gameLoop();
     }
@@ -34,12 +38,18 @@ public class Game implements Observable{
         observers = new ArrayList<Observer>();
         playerHandCount = new HashMap<String, Integer>();
     	PlayerStrategy<? super UserPlayer> userStrategy = new UserStrategy();
-    	PlayerStrategy<? super AIPlayer> aiStrategyOne = new AIStrategyTwo();
+    	PlayerStrategy<? super AIPlayer> aiStrategyOne = new AIStrategyOne();
+    	PlayerStrategy<? super AIPlayer> aiStrategyTwo = new AIStrategyTwo();
+    	PlayerStrategy<? super AIPlayer> aiStrategyThree = new AIStrategyThree();
     	
         userPlayer = new UserPlayer("USER", this, userStrategy);
-        aiPlayer = new AIPlayer("AI1", this, aiStrategyOne);
+        aiPlayer1 = new AIPlayer("AI1", this, aiStrategyOne);
+        aiPlayer2 = new AIPlayer("AI2", this, aiStrategyTwo);
+        aiPlayer3 = new AIPlayer("AI3", this, aiStrategyThree);
         this.addObserver(userPlayer);
-        this.addObserver(aiPlayer);
+        this.addObserver(aiPlayer1);
+        this.addObserver(aiPlayer2);
+        this.addObserver(aiPlayer3);
     }
 
     public void gameLoop() {
@@ -60,12 +70,15 @@ public class Game implements Observable{
                 board.printBoard();
                 this.messageObservers();
             } else if (currentPlayerCheck == 1) {
-                System.out.println("\nPlayer " + aiPlayer.name + "'s turn");
-                aiPlayer.playTurn();
+                System.out.println("\nPlayer " + aiPlayer1.name + "'s turn");
+                aiPlayer1.playTurn();
                 board.printBoard();
                 this.messageObservers();
             } else if (currentPlayerCheck == 2) {
-
+            	 System.out.println("\nPlayer " + aiPlayer2.name + "'s turn");
+                 aiPlayer2.playTurn();
+                 board.printBoard();
+                 this.messageObservers();
             } else if (currentPlayerCheck == 3) {
 
             }
@@ -87,10 +100,16 @@ public class Game implements Observable{
         if (userPlayer.hand.size() == 0) {
             gameWinner = userPlayer;
             return true;
-        } else if (aiPlayer.hand.size() == 0) {
-            gameWinner = aiPlayer;
+        } else if (aiPlayer1.hand.size() == 0) {
+            gameWinner = aiPlayer1;
             return true;
-        } else {
+        } else if(aiPlayer2.hand.size() == 0){
+        	gameWinner = aiPlayer2;
+            return true;
+        }else if(aiPlayer3.hand.size() == 0){
+        	gameWinner = aiPlayer3;
+            return true;
+        }else {
             return false;
         }
     }
@@ -101,7 +120,8 @@ public class Game implements Observable{
 
     public void updatePlayerHashMap() {
         this.playerHandCount.put(userPlayer.name, userPlayer.getHand().size());
-        this.playerHandCount.put(aiPlayer.name, aiPlayer.getHand().size());
+        this.playerHandCount.put(aiPlayer1.name, aiPlayer1.getHand().size());
+        this.playerHandCount.put(aiPlayer2.name, aiPlayer2.getHand().size());
     }
 
     public void messageObservers() {

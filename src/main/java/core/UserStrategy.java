@@ -17,6 +17,17 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 			}else {
 				System.out.println("(1) Draw Tile, (2) Create Meld, (3) Play tiles on the table.  Enter -1 to quit.");
 			}
+			
+			while(!reader.hasNextInt()) {
+				System.out.println("Wrong input. Please input again.");
+				if(pass) {
+					System.out.println("(1) Pass, (2) Create Meld, (3) Play tiles on the table. Enter -1 to quit.");
+				}else {
+					System.out.println("(1) Draw Tile, (2) Create Meld, (3) Play tiles on the table.  Enter -1 to quit.");
+				}
+				reader.nextLine();
+			}
+			
 			choice = reader.nextInt();
 			if(choice == -1) {
 				player.game.endGame();
@@ -25,10 +36,15 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 			}
 		
 			if(choice == 1) {//Draw tile
+				if(player.game.getDeck() == null) {
+					System.out.println("The deck is empty.");
+					break;
+				}
 				if(pass) {
 					pass = false;
 					break;
 				}
+				
 				Tile newTile = player.game.getDeck().drawTile();
 				System.out.println("You drew: " + newTile.getColour() + ", " + newTile.getRank());		
 				player.hand.add(newTile);
@@ -43,6 +59,11 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 				player.tileSelectionInput(reader, availableTiles);
 				
 				System.out.println("Create another meld? (1)Yes (2)No");
+				while(!reader.hasNextInt()) {
+					System.out.println("Wrong input. Please input again.");
+					System.out.println("Create another meld? (1)Yes (2)No");
+					reader.nextLine();
+				}
 				createAdditionalMelds = reader.nextInt();
 				
 				while(createAdditionalMelds == 1) {
@@ -51,6 +72,11 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 					player.tileSelectionInput(reader, availableTiles);
 					
 					System.out.println("Create another meld? (1)Yes (2)No");
+					while(!reader.hasNextInt()) {
+						System.out.println("Wrong input. Please input again.");
+						System.out.println("Create another meld? (1)Yes (2)No");
+						reader.nextLine();
+					}
 					createAdditionalMelds = reader.nextInt();
 					
 				}
@@ -79,6 +105,11 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 				
 				while(true) {
 					System.out.println("Choose an option: 1. Add a tile to the end of a meld. 2. Add a tile to the beginning of a meld. 3. Add a tile to create a new meld. Enter -1 to go back.");
+					while(!reader.hasNextInt()) {
+						System.out.println("Wrong input. Please input again.");
+						System.out.println("Choose an option: 1. Add a tile to the end of a meld. 2. Add a tile to the beginning of a meld. 3. Add a tile to create a new meld. Enter -1 to go back.");
+						reader.nextLine();
+					}
 					int option = reader.nextInt();
 					if(option == -1) {
 						break;
