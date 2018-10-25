@@ -55,6 +55,11 @@ public class UserPlayer extends Player{
 		//Select tiles to create meld
 		while(true) {
 			System.out.println("Enter the index of the Tile you want to select. (-1) to stop selecting");
+			while(!reader.hasNextInt()) {
+				System.out.println("Wrong input. Please input again.");
+				System.out.println("Enter the index of the Tile you want to select. (-1) to stop selecting");
+				reader.nextLine();
+			}
 			tileSelected = reader.nextInt();
 			
 			if(tileSelected >= availableTiles.size() || tileSelected < -1) {//Invalid Tile
