@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Game implements Observable{
 
-    private ArrayList<Observer> observers;
+    public ArrayList<Observer> observers;
     public HashMap<String, Integer> playerHandCount;
     private enum GameStates { PLAY, END }
     private Deck deck = new Deck();
