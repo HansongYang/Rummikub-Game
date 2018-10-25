@@ -6,7 +6,7 @@ public class GameTest extends TestCase {
 
     public void testStart() {
         Game game = new Game();
-        game.start();
+       // game.start();
     }
 
     public void testCreateAndMessageObservers() {
@@ -23,7 +23,7 @@ public class GameTest extends TestCase {
         assertEquals(num, game.userPlayer.playerHandCount.get("USER"));
         assertEquals(num, game.aiPlayer1.playerHandCount.get("AI1"));
         assertEquals(num, game.aiPlayer2.playerHandCount.get("AI2"));
-       // assertEquals(num, game.aiPlayer3.playerHandCount.get("AI3"));
+        assertEquals(num, game.aiPlayer3.playerHandCount.get("AI3"));
         
         Tile tile = deck.drawTile();
         game.userPlayer.hand.add(tile);
@@ -36,11 +36,11 @@ public class GameTest extends TestCase {
         game.messageObservers();
         game.aiPlayer2.hand.add(tile);
         game.messageObservers();
-      //  game.aiPlayer3.hand.add(tile);
-      //  game.messageObservers();
+        game.aiPlayer3.hand.add(tile);
+        game.messageObservers();
         
         assertEquals(num2, game.aiPlayer1.playerHandCount.get("AI1"));
         assertEquals(num2, game.aiPlayer2.playerHandCount.get("AI2"));
-       // assertEquals(num2, game.aiPlayer3.playerHandCount.get("AI3"));
+        assertEquals(num2, game.aiPlayer3.playerHandCount.get("AI3"));
     }
 }
