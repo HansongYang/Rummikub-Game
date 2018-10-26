@@ -37,6 +37,9 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 			if(player.hand.size() == initialHandSize) {//Played 0 tiles
 				tryToWin(player,setsThenRuns);
 				if(player.hand.size() == initialHandSize) {//Played 0 tiles
+					if(player.game.getDeck().getDeckSize() == 0) {
+						return;
+					}
 					//Draw tile
 					Tile newTile = player.game.getDeck().drawTile();
 					player.hand.add(newTile);

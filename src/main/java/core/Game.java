@@ -80,9 +80,28 @@ public class Game implements Observable{
                  board.printBoard();
                  this.messageObservers();
             } else if (currentPlayerCheck == 3) {
-
+            	 System.out.println("\nPlayer " + aiPlayer3.name + "'s turn");
+                 aiPlayer3.playTurn();
+                 board.printBoard();
             }
-
+            
+            if(deck.getDeckSize() == 0) {
+				System.out.println("The deck is empty.");
+            	int value1 = Math.min(userPlayer.getHand().size(), aiPlayer1.getHand().size());
+            	int value2 = Math.min(aiPlayer2.getHand().size(), aiPlayer3.getHand().size());
+            	int minimum = Math.min(value1, value2);
+            	if(minimum == userPlayer.getHand().size()) {
+            		System.out.println(userPlayer.name + " wins the game!");
+            	}else if(minimum == aiPlayer1.getHand().size()) {
+            		System.out.println(aiPlayer1.name + " wins the game!");
+            	}else if(minimum == aiPlayer2.getHand().size()) {
+            		System.out.println(aiPlayer2.name + " wins the game!");
+            	}else {
+            		System.out.println(aiPlayer3.name + " wins the game!");
+            	}
+            	gameState = GameStates.END;
+            }
+            
             currentPlayerCheck++;
             if (gameWinCheck()) System.out.println(gameWinner.name + " wins the game!");
         }
@@ -98,15 +117,19 @@ public class Game implements Observable{
 
     public boolean gameWinCheck() {
         if (userPlayer.hand.size() == 0) {
+        	gameState = GameStates.END;
             gameWinner = userPlayer;
             return true;
         } else if (aiPlayer1.hand.size() == 0) {
+        	gameState = GameStates.END;
             gameWinner = aiPlayer1;
             return true;
         } else if(aiPlayer2.hand.size() == 0){
+        	gameState = GameStates.END;
         	gameWinner = aiPlayer2;
             return true;
         }else if(aiPlayer3.hand.size() == 0){
+        	gameState = GameStates.END;
         	gameWinner = aiPlayer3;
             return true;
         }else {
@@ -122,6 +145,7 @@ public class Game implements Observable{
         this.playerHandCount.put(userPlayer.name, userPlayer.getHand().size());
         this.playerHandCount.put(aiPlayer1.name, aiPlayer1.getHand().size());
         this.playerHandCount.put(aiPlayer2.name, aiPlayer2.getHand().size());
+        this.playerHandCount.put(aiPlayer3.name, aiPlayer3.getHand().size());
     }
 
     public void messageObservers() {

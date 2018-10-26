@@ -18,7 +18,8 @@ public class UserPlayer extends Player{
 	}
 	
 	public void playTurn() {
-		strategy.executeStrategy(this);	
+		strategy.executeStrategy(this);
+		meldsInHand.clear();
 	}
 	
 	public Meld createMeld(ArrayList<Tile> selectedTiles, Hand availableTiles) {
@@ -68,7 +69,6 @@ public class UserPlayer extends Player{
 			else if(tileSelected == -1) {//Finished selecting
 				Meld meld = createMeld(selectTiles(tileIndices, availableTiles), availableTiles);
 				if(meld != null) {
-					meldsInHand.clear();
 					meldsInHand.add(meld);
 				}else {
 					System.out.println("Invalid Meld");
