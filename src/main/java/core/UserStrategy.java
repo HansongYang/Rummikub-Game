@@ -36,8 +36,7 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 			}
 		
 			if(choice == 1) {//Draw tile
-				if(player.game.getDeck() == null) {
-					System.out.println("The deck is empty.");
+				if(player.game.getDeck().getDeckSize() == 0) {
 					break;
 				}
 				if(pass) {

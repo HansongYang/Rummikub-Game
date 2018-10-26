@@ -68,7 +68,6 @@ public class MeldValidatorService {
             ranks.add(tile.getRank());
         }
 
-        Collections.sort(ranks);
         int prevRank = ranks.get(0);
 
         for(int i = 1; i < ranks.size(); i++) {

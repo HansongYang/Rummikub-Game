@@ -41,6 +41,9 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 				player.playMelds(player.game.getBoard(), noDuplication);
 			}
 			else {
+				if(player.game.getDeck().getDeckSize() == 0) {
+					return;
+				}
 				//Draw tile
 				Tile newTile = player.game.getDeck().drawTile();
 				player.hand.add(newTile);
