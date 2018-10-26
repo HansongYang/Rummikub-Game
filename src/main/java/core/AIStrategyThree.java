@@ -40,15 +40,24 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 						
 					}else {//Play most tiles possible
 						
-						player.meldsInHand = meldsToPlay;
-						for(int i = 0; i < meldsToPlay.size(); i++) {
-							for(int j = 0; j < meldsToPlay.get(i).size();j++) {
-								player.hand.remove(meldsToPlay.get(i).getTile(j));
-							}
-						}
-						player.playMelds(player.game.getBoard(), player.meldsInHand);
+						int tilesPlayed = playWithTableTiles(player,remainingTiles);
 						
-						playWithTableTiles(player,remainingTiles);
+						if(tilesPlayed == 0 && meldsToPlay.size() == 0) {//0 Tiles can be played. Draw tile
+							
+							Tile newTile = player.game.getDeck().drawTile();
+							player.hand.add(newTile);
+							
+						}else {//Play all melds
+						
+							player.meldsInHand = meldsToPlay;
+							for(int i = 0; i < meldsToPlay.size(); i++) {
+								for(int j = 0; j < meldsToPlay.get(i).size();j++) {
+									player.hand.remove(meldsToPlay.get(i).getTile(j));
+								}
+							}
+							player.playMelds(player.game.getBoard(), player.meldsInHand);
+						
+						}
 					}				
 				}
 			}				
