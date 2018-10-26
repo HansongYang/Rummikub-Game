@@ -23,10 +23,7 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 			}
 			else {//Play initial 30
 				player.initial30Played = true;
-				for(int i = 0; i < initial.get(0).size(); i++) {
-					player.hand.remove(initial.get(0).getTile(i));
-				}
-				player.playMeld(player.game.getBoard(), initial.get(0));
+				player.playMelds(player.game.getBoard(), initial);
 			}	
 		}else {
 			int initialHandSize = player.hand.size();
@@ -108,15 +105,6 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 		}
 
 		return tilesPlayed;
-	}
-
-	public void makeMeldFromBoardTile() {
-		// look through remaining tiles
-		// look through boards tiles
-		// pick a board tile
-		// can it make a set or run with the addition of the tile
-		// if so remove tile from current meld and add as new meld with addition of other tiles from hand
-		// continue loop if not
 	}
 }
 

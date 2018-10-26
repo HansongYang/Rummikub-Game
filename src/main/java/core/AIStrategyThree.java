@@ -15,10 +15,7 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 			}
 			else {
 				player.initial30Played = true;
-				for(int i = 0; i < initial.get(0).size(); i++) {
-					player.hand.remove(initial.get(0).getTile(i));
-				}
-				player.playMeld(player.game.getBoard(), initial.get(0));
+				player.playMelds(player.game.getBoard(), initial);
 			}		
 		}else {
 			int initialHandSize = player.hand.size();
@@ -43,7 +40,9 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 						int tilesPlayed = playWithTableTiles(player,remainingTiles);
 						
 						if(tilesPlayed == 0 && meldsToPlay.size() == 0) {//0 Tiles can be played. Draw tile
-							
+							if(player.game.getDeck().getDeckSize() == 0) {
+								return;
+							}
 							Tile newTile = player.game.getDeck().drawTile();
 							player.hand.add(newTile);
 							
