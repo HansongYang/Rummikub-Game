@@ -218,22 +218,40 @@ public class Hand {
 	//Find the initial 30 points for a player, if there is no set or run, it will return null.
 	public ArrayList<Meld> getInitialTiles() {
 		ArrayList<Meld> runs = getMeldRuns();
-		ArrayList<Meld> sets = getMeldSets();
 		ArrayList<Meld> initial = new ArrayList<Meld>();
 		
 		if(runs.size() > 0) {
-			for(int i = 0; i < runs.size(); i++) {
-				if(runs.get(i).totalValue() >= 30) {
-					initial.add(runs.get(i));
+			while(runs.size() > 0) {
+				initial.add(runs.get(0));
+				for(int i = 0; i < runs.get(0).size(); i++) {
+					hands.remove(runs.get(0).getTile(i));
 				}
+				runs = getMeldRuns();
 			}
 		}
 		
+		ArrayList<Meld> sets = getMeldSets();
+		
 		if(sets.size() > 0) {
-			for(int i = 0; i < sets.size(); i++) {
-				if(sets.get(i).totalValue() >= 30) {
-					initial.add(sets.get(i));
+			while(sets.size() > 0) {
+				initial.add(sets.get(0));
+				for(int i = 0; i < sets.get(0).size(); i++) {
+					hands.remove(sets.get(0).getTile(i));
 				}
+				sets = getMeldSets();
+			}
+		}
+		
+		int value = 0;
+		for(int i = 0; i < initial.size(); i++) {
+			value += initial.get(i).totalValue();
+		}
+		if(value < 30) {
+			for(int i = 0; i < initial.size(); i++) {
+				for(int j = 0; j < initial.get(i).size(); j++) {
+					hands.add(initial.get(i).getTile(j));
+				}
+				initial.remove(i);
 			}
 		}
 		

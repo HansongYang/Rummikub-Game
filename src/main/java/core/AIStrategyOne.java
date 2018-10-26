@@ -14,10 +14,7 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 			}
 			else {
 				player.initial30Played = true;
-				for(int i = 0; i < initial.get(0).size(); i++) {
-					player.hand.remove(initial.get(0).getTile(i));
-				}
-				player.playMeld(player.game.getBoard(), initial.get(0));
+				player.playMelds(player.game.getBoard(), initial);
 			}			
 		}
 		else {
