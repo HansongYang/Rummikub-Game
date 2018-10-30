@@ -200,7 +200,7 @@ public class Hand {
 				possibleRun.add(hand.getTile(i));
 				
 				for(int j = i+1; j < hand.size(); j++){
-					if(hand.getTile(j-1).getRank() == hand.getTile(j).getRank() -1) {
+					if(hand.getTile(j-1).getRank() == hand.getTile(j).getRank() - 1) {
 						possibleRun.add(hand.getTile(j));
 					}
 					else {
@@ -210,6 +210,14 @@ public class Hand {
 					if(possibleRun.size() > 2)
 						runs.add(new Meld(possibleRun));
 				}
+			}
+		}
+		
+		for(int i = 0; i < runs.size(); i++) {
+			if(runs.get(i).size() > 3) {
+				Meld goodMeld = new Meld();
+				goodMeld = runs.remove(i);
+				runs.add(0, goodMeld);
 			}
 		}
 		return runs;
