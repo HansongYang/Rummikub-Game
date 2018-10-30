@@ -112,29 +112,81 @@ public class HandTest extends TestCase{
 	
 	public void testGetInitialPoints() {
 		Hand hand = new Hand();
-		Tile t4 = new Tile('O', 3);
-		Tile t3 = new Tile('R', 8);
-		Tile t2 = new Tile('R', 9);
-		Tile t1 = new Tile('R', 10);
-		Tile t5 = new Tile('O', 11);
-		Tile t6 = new Tile('B', 11);
-		Tile t7 = new Tile('G', 11);
-		Tile t8 = new Tile('R', 1);
 		
-		hand.add(t4);
+		Tile t1 = new Tile('O', 10);
+		Tile t2 = new Tile('B', 10);
+		Tile t3 = new Tile('G', 10);
 		hand.add(t1);
 		hand.add(t2);
 		hand.add(t3);
-		hand.add(t5);
-		hand.add(t6);
-		hand.add(t7);
-		hand.add(t8);
 		ArrayList<Meld> initial = hand.getInitialTiles();
 		
 		assertTrue(1 == initial.size());
-		assertTrue(11 == initial.get(0).getTile(0).getRank() && 'O' == initial.get(0).getTile(0).getColour());
-		assertTrue(11 == initial.get(0).getTile(1).getRank() && 'B' == initial.get(0).getTile(1).getColour());
-		assertTrue(11 == initial.get(0).getTile(2).getRank() && 'G' == initial.get(0).getTile(2).getColour());
+		assertTrue(10 == initial.get(0).getTile(0).getRank() && 'O' == initial.get(0).getTile(0).getColour());
+		assertTrue(10 == initial.get(0).getTile(1).getRank() && 'B' == initial.get(0).getTile(1).getColour());
+		assertTrue(10 == initial.get(0).getTile(2).getRank() && 'G' == initial.get(0).getTile(2).getColour());
+		
+		Hand hand2 = new Hand();
+		Tile t4 = new Tile('O', 13);
+		Tile t5 = new Tile('B', 13);
+		Tile t6 = new Tile('G', 13);
+		hand2.add(t4);
+		hand2.add(t5);
+		hand2.add(t6);
+		initial = hand2.getInitialTiles();
+		
+		assertTrue(1 == initial.size());
+		assertTrue(13 == initial.get(0).getTile(0).getRank() && 'O' == initial.get(0).getTile(0).getColour());
+		assertTrue(13 == initial.get(0).getTile(1).getRank() && 'B' == initial.get(0).getTile(1).getColour());
+		assertTrue(13 == initial.get(0).getTile(2).getRank() && 'G' == initial.get(0).getTile(2).getColour());
+		
+		Hand hand3 = new Hand();
+		Tile t7 = new Tile('O', 9);
+		Tile t8 = new Tile('R', 9);
+		Tile t9 = new Tile('B', 9);
+		Tile t10 = new Tile('O', 1);
+		Tile t11 = new Tile('B', 1);
+		Tile t12 = new Tile('G', 1);
+		
+		hand3.add(t7);
+		hand3.add(t8);
+		hand3.add(t9);
+		hand3.add(t10);
+		hand3.add(t11);
+		hand3.add(t12);
+	    initial = hand3.getInitialTiles();
+		
+		assertTrue(2 == initial.size());
+		assertTrue(1 == initial.get(0).getTile(0).getRank() && 'O' == initial.get(0).getTile(0).getColour());
+		assertTrue(1 == initial.get(0).getTile(1).getRank() && 'B' == initial.get(0).getTile(1).getColour());
+		assertTrue(1 == initial.get(0).getTile(2).getRank() && 'G' == initial.get(0).getTile(2).getColour());
+		assertTrue(9 == initial.get(1).getTile(0).getRank() && 'O' == initial.get(1).getTile(0).getColour());
+		assertTrue(9 == initial.get(1).getTile(1).getRank() && 'R' == initial.get(1).getTile(1).getColour());
+		assertTrue(9 == initial.get(1).getTile(2).getRank() && 'B' == initial.get(1).getTile(2).getColour());
+		
+		
+		Hand hand4 = new Hand();
+		Tile t13 = new Tile('O', 5);
+		Tile t14 = new Tile('R', 5);
+		Tile t15 = new Tile('B', 5);
+		Tile t16 = new Tile('O', 9);
+		Tile t17 = new Tile('B', 9);
+		Tile t18 = new Tile('G', 9);
+		hand4.add(t13);
+		hand4.add(t14);
+		hand4.add(t15);
+		hand4.add(t16);
+		hand4.add(t17);
+		hand4.add(t18);
+	    initial = hand4.getInitialTiles();
+		
+		assertTrue(2 == initial.size());
+		assertTrue(5 == initial.get(0).getTile(0).getRank() && 'O' == initial.get(0).getTile(0).getColour());
+		assertTrue(5 == initial.get(0).getTile(1).getRank() && 'R' == initial.get(0).getTile(1).getColour());
+		assertTrue(5 == initial.get(0).getTile(2).getRank() && 'B' == initial.get(0).getTile(2).getColour());
+		assertTrue(9 == initial.get(1).getTile(0).getRank() && 'O' == initial.get(1).getTile(0).getColour());
+		assertTrue(9 == initial.get(1).getTile(1).getRank() && 'B' == initial.get(1).getTile(1).getColour());
+		assertTrue(9 == initial.get(1).getTile(2).getRank() && 'G' == initial.get(1).getTile(2).getColour());
 	}
 	
 	public void testGetRemainingTiles() {
