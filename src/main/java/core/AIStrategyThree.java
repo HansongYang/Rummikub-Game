@@ -40,6 +40,7 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 								return;
 							}
 							Tile newTile = player.game.getDeck().drawTile();
+							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 							player.hand.add(newTile);
 						}
 					}else {//Play most tiles possible
