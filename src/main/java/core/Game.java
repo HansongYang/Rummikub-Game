@@ -71,29 +71,17 @@ public class Game implements Observable{
                 this.messageObservers();
             } else if (currentPlayerCheck == 1) {
                 System.out.println("\nPlayer " + aiPlayer1.name + "'s turn");
-                aiPlayer1.getHand().sortTilesByColour();
-                aiPlayer1.getHand().printHand();
                 aiPlayer1.playTurn();
-                aiPlayer1.getHand().sortTilesByColour();
-                aiPlayer1.getHand().printHand();
                 board.printBoard();
                 this.messageObservers();
             } else if (currentPlayerCheck == 2) {
             	 System.out.println("\nPlayer " + aiPlayer2.name + "'s turn");
-            	 aiPlayer2.getHand().sortTilesByColour();
-                 aiPlayer2.getHand().printHand();
                  aiPlayer2.playTurn();
-                 aiPlayer2.getHand().sortTilesByColour();
-                 aiPlayer2.getHand().printHand();
                  board.printBoard();
                  this.messageObservers();
             } else if (currentPlayerCheck == 3) {
             	 System.out.println("\nPlayer " + aiPlayer3.name + "'s turn");
-            	 aiPlayer3.getHand().sortTilesByColour();
-                 aiPlayer3.getHand().printHand();
                  aiPlayer3.playTurn();
-                 aiPlayer3.getHand().sortTilesByColour();
-                 aiPlayer3.getHand().printHand();
                  board.printBoard();
             }
             
