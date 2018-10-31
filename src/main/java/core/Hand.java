@@ -247,7 +247,7 @@ public class Hand {
 			value += initial.get(i).totalValue();
 		}
 		if(value < 30) {
-			for(int i = 0; i < initial.size(); i++) {
+			for(int i = initial.size() - 1; i >= 0; i--) {
 				for(int j = 0; j < initial.get(i).size(); j++) {
 					hands.add(initial.get(i).getTile(j));
 				}

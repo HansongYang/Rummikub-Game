@@ -18,11 +18,15 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 			}			
 		}
 		else {
+			int initialHandSize = player.hand.size();
 			ArrayList<Meld> noDuplication = new ArrayList<Meld>();;
 			ArrayList<Meld> runsThenSets = player.meldRunsFirst();
 			ArrayList<Meld> setsThenRuns = player.meldSetsFirst();
 				
-			player.meldsInHand = findBestPlay(runsThenSets, setsThenRuns);
+			player.meldsInHand = player.findBestPlay(runsThenSets, setsThenRuns);
+			
+			ArrayList<Tile> remainingTiles = player.hand.getRemainingTiles(player.meldsInHand);
+			player.playWithTableTiles(remainingTiles);
 		
 			if(player.meldsInHand != null && player.meldsInHand.size() > 0) {
 				while(player.meldsInHand.size() != 0) {
@@ -33,11 +37,11 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 					}
 					runsThenSets = player.meldRunsFirst();
 					setsThenRuns = player.meldSetsFirst();
-					player.meldsInHand = findBestPlay(runsThenSets, setsThenRuns);
+					player.meldsInHand = player.findBestPlay(runsThenSets, setsThenRuns);
 				}
 				player.playMelds(player.game.getBoard(), noDuplication);
 			}
-			else {
+			else if(player.hand.size() == initialHandSize){//No tiles played to board
 				if(player.game.getDeck().getDeckSize() == 0) {
 					return;
 				}
@@ -48,24 +52,5 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 		}
 	}
 	
-	//Determine the best set of melds to play based on strategy 1
-	public ArrayList<Meld> findBestPlay(ArrayList<Meld> melds1, ArrayList<Meld> melds2){
-		int totalTiles1 = 0;
-		int totalTiles2 = 0;
-		
-		//Get total number of tiles used
-		for(int i = 0; i < melds1.size();i++) {
-			totalTiles1 += melds1.get(i).size();
-		}
-		for(int i = 0; i < melds2.size();i++) {
-			totalTiles2 += melds2.get(i).size();
-		}
-		
-		if(totalTiles1 > totalTiles2) {
-			return melds1;
-		}
-		else {
-			return melds2;
-		}
-	}
+	
 }

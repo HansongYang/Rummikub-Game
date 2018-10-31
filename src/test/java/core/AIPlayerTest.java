@@ -44,7 +44,7 @@ public class AIPlayerTest extends TestCase {
 		
 	}
 	
-	/*public void testFindBestPlay() {
+	public void testFindBestPlay() {
 		
 		AIPlayer player = new AIPlayer();
 		
@@ -98,40 +98,7 @@ public class AIPlayerTest extends TestCase {
 		assertEquals(melds2c, player.findBestPlay(melds1c, melds2c));
 		
 		
-	}*/
-	
-	public void testPlayTurn() {
-		
-		//Play all melds
-		Game game = new Game();
-		AIPlayer player = new AIPlayer("AI", game, new AIStrategyOne());
-		player.initial30Played = true;
-		
-		player.hand.add(new Tile('R',1));
-		player.hand.add(new Tile('R',2));
-		player.hand.add(new Tile('R',3));
-		player.hand.add(new Tile('B',1));
-		player.hand.add(new Tile('G',1));
-		
-		player.playTurn();
-		
-		assertEquals(1,game.getBoard().currentMelds.size());
-		assertEquals(2, player.hand.size());
-		
-		
-		//Can't play, draw tile
-		Game game2 = new Game();
-		AIPlayer player2 = new AIPlayer("AI", game2, new AIStrategyOne());
-			
-		player2.hand.add(new Tile('R',1));
-		player2.hand.add(new Tile('R',2));
-		
-		player.playTurn();
-		
-		assertEquals(0,game2.getBoard().currentMelds.size());
-		assertEquals(2, player2.hand.size());
-		
-		
 	}
+	
 	
 }

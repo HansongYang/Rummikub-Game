@@ -28,16 +28,16 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 				if(player.hand.size() == initialHandSize) {//Played 0 tiles
 					//Can't win this turn
 					
-					ArrayList<Meld> meldsToPlay = findBestPlay(runsThenSets,setsThenRuns);
+					ArrayList<Meld> meldsToPlay = player.findBestPlay(runsThenSets,setsThenRuns);
 					ArrayList<Tile> remainingTiles = player.hand.getRemainingTiles(meldsToPlay);	
 					
 					if(!otherPlayerHas3FewerTiles(player)) {
 						
-						playWithTableTiles(player,remainingTiles);
+						player.playWithTableTiles(remainingTiles);
 						
 					}else {//Play most tiles possible
 						
-						int tilesPlayed = playWithTableTiles(player,remainingTiles);
+						int tilesPlayed = player.playWithTableTiles(remainingTiles);
 						
 						if(tilesPlayed == 0 && meldsToPlay.size() == 0) {//0 Tiles can be played. Draw tile
 							if(player.game.getDeck().getDeckSize() == 0) {
@@ -82,7 +82,7 @@ public void tryToWin(AIPlayer player, ArrayList<Meld> meldsInHand) {
 			if(canPlayAllTilesToBoard(player,remainingTiles)) {
 				//All remaining tiles can be played, proceed to play all tiles from hand to win
 				
-				playWithTableTiles(player, remainingTiles);
+				player.playWithTableTiles(remainingTiles);
 							
 				player.meldsInHand = meldsInHand;
 				for(int i = 0; i < meldsInHand.size(); i++) {
@@ -96,7 +96,7 @@ public void tryToWin(AIPlayer player, ArrayList<Meld> meldsInHand) {
 	}
 
 	public boolean canPlayAllTilesToBoard(AIPlayer player, ArrayList<Tile> remainingTiles) {
-		int playAbleTiles = 0;
+		int playableTiles = 0;
 	
 		for (Tile tile : remainingTiles) {
 			Meld meldToAdd = new Meld();
@@ -109,42 +109,14 @@ public void tryToWin(AIPlayer player, ArrayList<Meld> meldsInHand) {
 				meldTempA.add(tile);
 				meldTempB.add(0, tile);
 				if (meldValidatorService.isValidMeld(meldTempA.getTiles())) {
-					playAbleTiles++;
+					playableTiles++;
 				} else if (meldValidatorService.isValidMeld(meldTempB.getTiles())) {
-					playAbleTiles++;
+					playableTiles++;
 				}
 			}
 		}
 	
-		return playAbleTiles == remainingTiles.size();
-	}
-
-	public int playWithTableTiles(AIPlayer player, ArrayList<Tile> remainingTiles) {
-		int tilesPlayed = 0;
-	
-		for (Tile tile : remainingTiles) {
-			Meld meldToAdd = new Meld();
-			meldToAdd.add(tile);
-	
-			for (int i = 0; i < player.game.getBoard().currentMelds.size(); i++) {
-				Meld meldTempA = new Meld(player.game.getBoard().currentMelds.get(i).getTiles());  // Meld for testing tile add to back
-				Meld meldTempB = new Meld(player.game.getBoard().currentMelds.get(i).getTiles());   // Meld for testing tile add to front
-				
-				meldTempA.add(tile);
-				meldTempB.add(0, tile);
-				if (meldValidatorService.isValidMeld(meldTempA.getTiles())) {
-					player.game.getBoard().addTileToMeldEnd(i, meldToAdd);
-					player.hand.remove(tile);
-					tilesPlayed++;
-				} else if (meldValidatorService.isValidMeld(meldTempB.getTiles())) {
-					player.game.getBoard().addTileToMeldBeginning(i, meldToAdd);
-					player.hand.remove(tile);
-					tilesPlayed++;
-				}
-			}
-		}
-
-		return tilesPlayed;
+		return playableTiles == remainingTiles.size();
 	}
 	
 	public boolean otherPlayerHas3FewerTiles(AIPlayer player) {
@@ -161,24 +133,5 @@ public void tryToWin(AIPlayer player, ArrayList<Meld> meldsInHand) {
 		return fewerTiles;
 	}
 	
-	public ArrayList<Meld> findBestPlay(ArrayList<Meld> melds1, ArrayList<Meld> melds2){
-		int totalTiles1 = 0;
-		int totalTiles2 = 0;
-		
-		//Get total number of tiles used
-		for(int i = 0; i < melds1.size();i++) {
-			totalTiles1 += melds1.get(i).size();
-		}
-		for(int i = 0; i < melds2.size();i++) {
-			totalTiles2 += melds2.get(i).size();
-		}
-		
-		if(totalTiles1 > totalTiles2) {
-			return melds1;
-		}
-		else {
-			return melds2;
-		}
-	}
 }
 
