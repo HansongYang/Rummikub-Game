@@ -71,17 +71,29 @@ public class Game implements Observable{
                 this.messageObservers();
             } else if (currentPlayerCheck == 1) {
                 System.out.println("\nPlayer " + aiPlayer1.name + "'s turn");
+                aiPlayer1.getHand().sortTilesByColour();
+                aiPlayer1.getHand().printHand();
                 aiPlayer1.playTurn();
+                aiPlayer1.getHand().sortTilesByColour();
+                aiPlayer1.getHand().printHand();
                 board.printBoard();
                 this.messageObservers();
             } else if (currentPlayerCheck == 2) {
             	 System.out.println("\nPlayer " + aiPlayer2.name + "'s turn");
+            	 aiPlayer2.getHand().sortTilesByColour();
+                 aiPlayer2.getHand().printHand();
                  aiPlayer2.playTurn();
+                 aiPlayer2.getHand().sortTilesByColour();
+                 aiPlayer2.getHand().printHand();
                  board.printBoard();
                  this.messageObservers();
             } else if (currentPlayerCheck == 3) {
             	 System.out.println("\nPlayer " + aiPlayer3.name + "'s turn");
+            	 aiPlayer3.getHand().sortTilesByColour();
+                 aiPlayer3.getHand().printHand();
                  aiPlayer3.playTurn();
+                 aiPlayer3.getHand().sortTilesByColour();
+                 aiPlayer3.getHand().printHand();
                  board.printBoard();
             }
             
@@ -91,12 +103,16 @@ public class Game implements Observable{
             	int value2 = Math.min(aiPlayer2.getHand().size(), aiPlayer3.getHand().size());
             	int minimum = Math.min(value1, value2);
             	if(minimum == userPlayer.getHand().size()) {
+            		System.out.println("User has "+userPlayer.getHand().size() +" tiles. Player 1 has " + aiPlayer1.getHand().size()+" tiles. Player 2 has " + aiPlayer2.getHand().size() + " tiles. Player 3 has " + aiPlayer3.getHand().size() + " tiles.");
             		System.out.println(userPlayer.name + " wins the game!");
             	}else if(minimum == aiPlayer1.getHand().size()) {
+            		System.out.println("User has "+userPlayer.getHand().size() +" tiles. Player 1 has " + aiPlayer1.getHand().size()+" tiles. Player 2 has " + aiPlayer2.getHand().size() + " tiles. Player 3 has " + aiPlayer3.getHand().size() + " tiles.");
             		System.out.println(aiPlayer1.name + " wins the game!");
             	}else if(minimum == aiPlayer2.getHand().size()) {
+            		System.out.println("User has "+userPlayer.getHand().size() +" tiles. Player 1 has " + aiPlayer1.getHand().size()+" tiles. Player 2 has " + aiPlayer2.getHand().size() + " tiles. Player 3 has " + aiPlayer3.getHand().size() + " tiles.");
             		System.out.println(aiPlayer2.name + " wins the game!");
             	}else {
+            		System.out.println("User has "+userPlayer.getHand().size() +" tiles. Player 1 has " + aiPlayer1.getHand().size()+" tiles. Player 2 has " + aiPlayer2.getHand().size() + " tiles. Player 3 has " + aiPlayer3.getHand().size() + " tiles.");
             		System.out.println(aiPlayer3.name + " wins the game!");
             	}
             	gameState = GameStates.END;

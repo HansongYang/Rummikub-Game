@@ -33,8 +33,14 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 					
 					if(!otherPlayerHas3FewerTiles(player)) {
 						
-						player.playWithTableTiles(remainingTiles);
-						
+						int tilesPlayed = player.playWithTableTiles(remainingTiles);
+						if(tilesPlayed == 0) {
+							if(player.game.getDeck().getDeckSize() == 0) {
+								return;
+							}
+							Tile newTile = player.game.getDeck().drawTile();
+							player.hand.add(newTile);
+						}
 					}else {//Play most tiles possible
 						
 						int tilesPlayed = player.playWithTableTiles(remainingTiles);
