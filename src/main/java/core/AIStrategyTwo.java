@@ -64,7 +64,7 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 		else {
 			ArrayList<Tile> remainingTiles = player.hand.getRemainingTiles(meldsInHand);
 						
-			int nTilesPlayedToBoard = playWithTableTiles(player, remainingTiles);
+			int nTilesPlayedToBoard = player.playWithTableTiles(remainingTiles);
 			
 			if(nTilesPlayedToBoard == remainingTiles.size()) {
 				//All remaining tiles played, proceed to play melds from hand to win
@@ -79,32 +79,5 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 		}
 	}
 
-	public int playWithTableTiles(AIPlayer player, ArrayList<Tile> remainingTiles) {
-		int tilesPlayed = 0;
-
-		for (Tile tile : remainingTiles) {
-			Meld meldToAdd = new Meld();
-			meldToAdd.add(tile);
-
-			for (int i = 0; i < player.game.getBoard().currentMelds.size(); i++) {
-				Meld meldTempA = new Meld(player.game.getBoard().currentMelds.get(i).getTiles());  // Meld for testing tile add to back
-				Meld meldTempB = new Meld(player.game.getBoard().currentMelds.get(i).getTiles());   // Meld for testing tile add to front
-				
-				meldTempA.add(tile);
-				meldTempB.add(0, tile);
-				if (meldValidatorService.isValidMeld(meldTempA.getTiles())) {
-					player.game.getBoard().addTileToMeldEnd(i, meldToAdd);
-					player.hand.remove(tile);
-					tilesPlayed++;
-				} else if (meldValidatorService.isValidMeld(meldTempB.getTiles())) {
-					player.game.getBoard().addTileToMeldBeginning(i, meldToAdd);
-					player.hand.remove(tile);
-					tilesPlayed++;
-				}
-			}
-		}
-
-		return tilesPlayed;
-	}
 }
 

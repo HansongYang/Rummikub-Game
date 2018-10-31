@@ -19,9 +19,9 @@ public class AIStrategyThreeTest extends TestCase{
 		aiPlayer.hand.add(new Tile('B',2));
 		aiPlayer.hand.add(new Tile('B',3));
 		
-		//Board is empty so draw tile
+		//Can't make initial 30 so draw tile
 		aiPlayer.strategy.executeStrategy(aiPlayer);		
-		assertEquals(game.getBoard().currentMelds.size(), 0);
+		assertEquals(0,game.getBoard().currentMelds.size());
 		aiPlayer.hand.remove(aiPlayer.hand.getTile(aiPlayer.hand.size()-1));
 		
 		Meld boardMeld = new Meld();
@@ -30,23 +30,19 @@ public class AIStrategyThreeTest extends TestCase{
 		boardMeld.add(new Tile('O',12));
 		game.getBoard().addMeld(boardMeld);
 		
-		//Board is not empty, but can not make initial 30 meld	
-		aiPlayer.strategy.executeStrategy(aiPlayer);		
-		assertEquals(game.getBoard().currentMelds.size(), 1);
-		aiPlayer.hand.remove(aiPlayer.hand.getTile(aiPlayer.hand.size()-1));
 		
 		aiPlayer.hand.add(new Tile('R',8));
 		aiPlayer.hand.add(new Tile('R',9));
 		
-		//Board is not empty, play initial 30	
+		//Play initial 30	
 		aiPlayer.strategy.executeStrategy(aiPlayer);	
-		assertEquals(game.getBoard().currentMelds.size(), 2);
+		assertEquals(2, game.getBoard().currentMelds.size());
 		
 		aiPlayer.hand.add(new Tile('O',13));
 		
 		//Play O13 to existing meld on board and play final meld from hand
 		aiPlayer.strategy.executeStrategy(aiPlayer);		
-		assertEquals(game.getBoard().currentMelds.size(), 3);
+		assertEquals(3, game.getBoard().currentMelds.size());
 		assertEquals(aiPlayer.hand.size(),0);
 		
 	}
