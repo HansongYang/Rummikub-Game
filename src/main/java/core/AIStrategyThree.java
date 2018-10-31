@@ -11,6 +11,7 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 			ArrayList<Meld> initial = player.hand.getInitialTiles();
 			if(initial.size() == 0) {
 				Tile newTile = player.game.getDeck().drawTile();
+				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}
 			else {
@@ -43,9 +44,11 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 							if(player.game.getDeck().getDeckSize() == 0) {
 								return;
 							}
+							System.out.println(player.name + " could play but has no tile to play");
 							Tile newTile = player.game.getDeck().drawTile();
+							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 							player.hand.add(newTile);
-							
+
 						}else {//Play all melds
 						
 							player.meldsInHand = meldsToPlay;
@@ -55,7 +58,7 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 								}
 							}
 							player.playMelds(player.game.getBoard(), player.meldsInHand);
-						
+							
 						}
 					}				
 				}

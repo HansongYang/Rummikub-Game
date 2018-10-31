@@ -46,7 +46,7 @@ public class Hand {
 		if(size() == 0) {
 			System.out.println("Player doesn't have any tile.");
 		} else {
-			System.out.print("Player's tile: ");
+			System.out.print("Player's hand: ");
 			for(int i = 0; i < hands.size(); i++) {
 				System.out.print("(" + i + ")");
 				hands.get(i).printTile();

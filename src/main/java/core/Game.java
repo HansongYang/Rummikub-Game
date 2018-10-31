@@ -61,8 +61,7 @@ public class Game implements Observable{
 
             if (currentPlayerCheck == 0) {
                 System.out.println("\nPlayer " + userPlayer.name + "'s turn");
-                userPlayer.getHand().sortTilesByColour();
-                userPlayer.getHand().printHand();
+                printPlayerHand(userPlayer);
                 userPlayer.playTurn();
                 if(gameState == GameStates.END) {
                 	break;
@@ -71,16 +70,19 @@ public class Game implements Observable{
                 this.messageObservers();
             } else if (currentPlayerCheck == 1) {
                 System.out.println("\nPlayer " + aiPlayer1.name + "'s turn");
+                printPlayerHand(aiPlayer1);
                 aiPlayer1.playTurn();
                 board.printBoard();
                 this.messageObservers();
             } else if (currentPlayerCheck == 2) {
             	 System.out.println("\nPlayer " + aiPlayer2.name + "'s turn");
+            	 printPlayerHand(aiPlayer2);
                  aiPlayer2.playTurn();
                  board.printBoard();
                  this.messageObservers();
             } else if (currentPlayerCheck == 3) {
             	 System.out.println("\nPlayer " + aiPlayer3.name + "'s turn");
+                 printPlayerHand(aiPlayer3);
                  aiPlayer3.playTurn();
                  board.printBoard();
             }
@@ -113,6 +115,11 @@ public class Game implements Observable{
     
     public Board getBoard() {
     	return board;
+    }
+
+    public void printPlayerHand(Player player) {
+        player.getHand().sortTilesByColour();
+        player.getHand().printHand();
     }
 
     public boolean gameWinCheck() {

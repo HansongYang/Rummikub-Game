@@ -11,6 +11,7 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 		if(player.game.getBoard().currentMelds.size() == 0) {
 			//Board is empty, so draw tile
 			Tile newTile = player.game.getDeck().drawTile();
+			System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 			player.hand.add(newTile);
 			return;
 		}else if(!player.initial30Played){
@@ -18,6 +19,7 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 			
 			if(initial.size() == 0) {//Can't make initial 30, draw tile
 				Tile newTile = player.game.getDeck().drawTile();
+				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 				return;
 			}
@@ -39,6 +41,7 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 					}
 					//Draw tile
 					Tile newTile = player.game.getDeck().drawTile();
+					System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 					player.hand.add(newTile);
 					return;
 				}

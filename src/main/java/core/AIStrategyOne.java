@@ -10,12 +10,13 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 			ArrayList<Meld> initial = player.hand.getInitialTiles();
 			if(initial.size() == 0) {
 				Tile newTile = player.game.getDeck().drawTile();
+				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}
 			else {
 				player.initial30Played = true;
 				player.playMelds(player.game.getBoard(), initial);
-			}			
+			}
 		}
 		else {
 			int initialHandSize = player.hand.size();
@@ -47,6 +48,7 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 				}
 				//Draw tile
 				Tile newTile = player.game.getDeck().drawTile();
+				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}
 		}
