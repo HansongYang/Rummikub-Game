@@ -36,7 +36,7 @@ public class AIStrategyThreeTest extends TestCase{
 		
 		//Play initial 30	
 		aiPlayer.strategy.executeStrategy(aiPlayer);	
-		assertEquals(2, game.getBoard().currentMelds.size());
+		assertEquals(3, game.getBoard().currentMelds.size());
 		
 		aiPlayer.hand.add(new Tile('O',13));
 		

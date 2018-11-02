@@ -6,12 +6,13 @@ import java.util.HashMap;
 public class Game implements Observable{
 
     public ArrayList<Observer> observers;
-    public HashMap<String, Integer> playerHandCount;
-    private enum GameStates { PLAY, END }
+    public HashMap<String, Integer> playerHandCount;  
     private Deck deck = new Deck();
-    private Board board = new Board();
-    private GameStates gameState;
+    private Board board = new Board();   
     private Player gameWinner;
+    
+    public enum GameStates { PLAY, END }
+    public GameStates gameState;
 
     public AIPlayer aiPlayer1;
     public AIPlayer aiPlayer2;

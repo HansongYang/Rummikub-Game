@@ -37,7 +37,7 @@ public class AIStrategyTwoTest extends TestCase {
 		
 		//Board is not empty, play initial 30	
 		aiPlayer.strategy.executeStrategy(aiPlayer);	
-		assertEquals(game.getBoard().currentMelds.size(), 2);
+		assertEquals(game.getBoard().currentMelds.size(), 3);
 		
 		aiPlayer.hand.add(new Tile('O',13));
 		
