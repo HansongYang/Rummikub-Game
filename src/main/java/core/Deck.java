@@ -45,6 +45,16 @@ public class Deck {
             playerHand.add(this.drawTile());
         }
     }
+    
+    public void removeTile(Tile t) {
+    	for(int i = 0; i < deck.size(); i++) {
+			if(deck.get(i).getRank() == t.getRank() && 
+					deck.get(i).getColour() == t.getColour()) {
+				deck.remove(i);
+				return;
+			}
+		}
+    }
 
     public int getDeckSize() {
         return deck.size();

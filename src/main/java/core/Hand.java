@@ -27,6 +27,7 @@ public class Hand {
 		for(int i = 0; i < hands.size(); i++) {
 			if(hands.get(i).getRank() == t.getRank() && hands.get(i).getColour() == t.getColour()) {
 				hands.remove(i);
+				return;
 			}
 		}
 	}
