@@ -9,11 +9,11 @@ public class Game implements Observable{
     public HashMap<String, Integer> playerHandCount;  
     private Deck deck = new Deck();
     private Board board = new Board();   
-    private Player gameWinner;
-    
+
     public enum GameStates { PLAY, END }
     public GameStates gameState;
 
+    public Player gameWinner;
     public AIPlayer aiPlayer1;
     public AIPlayer aiPlayer2;
     public AIPlayer aiPlayer3;
