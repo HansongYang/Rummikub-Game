@@ -1,18 +1,18 @@
 package core;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class Game implements Observable{
 
-    public ArrayList<Observer> observers;
-    public HashMap<String, Integer> playerHandCount;  
     private Deck deck = new Deck();
-    private Board board = new Board();   
+    private Board board = new Board();
+    private Map<Player, Integer> playerOrder = new LinkedHashMap<Player, Integer>();
+    private ArrayList<Player> players = new ArrayList<Player>();
 
+    public ArrayList<Observer> observers;
+    public HashMap<String, Integer> playerHandCount;
     public enum GameStates { PLAY, END }
     public GameStates gameState;
-
     public Player gameWinner;
     public AIPlayer aiPlayer1;
     public AIPlayer aiPlayer2;
@@ -31,6 +31,7 @@ public class Game implements Observable{
         deck.dealTiles(aiPlayer1);
         deck.dealTiles(aiPlayer2);
         deck.dealTiles(aiPlayer3);
+        settleTurns();
         gameState = GameStates.PLAY;
         gameLoop();
     }
@@ -47,6 +48,10 @@ public class Game implements Observable{
         aiPlayer1 = new AIPlayer("AI1", this, aiStrategyOne);
         aiPlayer2 = new AIPlayer("AI2", this, aiStrategyTwo);
         aiPlayer3 = new AIPlayer("AI3", this, aiStrategyThree);
+        this.players.add(userPlayer);
+        this.players.add(aiPlayer1);
+        this.players.add(aiPlayer2);
+        this.players.add(aiPlayer3);
         this.addObserver(userPlayer);
         this.addObserver(aiPlayer1);
         this.addObserver(aiPlayer2);
@@ -54,40 +59,26 @@ public class Game implements Observable{
     }
 
     public void gameLoop() {
-        int currentPlayerCheck = 0;
+        printTurns();
+
 
         while(gameState == GameStates.PLAY) {
 
-            if (currentPlayerCheck > 3) currentPlayerCheck = 0;
+            Iterator it = this.playerOrder.entrySet().iterator();
 
-            if (currentPlayerCheck == 0) {
-                System.out.println("\nPlayer " + userPlayer.name + "'s turn");
-                printPlayerHand(userPlayer);
-                userPlayer.playTurn();
-                if(gameState == GameStates.END) {
-                	break;
-                }
+            while (it.hasNext()) {
+
+                Map.Entry pair = (Map.Entry)it.next();
+                Player player = (Player)pair.getKey();
+
+                System.out.println("\nPlayer " + player.name + "'s turn");
+                printPlayerHand(player);
+                player.playTurn();
+                if(gameState == GameStates.END) break;
                 board.printBoard();
                 this.messageObservers();
-            } else if (currentPlayerCheck == 1) {
-                System.out.println("\nPlayer " + aiPlayer1.name + "'s turn");
-                printPlayerHand(aiPlayer1);
-                aiPlayer1.playTurn();
-                board.printBoard();
-                this.messageObservers();
-            } else if (currentPlayerCheck == 2) {
-            	 System.out.println("\nPlayer " + aiPlayer2.name + "'s turn");
-            	 printPlayerHand(aiPlayer2);
-                 aiPlayer2.playTurn();
-                 board.printBoard();
-                 this.messageObservers();
-            } else if (currentPlayerCheck == 3) {
-            	 System.out.println("\nPlayer " + aiPlayer3.name + "'s turn");
-                 printPlayerHand(aiPlayer3);
-                 aiPlayer3.playTurn();
-                 board.printBoard();
             }
-            
+
             if(deck.getDeckSize() == 0) {
 				System.out.println("The deck is empty.");
             	int value1 = Math.min(userPlayer.getHand().size(), aiPlayer1.getHand().size());
@@ -108,8 +99,7 @@ public class Game implements Observable{
             	}
             	gameState = GameStates.END;
             }
-            
-            currentPlayerCheck++;
+
             if (gameWinCheck()) System.out.println(gameWinner.name + " wins the game!");
         }
     }
@@ -120,6 +110,40 @@ public class Game implements Observable{
     
     public Board getBoard() {
     	return board;
+    }
+
+    public void settleTurns() {
+        Deck turnDeck = new Deck();
+
+        for (int i = 0; i < this.players.size(); i++) {
+            Tile tile = turnDeck.drawTile();
+            this.playerOrder.put(this.players.get(i), tile.getRank());
+        }
+
+        // Credit: https://www.mkyong.com/java/how-to-sort-a-map-in-java/
+        List<Map.Entry<Player, Integer>> list = new LinkedList<Map.Entry<Player, Integer>>(this.playerOrder.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Player, Integer>>() {
+            public int compare(Map.Entry<Player, Integer> o1, Map.Entry<Player, Integer> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+        Map<Player, Integer> sortedPlayerOrder = new LinkedHashMap<Player, Integer>();
+        for (Map.Entry<Player, Integer> entry : list) {
+            sortedPlayerOrder.put(entry.getKey(), entry.getValue());
+        }
+
+        this.playerOrder = sortedPlayerOrder;
+    }
+
+    public void printTurns() {
+        Iterator it = this.playerOrder.entrySet().iterator();
+        System.out.print("Turn Order: ");
+
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            Player player = (Player)pair.getKey();
+            System.out.print(player.name + " ");
+        }
     }
 
     public void printPlayerHand(Player player) {
