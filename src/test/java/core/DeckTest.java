@@ -6,7 +6,7 @@ public class DeckTest extends TestCase {
 
     public void testNumOfCardsInDeck() {
         Deck deck = new Deck();
-        assertEquals(104, deck.getDeckSize());
+        assertEquals(106, deck.getDeckSize());
     }
 
     public void testCardReturnedFromTakeCard() {
@@ -17,7 +17,7 @@ public class DeckTest extends TestCase {
     public void testDeckSizeDecreasesWhenRemoveFromDeck() {
         Deck deck = new Deck();
         Tile tile = deck.drawTile();
-        assertEquals(103, deck.getDeckSize());
+        assertEquals(105, deck.getDeckSize());
     }
 
     public void testCheckForValidDuplicateTiles() {
@@ -25,7 +25,7 @@ public class DeckTest extends TestCase {
 
         int numOfBlueFive = 0;
 
-        for (int i = 0; i < 104; i++) {
+        for (int i = 0; i < 106; i++) {
             Tile tile = deck.drawTile();
 
             if (tile.getRank() == 5 && tile.getColour() == 'B') numOfBlueFive++;
@@ -42,5 +42,18 @@ public class DeckTest extends TestCase {
         deck.dealTiles(player);
 
         assertEquals(14, player.getHand().size());
+    }
+
+    public void testTwoJokersInDeck() {
+        Deck deck = new Deck();
+        int numOfJokers = 0;
+
+        for (int i = 0; i < 106; i++) {
+            Tile tile = deck.drawTile();
+
+            if (tile.getRank() == 0 && tile.getColour() == 'J') numOfJokers++;
+        }
+
+        assertEquals(2, numOfJokers);
     }
 }

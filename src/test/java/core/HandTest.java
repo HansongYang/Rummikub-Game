@@ -53,11 +53,13 @@ public class HandTest extends TestCase{
 	public void testSortTileByColour() {
 		Deck d = new Deck();
 		Hand hand = new Hand();
+		Tile t5 = new Tile('J', 0);
 		Tile t4 = new Tile('O', 3);
 		Tile t3 = new Tile('B', 3);
 		Tile t2 = new Tile('G', 2);
 		Tile t1 = new Tile('R', 1);
-		
+
+		hand.add(t5);
 		hand.add(t4);
 		hand.add(t3);
 		hand.add(t2);
@@ -68,6 +70,7 @@ public class HandTest extends TestCase{
 		assertEquals('B', hand.getTile(1).getColour());
 		assertEquals('G', hand.getTile(2).getColour());
 		assertEquals('O', hand.getTile(3).getColour());
+		assertEquals('J', hand.getTile(4).getColour());
 	}
 	
 	public void testGetMeldSets() {
