@@ -23,6 +23,8 @@ public class Deck {
                     deck.add(tile);
                 }
             }
+            Tile joker = new Tile('J', 0);
+            deck.add(joker);
         }
     }
 
