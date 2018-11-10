@@ -18,6 +18,7 @@ public class Tile {
 			case 'B': colourTemp = "Blue"; break;
 			case 'G': colourTemp = "Green"; break;
 			case 'O': colourTemp = "Orange"; break;
+			case 'J': colourTemp = "Joker"; break;
 		}
 
 		if (justPlayedFlag) {

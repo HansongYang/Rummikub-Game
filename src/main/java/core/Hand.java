@@ -68,7 +68,7 @@ public class Hand {
 		ArrayList<Tile> newHand = new ArrayList<Tile>();	
 		colouredTiles = this.separateTilesByColour();
 		
-		for(int i = 0; i < 4; i++){
+		for(int i = 0; i < 5; i++){
 			colouredTiles.get(i).sortTilesByNumber();
 			newHand.addAll(colouredTiles.get(i).getTiles());
 		}
@@ -80,7 +80,7 @@ public class Hand {
 		ArrayList<Hand> colouredTiles = new ArrayList<Hand>();
 		Tile current;
 		
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < 5; i++) {
 			colouredTiles.add(new Hand());
 		}
 		
@@ -93,8 +93,10 @@ public class Hand {
 				colouredTiles.get(1).add(current);
 			} else if(current.getColour() == 'G') {
 				colouredTiles.get(2).add(current);
-			}else if(current.getColour() == 'O'){
+			} else if(current.getColour() == 'O'){
 				colouredTiles.get(3).add(current);
+			} else if(current.getColour() == 'J'){
+				colouredTiles.get(4).add(current);
 			}
 		}
 		return colouredTiles;
