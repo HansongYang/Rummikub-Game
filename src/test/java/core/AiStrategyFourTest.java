@@ -10,9 +10,15 @@ public class AiStrategyFourTest extends TestCase {
 		meld.add(G5);
 		meld.add(O5);
 		game.getBoard().addMeld(meld);
-		aiStrategyFour.getBoardTileColours();
 		
-		assertEquals(1, aiStrategyFour.blue);
+		aiPlayer4.initial30Played = true;
+		aiPlayer4.strategy.executeStrategy(aiPlayer4);
+		
+		System.out.println("RED " + aiPlayer4.red);
+		System.out.println("ORANGE " + aiPlayer4.orange);
+		System.out.println("GREEN " + aiPlayer4.green);
+		System.out.println("BLUE " + aiPlayer4.blue);
+		assertEquals(1, aiPlayer4.blue);
 		
 	}
 	

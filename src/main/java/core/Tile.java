@@ -43,5 +43,9 @@ public class Tile {
 	public void setJustPlayedFlag() { justPlayedFlag = true; }
 
 	public void resetJustPlayedFlag() { justPlayedFlag = false; }
+	
+	public String toString() {
+		return this.colour + Integer.toString(this.rank);
+	}
 
 }
