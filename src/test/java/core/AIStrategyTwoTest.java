@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class AIStrategyTwoTest extends TestCase {
 
 	public void testExecuteStrategy() {
-		Game game = new Game();
+		Model game = new Model();
 		PlayerStrategy<? super AIPlayer> aiStrategyTwo = new AIStrategyTwo();
 		AIPlayer aiPlayer = new AIPlayer("AI2", game, aiStrategyTwo);
 		

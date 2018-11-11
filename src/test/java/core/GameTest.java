@@ -10,7 +10,7 @@ public class GameTest extends TestCase {
     }
 
     public void testCreateAndMessageObservers() {
-        Game game = new Game();
+    	Model game = new Model();
         Deck deck = new Deck();
         game.createGamePlayers();
         deck.dealTiles(game.userPlayer);
