@@ -59,9 +59,9 @@ public class MeldValidatorService {
             Tile tile = tiles.get(i);
 
             //Check color
-            if(color == ' ') {
+            if(color == ' ' && tile.getColour() != 'J') {
                 color = tile.getColour();
-            } else if(color != tile.getColour()) {
+            } else if(color != tile.getColour() && tile.getColour() != 'J') {
                 return false;
             }
 
@@ -72,10 +72,12 @@ public class MeldValidatorService {
 
         for(int i = 1; i < ranks.size(); i++) {
 
-            if(ranks.get(i) - prevRank != 1) {
-                return false;
+            if (ranks.get(i) != 0) {
+                if(ranks.get(i) - prevRank != 1) {
+                    return false;
+                }
+                prevRank = ranks.get(i);
             }
-            prevRank = ranks.get(i);
         }
 
 

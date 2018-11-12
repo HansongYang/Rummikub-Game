@@ -24,7 +24,10 @@ public class Player implements Observer {
 		this.model = model;
 		this.meldsInHand = new ArrayList<Meld>();
 	}
-	
+
+	// Kept here for override
+	public void playTurn() {}
+
 	public Hand getHand() {
 		return this.hand;
 	}

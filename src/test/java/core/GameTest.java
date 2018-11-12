@@ -4,11 +4,6 @@ import junit.framework.TestCase;
 
 public class GameTest extends TestCase {
 
-    public void testStart() {
-        Game game = new Game();
-       // game.start();
-    }
-
     public void testCreateAndMessageObservers() {
     	Model game = new Model();
         Deck deck = new Deck();
@@ -42,5 +37,17 @@ public class GameTest extends TestCase {
         assertEquals(num2, game.aiPlayer1.playerHandCount.get("AI1"));
         assertEquals(num2, game.aiPlayer2.playerHandCount.get("AI2"));
         assertEquals(num2, game.aiPlayer3.playerHandCount.get("AI3"));
+    }
+
+    public void testGameWinCheck() {
+        Game game = new Game();
+        game.createGamePlayers();
+        game.getDeck().dealTiles(game.aiPlayer1);
+        game.getDeck().dealTiles(game.aiPlayer2);
+        game.getDeck().dealTiles(game.aiPlayer3);
+
+        assertTrue(game.gameWinCheck());
+        assertEquals(game.gameWinner, game.userPlayer);
+        assertEquals(game.gameState, game.gameState.END);
     }
 }

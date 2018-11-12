@@ -1,10 +1,9 @@
 package core;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 import core.Model.GameStates;
+
 
 public class Game  {
     
@@ -24,16 +23,18 @@ public class Game  {
     	model = new Model();
     	view = new ConsoleView(model);
     	controller = new ConsoleController(view,model);
+
     }
 
     public void gameLoop() {
-        int currentPlayerCheck = 0;
+        
+       int currentPlayerCheck = 0;
 
         while(model.gameState == GameStates.PLAY) {
+            
+          if (currentPlayerCheck > 3) currentPlayerCheck = 0;
 
-            if (currentPlayerCheck > 3) currentPlayerCheck = 0;
-
-            if (currentPlayerCheck == 0) {
+           if (currentPlayerCheck == 0) {
             	view.indicateTurn(model.userPlayer);
             	view.displayPlayerHand(model.userPlayer);
             	
@@ -66,7 +67,7 @@ public class Game  {
             }
             
             if(model.getDeck().getDeckSize() == 0) {
-				System.out.println("The deck is empty.");
+				        System.out.println("The deck is empty.");
             	int value1 = Math.min(model.userPlayer.getHand().size(), model.aiPlayer1.getHand().size());
             	int value2 = Math.min(model.aiPlayer2.getHand().size(), model.aiPlayer3.getHand().size());
             	int minimum = Math.min(value1, value2);
@@ -87,7 +88,8 @@ public class Game  {
             }
             
             currentPlayerCheck++;
-            if (model.gameWinCheck()) view.displayWinner(model.gameWinner);;
+            if (model.gameWinCheck()) view.displayWinner(model.gameWinner);
+
         }
     }
     
@@ -334,6 +336,7 @@ public class Game  {
 		}
 	}
     
+
 	public void tileSelectionLoop(UserPlayer player, Hand availableTiles) {
 		int tileSelected;
 		
@@ -368,9 +371,41 @@ public class Game  {
 			}
 		}
 	}
-    
 
-  
 
+
+    public void settleTurns() {
+        Deck turnDeck = new Deck();
+
+        for (int i = 0; i < this.players.size(); i++) {
+            Tile tile = turnDeck.drawTile();
+            this.playerOrder.put(this.players.get(i), tile.getRank());
+        }
+
+        // Credit: https://www.mkyong.com/java/how-to-sort-a-map-in-java/
+        List<Map.Entry<Player, Integer>> list = new LinkedList<Map.Entry<Player, Integer>>(this.playerOrder.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Player, Integer>>() {
+            public int compare(Map.Entry<Player, Integer> o1, Map.Entry<Player, Integer> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+        Map<Player, Integer> sortedPlayerOrder = new LinkedHashMap<Player, Integer>();
+        for (Map.Entry<Player, Integer> entry : list) {
+            sortedPlayerOrder.put(entry.getKey(), entry.getValue());
+        }
+
+        this.playerOrder = sortedPlayerOrder;
+    }
+
+    public void printTurns() {
+        Iterator it = this.playerOrder.entrySet().iterator();
+        System.out.print("Turn Order: ");
+
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            Player player = (Player)pair.getKey();
+            System.out.print(player.name + " ");
+        }
+    }
 
 }
