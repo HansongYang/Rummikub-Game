@@ -53,5 +53,8 @@ public class MeldTest extends TestCase {
 		
 		meld.add(new Tile('R', 4));
 		assertEquals(10, meld.totalValue());
+
+		meld.add(new Tile('J', 0));
+		assertEquals(15, meld.totalValue());
 	}
 }
