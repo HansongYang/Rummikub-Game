@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import junit.framework.TestCase;
 
@@ -36,7 +37,20 @@ public class AiStrategyFourTest extends TestCase {
 		testArrayList.add(G5);
 		testArrayLists.add(testArrayList);
 		assertEquals(testArrayLists, aiPlayer4.hand.getSetsOfTwo());
+	}
+	
+	public void testSetsOfTwo() {
+		aiPlayer4.initial30Played = true;
+		aiPlayer4.strategy.executeStrategy(aiPlayer4);
 		
+		aiPlayer4.hand.add(B5);
+		aiPlayer4.hand.add(G5);
+		aiPlayer4.hand.add(O5);
+		
+		testArrayList = new ArrayList<Tile>();
+		testArrayLists = new ArrayList<ArrayList<Tile>>();
+		
+		assertEquals(testArrayLists, aiPlayer4.hand.getSetsOfTwo());
 	}
 	
 	Game game = new Game();
