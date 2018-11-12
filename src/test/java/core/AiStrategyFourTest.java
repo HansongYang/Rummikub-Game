@@ -33,7 +33,7 @@ public class AiStrategyFourTest extends TestCase {
 		testArrayList = new ArrayList<Tile>();
 		testArrayList.add(B5);
 		testArrayList.add(G5);
-		assertEquals(testArrayList, aiPlayer4.setsOfTwo);
+		assertEquals(testArrayList, aiPlayer4.Hand.getSetsOfTwo);
 		
 	}
 	
