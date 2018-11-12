@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Meld {
 	public boolean run = false;
 	private ArrayList<Tile> melds;
+	private MeldValidatorService meldValidatorService = new MeldValidatorService();
 
 	public Meld() {
 		melds = new ArrayList<Tile>();
@@ -64,7 +65,12 @@ public class Meld {
 	public int totalValue() {
 		int value = 0;
 		for(int i = 0; i < melds.size(); i++) {
-			value += melds.get(i).getRank();
+			// Joker check
+			if (melds.get(i).getRank() == 0) {
+				value += meldValidatorService.getJokerValue(melds, i);
+			} else {
+				value += melds.get(i).getRank();
+			}
 		}
 		return value;
 	}
