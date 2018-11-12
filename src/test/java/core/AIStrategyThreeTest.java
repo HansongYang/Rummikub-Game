@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 public class AIStrategyThreeTest extends TestCase{
 
 	public void testExecuteStrategy() {
-		Game game = new Game();
+		Model game = new Model();
 		PlayerStrategy<? super AIPlayer> aiStrategyThree = new AIStrategyThree();
 		AIPlayer aiPlayer = new AIPlayer("AI3", game, aiStrategyThree);
 		
@@ -48,7 +48,7 @@ public class AIStrategyThreeTest extends TestCase{
 	}
 	
 	public void testExecuteStrategy_multiplePlayers(){
-		Game game = new Game();
+		Model game = new Model();
 		PlayerStrategy<? super AIPlayer> aiStrategyThree = new AIStrategyThree();
 		PlayerStrategy<? super AIPlayer> aiStrategyTwo = new AIStrategyTwo();
 		PlayerStrategy<? super AIPlayer> aiStrategyOne = new AIStrategyOne();

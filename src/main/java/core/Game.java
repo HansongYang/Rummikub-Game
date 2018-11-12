@@ -2,115 +2,377 @@ package core;
 
 import java.util.*;
 
-public class Game implements Observable{
+import core.Model.GameStates;
 
-    private Deck deck = new Deck();
-    private Board board = new Board();
-    private Map<Player, Integer> playerOrder = new LinkedHashMap<Player, Integer>();
-    private ArrayList<Player> players = new ArrayList<Player>();
 
-    public ArrayList<Observer> observers;
-    public HashMap<String, Integer> playerHandCount;
-    public enum GameStates { PLAY, END }
-    public GameStates gameState;
-    public Player gameWinner;
-    public AIPlayer aiPlayer1;
-    public AIPlayer aiPlayer2;
-    public AIPlayer aiPlayer3;
-    public UserPlayer userPlayer;
+public class Game  {
+    
+    public Model model;
+    public View view;
+    public Controller controller;
 
     public static void main(String[] arg) {
         Game game = new Game();
-        game.start();
+        
+        game.model.initGame();
+        game.gameLoop();
+        
     }
+    
+    public Game() {
+    	model = new Model();
+    	view = new ConsoleView(model);
+    	controller = new ConsoleController(view,model);
 
-    // Start function which initializes players, deals tiles, and begins main game loop
-    public void start() {
-        createGamePlayers();
-        deck.dealTiles(userPlayer);
-        deck.dealTiles(aiPlayer1);
-        deck.dealTiles(aiPlayer2);
-        deck.dealTiles(aiPlayer3);
-        settleTurns();
-        gameState = GameStates.PLAY;
-        gameLoop();
-    }
-
-    public void createGamePlayers() {
-        observers = new ArrayList<Observer>();
-        playerHandCount = new HashMap<String, Integer>();
-    	PlayerStrategy<? super UserPlayer> userStrategy = new UserStrategy();
-    	PlayerStrategy<? super AIPlayer> aiStrategyOne = new AIStrategyOne();
-    	PlayerStrategy<? super AIPlayer> aiStrategyTwo = new AIStrategyTwo();
-    	PlayerStrategy<? super AIPlayer> aiStrategyThree = new AIStrategyThree();
-    	
-        userPlayer = new UserPlayer("USER", this, userStrategy);
-        aiPlayer1 = new AIPlayer("AI1", this, aiStrategyOne);
-        aiPlayer2 = new AIPlayer("AI2", this, aiStrategyTwo);
-        aiPlayer3 = new AIPlayer("AI3", this, aiStrategyThree);
-        this.players.add(userPlayer);
-        this.players.add(aiPlayer1);
-        this.players.add(aiPlayer2);
-        this.players.add(aiPlayer3);
-        this.addObserver(userPlayer);
-        this.addObserver(aiPlayer1);
-        this.addObserver(aiPlayer2);
-        this.addObserver(aiPlayer3);
     }
 
     public void gameLoop() {
-        printTurns();
+        
+       int currentPlayerCheck = 0;
 
+        while(model.gameState == GameStates.PLAY) {
+            
+          if (currentPlayerCheck > 3) currentPlayerCheck = 0;
 
-        while(gameState == GameStates.PLAY) {
-
-            Iterator it = this.playerOrder.entrySet().iterator();
-
-            while (it.hasNext()) {
-
-                Map.Entry pair = (Map.Entry)it.next();
-                Player player = (Player)pair.getKey();
-
-                System.out.println("\nPlayer " + player.name + "'s turn");
-                printPlayerHand(player);
-                player.playTurn();
-                if(gameState == GameStates.END) break;
-                board.printBoard();
-                this.messageObservers();
+           if (currentPlayerCheck == 0) {
+            	view.indicateTurn(model.userPlayer);
+            	view.displayPlayerHand(model.userPlayer);
+            	
+                //model.userPlayer.playTurn();
+                userPlayerTurnLoop(model.userPlayer);
+                
+                if(model.gameState == GameStates.END) {
+                	break;
+                }
+                view.displayBoard(model.getBoard());
+                
+                model.messageObservers();
+            } else if (currentPlayerCheck == 1) {
+            	view.indicateTurn(model.aiPlayer1);
+            	view.displayPlayerHand(model.aiPlayer1);           
+                model.aiPlayer1.playTurn();
+                view.displayBoard(model.getBoard());
+                model.messageObservers();
+            } else if (currentPlayerCheck == 2) {
+            	view.indicateTurn(model.aiPlayer2);
+            	view.displayPlayerHand(model.aiPlayer2); 
+            	model.aiPlayer2.playTurn();
+            	view.displayBoard(model.getBoard());
+            	model.messageObservers();
+            } else if (currentPlayerCheck == 3) {
+            	view.indicateTurn(model.aiPlayer3);
+            	view.displayPlayerHand(model.aiPlayer3); 
+                model.aiPlayer3.playTurn();
+                view.displayBoard(model.getBoard());
             }
-
-            if(deck.getDeckSize() == 0) {
-				System.out.println("The deck is empty.");
-            	int value1 = Math.min(userPlayer.getHand().size(), aiPlayer1.getHand().size());
-            	int value2 = Math.min(aiPlayer2.getHand().size(), aiPlayer3.getHand().size());
+            
+            if(model.getDeck().getDeckSize() == 0) {
+				        System.out.println("The deck is empty.");
+            	int value1 = Math.min(model.userPlayer.getHand().size(), model.aiPlayer1.getHand().size());
+            	int value2 = Math.min(model.aiPlayer2.getHand().size(), model.aiPlayer3.getHand().size());
             	int minimum = Math.min(value1, value2);
-            	if(minimum == userPlayer.getHand().size()) {
-            		System.out.println("User has "+userPlayer.getHand().size() +" tiles. Player 1 has " + aiPlayer1.getHand().size()+" tiles. Player 2 has " + aiPlayer2.getHand().size() + " tiles. Player 3 has " + aiPlayer3.getHand().size() + " tiles.");
-            		System.out.println(userPlayer.name + " wins the game!");
-            	}else if(minimum == aiPlayer1.getHand().size()) {
-            		System.out.println("User has "+userPlayer.getHand().size() +" tiles. Player 1 has " + aiPlayer1.getHand().size()+" tiles. Player 2 has " + aiPlayer2.getHand().size() + " tiles. Player 3 has " + aiPlayer3.getHand().size() + " tiles.");
-            		System.out.println(aiPlayer1.name + " wins the game!");
-            	}else if(minimum == aiPlayer2.getHand().size()) {
-            		System.out.println("User has "+userPlayer.getHand().size() +" tiles. Player 1 has " + aiPlayer1.getHand().size()+" tiles. Player 2 has " + aiPlayer2.getHand().size() + " tiles. Player 3 has " + aiPlayer3.getHand().size() + " tiles.");
-            		System.out.println(aiPlayer2.name + " wins the game!");
+            	if(minimum == model.userPlayer.getHand().size()) {
+            		view.displayFinalTileCounts();
+            		view.displayWinner(model.userPlayer);
+            	}else if(minimum == model.aiPlayer1.getHand().size()) {
+            		view.displayFinalTileCounts();
+            		view.displayWinner(model.aiPlayer1);
+            	}else if(minimum == model.aiPlayer2.getHand().size()) {
+            		view.displayFinalTileCounts();
+            		view.displayWinner(model.aiPlayer2);
             	}else {
-            		System.out.println("User has "+userPlayer.getHand().size() +" tiles. Player 1 has " + aiPlayer1.getHand().size()+" tiles. Player 2 has " + aiPlayer2.getHand().size() + " tiles. Player 3 has " + aiPlayer3.getHand().size() + " tiles.");
-            		System.out.println(aiPlayer3.name + " wins the game!");
+            		view.displayFinalTileCounts();
+            		view.displayWinner(model.aiPlayer3);
             	}
-            	gameState = GameStates.END;
+            	model.gameState = GameStates.END;
             }
+            
+            currentPlayerCheck++;
+            if (model.gameWinCheck()) view.displayWinner(model.gameWinner);
 
-            if (gameWinCheck()) System.out.println(gameWinner.name + " wins the game!");
         }
     }
     
-    public Deck getDeck() {
-    	return deck;
-    }
+    public void userPlayerTurnLoop(UserPlayer player) {
+		
+		//Scanner reader = new Scanner(System.in);
+		int choice = 0;
+		int numOfTiles = player.getHand().size();
+		boolean pass = false;
+		while(true) {
+			if(numOfTiles > player.getHand().size()) {
+				view.displayTurnOptions_Pass();			
+				pass = true;
+			}else {
+				view.displayTurnOptions();		
+			}
+			
+			/*while(!reader.hasNextInt()) {
+				System.out.println("Wrong input. Please input again.");
+				if(pass) {
+					System.out.println("(1) Pass, (2) Create Meld, (3) Play tiles on the table. Enter -1 to quit.");
+				}else {
+					System.out.println("(1) Draw Tile, (2) Create Meld, (3) Play tiles on the table.  Enter -1 to quit.");
+				}
+				reader.nextLine();
+			}*/
+			
+			choice = controller.turnOptionInput();
+			
+			if(choice == -1) {
+				player.model.endGame();
+				view.indicateUserEndsGame(player);
+				break;
+			}
+		
+			if(choice == 1) {//Draw tile
+				if(player.model.getDeck().getDeckSize() == 0) {
+					break;
+				}
+				if(pass) {
+					pass = false;
+					break;
+				}
+				
+				Tile newTile = player.model.getDeck().drawTile();
+				view.displayDrawnTile(newTile);	
+				player.hand.add(newTile);
+				break;
+			}
+			else if(choice == 2) {//Play Meld
+			
+				int createAdditionalMelds;
+				
+				Hand availableTiles = player.hand;
+				
+				tileSelectionLoop(player, availableTiles);
+				
+				view.displayCreateAnotherMeldOption();
+				/*while(!reader.hasNextInt()) {
+					System.out.println("Wrong input. Please input again.");
+					System.out.println("Create another meld? (1)Yes (2)No");
+					reader.nextLine();
+				}*/
+				createAdditionalMelds = controller.turnOptionInput();
+				
+				while(createAdditionalMelds == 1) {
+					view.indicateAvailableTiles();
+					view.displayHand(availableTiles);
+					
+					tileSelectionLoop(player, availableTiles);
+					
+					view.displayCreateAnotherMeldOption();
+					/*while(!reader.hasNextInt()) {
+						System.out.println("Wrong input. Please input again.");
+						System.out.println("Create another meld? (1)Yes (2)No");
+						reader.nextLine();
+					}*/
+					createAdditionalMelds = controller.turnOptionInput();
+					
+				}
+				
+				if(!player.initial30Played) {
+					if(player.totalAllMelds(player.meldsInHand) < 30){
+						view.indicateMeldsLessThan30();
+					}
+					else {
+						player.playMelds(player.model.getBoard(), player.meldsInHand);
+						player.initial30Played = true;
+					}
+				}
+				else {
+					player.playMelds(player.model.getBoard(), player.meldsInHand);
+				}
+			}
+			else if(choice == 3) {
+				if(player.model.getBoard().currentMelds.size() == 0) {
+					view.indicateNoTileOnBoard();
+					userPlayerTurnLoop(player);
+					return;
+				}
+				
+				Hand availableTiles = player.hand;
+				
+				while(true) {
+					view.displayTileToExistingMeldOptions();
+					/*while(!reader.hasNextInt()) {
+						System.out.println("Wrong input. Please input again.");
+						System.out.println("Choose an option: 1. Add a tile to the end of a meld. 2. Add a tile to the beginning of a meld. 3. Add a tile to create a new meld. Enter -1 to go back.");
+						reader.nextLine();
+					}*/
+					int option = controller.turnOptionInput();
+					if(option == -1) {
+						break;
+					}
+					if(option == 1) {
+						while(true) {
+							view.displayTileToMeldSelection();
+							int tileSelected = controller.turnOptionInput();
+							if(tileSelected == -1) {
+								break;
+							}
+							
+							if(tileSelected >= availableTiles.size() || tileSelected < -1) {//Invalid Tile
+								view.indicateWrongInput();
+							}else {
+								while(true) {
+									view.displayBoard(player.model.getBoard());
+									view.displayMeldSelection();
+									int meldSelected = controller.turnOptionInput();
+									if(meldSelected == -1) { break;}
+									if(meldSelected >=  player.model.getBoard().currentMelds.size() || meldSelected < 0) {//Invalid Tile
+										view.indicateWrongInput();
+									}else {
+										Meld meld = new Meld();
+										meld.add(player.hand.getTile(tileSelected));
+										if(player.model.getBoard().addTileToMeldEnd(meldSelected, meld)) {
+											player.getHand().remove(player.hand.getTile(tileSelected));						
+											view.displayBoard(model.getBoard());
+											view.displayHand(player.getHand());
+										}else {
+											view.indicateInvalidMeld();
+										}
+										break;
+									 }
+								}
+							}
+						}
+					}else if(option == 2) {
+						while(true) {
+							view.displayTileToMeldSelection();
+							int tileSelected = controller.turnOptionInput();
+							if(tileSelected == -1) {
+								break;
+							}
+								
+							if(tileSelected >= availableTiles.size() || tileSelected < -1) {//Invalid Tile
+								view.indicateWrongInput();
+							}else {
+								while(true) {
+									view.displayBoard(player.model.getBoard());
+									view.displayMeldSelection();
+									int meldSelected = controller.turnOptionInput();
+									if(meldSelected == -1) { break;}
+									if(meldSelected >= player.model.getBoard().currentMelds.size() || meldSelected < 0) {//Invalid Tile
+										view.indicateWrongInput();
+									}else {
+										Meld meld = new Meld();
+										meld.add(player.hand.getTile(tileSelected));
+										if(player.model.getBoard().addTileToMeldBeginning(meldSelected, meld)) {
+											player.getHand().remove(player.hand.getTile(tileSelected));
+											view.displayBoard(model.getBoard());
+											view.displayHand(player.getHand());
+										}else {
+											view.indicateInvalidMeld();
+										}
+										break;
+									}
+								}
+							}
+						}
+					}else if(option == 3) {
+							Meld meld = new Meld();
+							while(true) {
+								view.displayTileToMeldSelection();
+								int tileSelected = controller.turnOptionInput();
+								if(tileSelected == -1) {
+									break;
+								}
+								
+								if(tileSelected >= availableTiles.size() || tileSelected < -1) {//Invalid Tile
+									view.indicateWrongInput();
+								}else {
+									meld.add(player.hand.getTile(tileSelected));
+								}
+							}
+							while(true) {
+								view.displayBoard(player.model.getBoard());
+								view.displayMeldSelection();
+								int meldSelected = controller.turnOptionInput();
+								if(meldSelected == -1) { break;}
+								if(meldSelected >= player.model.getBoard().currentMelds.size() || meldSelected < 0) {//Invalid Tile
+									view.indicateWrongInput();
+								}else {
+									while(true) {
+										view.displayMeld(player.model.getBoard().currentMelds.get(meldSelected));
+										view.displayTileInSelectedMeldSelection();
+										int tileOfMeld = controller.turnOptionInput();
+										if(tileOfMeld == -1) { break;}
+										if(tileOfMeld >= player.model.getBoard().currentMelds.get(meldSelected).size() || tileOfMeld < 0) {
+											view.indicateWrongInput();
+										}else {
+											while(true) {
+												view.displayTileToMeldPositionSelection();
+												int positionOfMeld = controller.turnOptionInput();
+												if(positionOfMeld == -1) { break;}
+												if(positionOfMeld < 0 || positionOfMeld >= meld.size()) {
+													view.indicateWrongInput();
+												}else {
+													if(player.model.getBoard().takeTileToFormNewMeld(meldSelected,tileOfMeld, positionOfMeld, meld)) {
+														for(int i = 0; i < meld.size(); i++) {
+															player.getHand().remove(meld.getTile(i));
+														}
+														view.displayBoard(model.getBoard());
+														view.displayHand(player.getHand());
+													}
+													else {
+														view.indicateInvalidMeld();
+													}
+												}
+												break;
+											}
+										}
+									}
+								}
+							}
+					 }else {
+						 view.indicateWrongInput();
+					 }
+				}
+			}
+			else {
+				view.indicateWrongInput();
+			}
+		}
+	}
     
-    public Board getBoard() {
-    	return board;
-    }
+
+	public void tileSelectionLoop(UserPlayer player, Hand availableTiles) {
+		int tileSelected;
+		
+		ArrayList<Integer> tileIndices = new ArrayList<Integer>();
+		
+		//Select tiles to create meld
+		while(true) {
+			view.displayTileSelection();
+			/*while(!reader.hasNextInt()) {
+				System.out.println("Wrong input. Please input again.");
+				System.out.println("Enter the index of the Tile you want to select. (-1) to stop selecting");
+				reader.nextLine();
+			}*/
+			tileSelected = controller.turnOptionInput();
+			
+			if(tileSelected >= availableTiles.size() || tileSelected < -1) {//Invalid Tile
+				view.indicateWrongInput();
+			}
+			else if(tileSelected == -1) {//Finished selecting
+				Meld meld = player.createMeld(player.selectTiles(tileIndices, availableTiles), availableTiles);
+				if(meld != null) {
+					player.meldsInHand.add(meld);
+				}else {
+					view.indicateInvalidMeld();
+				}
+				
+				tileIndices.clear();
+				break;
+			}
+			else {//Select tile
+				tileIndices.add(tileSelected);
+			}
+		}
+	}
+
+
 
     public void settleTurns() {
         Deck turnDeck = new Deck();
@@ -146,56 +408,4 @@ public class Game implements Observable{
         }
     }
 
-    public void printPlayerHand(Player player) {
-        player.getHand().sortTilesByColour();
-        player.getHand().printHand();
-    }
-
-    public boolean gameWinCheck() {
-        if (userPlayer.hand.size() == 0) {
-        	gameState = GameStates.END;
-            gameWinner = userPlayer;
-            return true;
-        } else if (aiPlayer1.hand.size() == 0) {
-        	gameState = GameStates.END;
-            gameWinner = aiPlayer1;
-            return true;
-        } else if(aiPlayer2.hand.size() == 0){
-        	gameState = GameStates.END;
-        	gameWinner = aiPlayer2;
-            return true;
-        }else if(aiPlayer3.hand.size() == 0){
-        	gameState = GameStates.END;
-        	gameWinner = aiPlayer3;
-            return true;
-        }else {
-            return false;
-        }
-    }
-    
-    public void endGame() {
-    	 gameState = GameStates.END;
-    }
-
-    public void updatePlayerHashMap() {
-        this.playerHandCount.put(userPlayer.name, userPlayer.getHand().size());
-        this.playerHandCount.put(aiPlayer1.name, aiPlayer1.getHand().size());
-        this.playerHandCount.put(aiPlayer2.name, aiPlayer2.getHand().size());
-        this.playerHandCount.put(aiPlayer3.name, aiPlayer3.getHand().size());
-    }
-
-    public void messageObservers() {
-        this.updatePlayerHashMap();
-        for (Observer o: observers) {
-            o.update(playerHandCount);
-        }
-    }
-
-    public void removeObserver(Observer observer) {
-        this.observers.remove(observer);
-    }
-
-    public void addObserver(Observer observer) {
-        this.observers.add(observer);
-    }
 }
