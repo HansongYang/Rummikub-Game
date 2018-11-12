@@ -1,5 +1,7 @@
 package core;
 
+import java.util.ArrayList;
+
 import junit.framework.TestCase;
 
 public class AiStrategyFourTest extends TestCase {
@@ -22,9 +24,23 @@ public class AiStrategyFourTest extends TestCase {
 		
 	}
 	
+	public void testFindSetsOfTwo() {
+		aiPlayer4.initial30Played = true;
+		aiPlayer4.strategy.executeStrategy(aiPlayer4);
+		aiPlayer4.hand.add(B5);
+		aiPlayer4.hand.add(G5);
+		
+		testArrayList = new ArrayList<Tile>();
+		testArrayList.add(B5);
+		testArrayList.add(G5);
+		assertEquals(testArrayList, aiPlayer4.setsOfTwo);
+		
+	}
+	
 	Game game = new Game();
 	PlayerStrategy<? super AIPlayer> aiStrategyFour = new AIStrategyFour();
 	AIPlayer aiPlayer4 = new AIPlayer("AI4", game, aiStrategyFour);
+	ArrayList<Tile> testArrayList;
 	
 	Tile B5 = new Tile('B',5);
 	Tile G5 = new Tile('G',5);
