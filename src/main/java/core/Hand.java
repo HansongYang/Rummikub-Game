@@ -3,6 +3,8 @@ package core;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Hand {
 	private ArrayList<Tile> hands;
@@ -145,6 +147,46 @@ public class Hand {
 		}
 		
 		return sets;
+	}
+	
+	public ArrayList<ArrayList<Tile>> getSetsOfTwo(){
+		
+		ArrayList<ArrayList<Tile>> setsTwo = new ArrayList<ArrayList<Tile>>();
+		
+		// Go through all the tiles in player's hand
+		// With each tile, try to find a set of 2 
+		// prevColours array is used for each possible set to keep track of colors we've added to the possible set
+		
+		// Example: If player Hand is [B2,G2,R5], method will initially return [[B2,G2],[G2,B2]]
+		// However, since [B2, G2] and [G2, B2] are the same thing, setsTwo is converted to a set and then back to an ArrayList
+		// to erase duplicates
+		
+		
+		for (Tile currentTile: this.getTiles()) {
+			ArrayList<Tile> possibleSet = new ArrayList<Tile>();
+			possibleSet.add(currentTile);
+			ArrayList<Character> prevColours = new ArrayList<Character>();
+			prevColours.add(currentTile.getColour());
+			
+			for (Tile possibleTile: this.getTiles()) {
+				if (possibleTile.getRank() == currentTile.getRank() && !prevColours.contains(possibleTile.getColour())) {
+					possibleSet.add(possibleTile);
+					prevColours.add(possibleTile.getColour());
+				}
+			}
+			
+			if (possibleSet.size() == 2) setsTwo.add(possibleSet);
+		}
+		
+		for (ArrayList<Tile> set : setsTwo) {
+			Collections.sort(set);
+		}
+		
+		Set<ArrayList<Tile>> javaSet = new HashSet<ArrayList<Tile>>(setsTwo);
+		setsTwo.clear();
+		setsTwo.addAll(javaSet);
+		
+		return setsTwo;
 	}
 	
 	//Find all of the possible meld of sets that this hand can get
