@@ -31,9 +31,11 @@ public class AiStrategyFourTest extends TestCase {
 		aiPlayer4.hand.add(G5);
 		
 		testArrayList = new ArrayList<Tile>();
+		testArrayLists = new ArrayList<ArrayList<Tile>>();
 		testArrayList.add(B5);
 		testArrayList.add(G5);
-		assertEquals(testArrayList, aiPlayer4.hand.getSetsOfTwo());
+		testArrayLists.add(testArrayList);
+		assertEquals(testArrayLists, aiPlayer4.hand.getSetsOfTwo());
 		
 	}
 	
@@ -41,6 +43,7 @@ public class AiStrategyFourTest extends TestCase {
 	PlayerStrategy<? super AIPlayer> aiStrategyFour = new AIStrategyFour();
 	AIPlayer aiPlayer4 = new AIPlayer("AI4", game, aiStrategyFour);
 	ArrayList<Tile> testArrayList;
+	ArrayList<ArrayList<Tile>> testArrayLists;
 	
 	Tile B5 = new Tile('B',5);
 	Tile G5 = new Tile('G',5);
