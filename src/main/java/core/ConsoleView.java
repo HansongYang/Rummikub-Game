@@ -15,7 +15,6 @@ public class ConsoleView implements View{
 		System.out.println("\nPlayer " + player.name + "'s turn");
 	}
 
-	
     public void displayPlayerHand(Player player) {
         player.getHand().sortTilesByColour();
         player.getHand().printHand();
@@ -115,4 +114,8 @@ public class ConsoleView implements View{
             System.out.print(player.name + " ");
         }
     }
+
+	@Override
+	public void displayPlayerHand() {
+	}
 }

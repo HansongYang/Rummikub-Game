@@ -134,7 +134,4 @@ public class Model implements Observable {
     public void addObserver(Observer observer) {
         this.observers.add(observer);
     }
-    
-    
-    
 }

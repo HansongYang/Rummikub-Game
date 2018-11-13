@@ -13,7 +13,6 @@ public class Game  {
 
     public static void main(String[] arg) {
         Game game = new Game();
-        
         game.model.initGame();
         game.gameLoop();
         
@@ -28,7 +27,6 @@ public class Game  {
 
     public void gameLoop() {
        	view.printTurns();
-
         while(model.gameState == GameStates.PLAY) {
 			Iterator it = model.playerOrder.entrySet().iterator();
 
@@ -36,7 +34,7 @@ public class Game  {
 				Map.Entry pair = (Map.Entry) it.next();
 				Player player = (Player) pair.getKey();
 				view.indicateTurn(player);
-				view.displayPlayerHand(player);
+				view.displayPlayerHand();
 				if (player instanceof UserPlayer) userPlayerTurnLoop(model.userPlayer);
 				else player.playTurn();
 				view.displayBoard(model.getBoard());
@@ -45,7 +43,7 @@ public class Game  {
 			}
             
             if(model.getDeck().getDeckSize() == 0) {
-				        System.out.println("The deck is empty.");
+				System.out.println("The deck is empty.");
             	int value1 = Math.min(model.userPlayer.getHand().size(), model.aiPlayer1.getHand().size());
             	int value2 = Math.min(model.aiPlayer2.getHand().size(), model.aiPlayer3.getHand().size());
             	int minimum = Math.min(value1, value2);
@@ -66,7 +64,6 @@ public class Game  {
             }
             
             if (model.gameWinCheck()) view.displayWinner(model.gameWinner);
-
         }
     }
     
