@@ -2,31 +2,17 @@ package core;
 
 import java.util.ArrayList;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene; 
 import javafx.scene.paint.Color; 
 import javafx.stage.Stage;
-import javafx.scene.control.Button; 
-import javafx.scene.control.CheckBox; 
-import javafx.scene.control.ChoiceBox; 
-import javafx.scene.control.DatePicker; 
-import javafx.scene.control.ListView; 
-import javafx.scene.control.RadioButton; 
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.control.*; 
 import javafx.scene.text.Text; 
-import javafx.scene.control.TextField; 
-import javafx.scene.control.ToggleGroup;  
-import javafx.scene.control.ToggleButton;
 import javafx.geometry.*; 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.Label;
 import javafx.scene.input.*;
 import javafx.scene.shape.*;
 
@@ -43,8 +29,9 @@ public class mainWindow extends Application implements View{
 	private String name;
 	private Stage stage;
 	private int position = 2;
-	private int boardPositionX = 3;
+	private int boardPositionX = 2;
 	private int boardPositionY = 0;
+	private Button play, draw;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -132,21 +119,7 @@ public class mainWindow extends Application implements View{
 		displayPlayerHand();
     	displayHand(model.userPlayer.getHand());
     	
-    	Button play = new Button("Play Tiles"); 
-    	panel.add(play, 30, 700, 20, 20);
-    	play.setOnAction(new EventHandler<ActionEvent>() {
-             public void handle(ActionEvent event) {
-            	 play();
-             }
-        });
-    	
-    	Button draw = new Button("Draw Tiles"); 
-    	panel.add(draw, 50, 700, 20, 20);
-    	draw.setOnAction(new EventHandler<ActionEvent>() {
-             public void handle(ActionEvent event) {
-            	 displayDrawnTile(model.getDeck().drawTile());
-             }
-        });
+    	play();
     	
     	Button restart = new Button("Restart Game"); 
     	panel.add(restart, 70, 700, 20, 20);
@@ -159,18 +132,40 @@ public class mainWindow extends Application implements View{
 	}
 	
 	public void play() {
-		for(int i = 0; i < tiles.size(); i++) {
-			Label newTile = tiles.get(i);
-        	panel.getChildren().remove(tiles.get(i));
-			panel.add(newTile, ++boardPositionX, boardPositionY);
-		}
-		++boardPositionX;
-		if(boardPositionX >= 16) {
-			System.out.println(boardPositionX);
-			boardPositionY += 3;
-			boardPositionX = 3;
-		}
-		tiles.clear();
+    	play = new Button("Play Tiles"); 
+    	panel.add(play, 30, 700, 20, 20);
+    	play.setOnAction(new EventHandler<ActionEvent>() {
+             public void handle(ActionEvent event) {
+         		for(int i = 0; i < tiles.size(); i++) {
+        			Label newTile = tiles.get(i);
+                	panel.getChildren().remove(tiles.get(i));
+        			panel.add(newTile, ++boardPositionX, boardPositionY);
+        		}
+        		++boardPositionX;
+        		if(boardPositionX >= 16) {
+        			System.out.println(boardPositionX);
+        			boardPositionY += 3;
+        			boardPositionX = 3;
+        		}
+        		tiles.clear();
+        		panel.getChildren().remove(draw);
+        		Button pass = new Button("Pass");
+        		panel.add(pass, 50, 700, 20, 20);
+            	pass.setOnAction(new EventHandler<ActionEvent>() {
+                     public void handle(ActionEvent event) {
+                    	 indicateTurn(model.aiPlayer3);
+                     }
+                });
+             }
+        });
+    	
+    	draw = new Button("Draw Tiles"); 
+    	panel.add(draw, 50, 700, 20, 20);
+    	draw.setOnAction(new EventHandler<ActionEvent>() {
+             public void handle(ActionEvent event) {
+            	 displayDrawnTile(model.getDeck().drawTile());
+             }
+        });
 	}
 	
 	public static void main(String args[]){          
@@ -189,14 +184,15 @@ public class mainWindow extends Application implements View{
     	Label playername = new Label("");
     	
     	if(!playernumber.equals("Player 1")) {
-    		playername = new Label("Player 1");
+    		playername = new Label("Player 1  ");
     		panel.add(playername, 1,0);
     	}else {
-    		playername = new Label("Player 2");
+    		playername = new Label("Player 2  ");
     		panel.add(playername, 1,0);
     	}
     	
     	for(int i = 0; i < model.aiPlayer1.getHand().size(); i++) {
+    		model.aiPlayer1.getHand().sortTilesByColour();
 	    	Label tile = new Label("    " + Integer.toString(model.aiPlayer1.getHand().getTile(i).getRank()));
 	    	tile.setMinSize(40,50);
 	    	if(model.aiPlayer1.getHand().getTile(i).getColour() == 'G') {
@@ -226,6 +222,7 @@ public class mainWindow extends Application implements View{
     	}
     	
     	for(int i = 0; i < model.aiPlayer2.getHand().size(); i++) {
+    		model.aiPlayer2.getHand().sortTilesByColour();
 	    	Label tile = new Label("    " + Integer.toString(model.aiPlayer2.getHand().getTile(i).getRank()));
 	    	tile.setMinSize(40,50);
 	    	if(model.aiPlayer2.getHand().getTile(i).getColour() == 'G') {
@@ -253,9 +250,7 @@ public class mainWindow extends Application implements View{
     	}
     	
     	for(int i = 0; i < model.aiPlayer3.getHand().size(); i++) {
-    		if(model.aiPlayer3.getHand().getTile(i) == null) {
-    			break;
-    		}
+    		model.aiPlayer3.getHand().sortTilesByColour();
 	    	Label tile = new Label("    " + Integer.toString(model.aiPlayer3.getHand().getTile(i).getRank()));
 	    	tile.setMinSize(40,50);
 	    	if(model.aiPlayer3.getHand().getTile(i).getColour() == 'G') {
@@ -280,6 +275,7 @@ public class mainWindow extends Application implements View{
 		// TODO Auto-generated method stub
 		Label playername = new Label(playernumber +": "+ name);
     	panel.add(playername, 0,700, 700,700);
+    	hand.sortTilesByColour();
     	
 		for(int i = 0; i < 14; i++) {
 	    	Label tile = new Label("    " + Integer.toString(hand.getTile(i).getRank()));
