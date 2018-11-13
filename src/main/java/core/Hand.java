@@ -210,12 +210,27 @@ public class Hand {
 				}
 			}
 			
-			if (possibleRun.size() == 2) runsTwo.add(possibleRun);
+			if (possibleRun.size() == 2 && !helpRun2(possibleRun)) {
+				runsTwo.add(possibleRun);
+			}
 		}
 		
 		return runsTwo;
+	}
+	
+	// helper function for seeing getRunsOfTwo() to see if the run of 2 is actually part of a bigger run
+	public boolean helpRun2(ArrayList<Tile> possibleRun) {
 		
+		char targetColour = possibleRun.get(0).getColour();
+		int targetRank = possibleRun.get(0).getRank() - 1;
 		
+		for (Tile tile: this.getTiles()) {
+			if (tile.getRank() == 2) System.out.println(tile);
+			if (tile.getColour() == targetColour && tile.getRank() == targetRank) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	
