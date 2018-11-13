@@ -1,6 +1,5 @@
 package core;
 
-
 public class Tile implements Comparable<Tile> {
 	private char colour;
 	private int rank;

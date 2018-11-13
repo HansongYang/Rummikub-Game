@@ -10,7 +10,6 @@ public class AIPlayer extends Player{
 	public int red = 0;
 	public int orange = 0;
 	public int green = 0;
-	ArrayList<Tile> setsOfTwo;
 	
 	PlayerStrategy<? super AIPlayer> strategy;
 	

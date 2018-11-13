@@ -161,6 +161,7 @@ public class Hand {
 		// However, since [B2, G2] and [G2, B2] are the same thing, setsTwo is converted to a set and then back to an ArrayList
 		// to erase duplicates
 		
+		Collections.sort(this.hands);
 		
 		for (Tile currentTile: this.getTiles()) {
 			ArrayList<Tile> possibleSet = new ArrayList<Tile>();
@@ -188,6 +189,35 @@ public class Hand {
 		
 		return setsTwo;
 	}
+	
+	public ArrayList<ArrayList<Tile>> getRunsOfTwo(){
+		
+		ArrayList<ArrayList<Tile>> runsTwo = new ArrayList<ArrayList<Tile>>();
+		
+		char initialColour;
+		
+		Collections.sort(this.hands);
+		for (Tile currentTile: this.getTiles()) {
+			ArrayList<Tile> possibleRun = new ArrayList<Tile>();
+			possibleRun.add(currentTile);
+			initialColour = currentTile.getColour();
+			
+			int currentNum = currentTile.getRank();
+			for (Tile possibleTile: this.getTiles()) {
+				if (possibleTile.getColour() == initialColour && (possibleTile.getRank() == currentNum + 1)) {
+					possibleRun.add(possibleTile);
+					currentNum = possibleTile.getRank();
+				}
+			}
+			
+			if (possibleRun.size() == 2) runsTwo.add(possibleRun);
+		}
+		
+		return runsTwo;
+		
+		
+	}
+	
 	
 	//Find all of the possible meld of sets that this hand can get
 	public ArrayList<Meld> getMeldSets() {
