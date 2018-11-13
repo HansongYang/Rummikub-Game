@@ -1,5 +1,8 @@
 package core;
 
+import java.util.Iterator;
+import java.util.Map;
+
 public class ConsoleView implements View{
 
 	public Model model; 
@@ -100,5 +103,16 @@ public class ConsoleView implements View{
     
     public void displayTileSelection() {
     	System.out.println("Enter the index of the Tile you want to select. (-1) to stop selecting");
+    }
+
+    public void printTurns() {
+        Iterator it = model.playerOrder.entrySet().iterator();
+        System.out.print("Turn Order: ");
+
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            Player player = (Player)pair.getKey();
+            System.out.print(player.name + " ");
+        }
     }
 }

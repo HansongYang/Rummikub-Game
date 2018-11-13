@@ -27,44 +27,22 @@ public class Game  {
     }
 
     public void gameLoop() {
-        
-       int currentPlayerCheck = 0;
+       	view.printTurns();
 
         while(model.gameState == GameStates.PLAY) {
-            
-          if (currentPlayerCheck > 3) currentPlayerCheck = 0;
+			Iterator it = model.playerOrder.entrySet().iterator();
 
-           if (currentPlayerCheck == 0) {
-            	view.indicateTurn(model.userPlayer);
-            	view.displayPlayerHand(model.userPlayer);
-            	
-                //model.userPlayer.playTurn();
-                userPlayerTurnLoop(model.userPlayer);
-                
-                if(model.gameState == GameStates.END) {
-                	break;
-                }
-                view.displayBoard(model.getBoard());
-                
-                model.messageObservers();
-            } else if (currentPlayerCheck == 1) {
-            	view.indicateTurn(model.aiPlayer1);
-            	view.displayPlayerHand(model.aiPlayer1);           
-                model.aiPlayer1.playTurn();
-                view.displayBoard(model.getBoard());
-                model.messageObservers();
-            } else if (currentPlayerCheck == 2) {
-            	view.indicateTurn(model.aiPlayer2);
-            	view.displayPlayerHand(model.aiPlayer2); 
-            	model.aiPlayer2.playTurn();
-            	view.displayBoard(model.getBoard());
-            	model.messageObservers();
-            } else if (currentPlayerCheck == 3) {
-            	view.indicateTurn(model.aiPlayer3);
-            	view.displayPlayerHand(model.aiPlayer3); 
-                model.aiPlayer3.playTurn();
-                view.displayBoard(model.getBoard());
-            }
+			while (it.hasNext()) {
+				Map.Entry pair = (Map.Entry) it.next();
+				Player player = (Player) pair.getKey();
+				view.indicateTurn(player);
+				view.displayPlayerHand(player);
+				if (player instanceof UserPlayer) userPlayerTurnLoop(model.userPlayer);
+				else player.playTurn();
+				view.displayBoard(model.getBoard());
+				model.messageObservers();
+				if (model.gameState == GameStates.END) break;
+			}
             
             if(model.getDeck().getDeckSize() == 0) {
 				        System.out.println("The deck is empty.");
@@ -87,7 +65,6 @@ public class Game  {
             	model.gameState = GameStates.END;
             }
             
-            currentPlayerCheck++;
             if (model.gameWinCheck()) view.displayWinner(model.gameWinner);
 
         }
@@ -371,41 +348,5 @@ public class Game  {
 			}
 		}
 	}
-
-
-
-    public void settleTurns() {
-        Deck turnDeck = new Deck();
-
-        for (int i = 0; i < this.players.size(); i++) {
-            Tile tile = turnDeck.drawTile();
-            this.playerOrder.put(this.players.get(i), tile.getRank());
-        }
-
-        // Credit: https://www.mkyong.com/java/how-to-sort-a-map-in-java/
-        List<Map.Entry<Player, Integer>> list = new LinkedList<Map.Entry<Player, Integer>>(this.playerOrder.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<Player, Integer>>() {
-            public int compare(Map.Entry<Player, Integer> o1, Map.Entry<Player, Integer> o2) {
-                return (o2.getValue()).compareTo(o1.getValue());
-            }
-        });
-        Map<Player, Integer> sortedPlayerOrder = new LinkedHashMap<Player, Integer>();
-        for (Map.Entry<Player, Integer> entry : list) {
-            sortedPlayerOrder.put(entry.getKey(), entry.getValue());
-        }
-
-        this.playerOrder = sortedPlayerOrder;
-    }
-
-    public void printTurns() {
-        Iterator it = this.playerOrder.entrySet().iterator();
-        System.out.print("Turn Order: ");
-
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            Player player = (Player)pair.getKey();
-            System.out.print(player.name + " ");
-        }
-    }
 
 }

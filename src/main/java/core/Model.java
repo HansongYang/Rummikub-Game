@@ -1,15 +1,16 @@
 package core;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 
 public class Model implements Observable {
 		
 	public ArrayList<Observer> observers;
 	public HashMap<String, Integer> playerHandCount;  
+    public Map<Player, Integer> playerOrder = new LinkedHashMap<Player, Integer>();
+    private ArrayList<Player> players = new ArrayList<Player>();
 	private Deck deck = new Deck();
-	private Board board = new Board();   
+	private Board board = new Board();
 
 	
 	public enum GameStates { PLAY, END }
@@ -29,6 +30,7 @@ public class Model implements Observable {
         deck.dealTiles(aiPlayer1);
         deck.dealTiles(aiPlayer2);
         deck.dealTiles(aiPlayer3);
+        settleTurns();
         gameState = GameStates.PLAY;
     }
     
@@ -44,6 +46,10 @@ public class Model implements Observable {
         aiPlayer1 = new AIPlayer("AI1", this, aiStrategyOne);
         aiPlayer2 = new AIPlayer("AI2", this, aiStrategyTwo);
         aiPlayer3 = new AIPlayer("AI3", this, aiStrategyThree);
+        this.players.add(userPlayer);
+        this.players.add(aiPlayer1);
+        this.players.add(aiPlayer2);
+        this.players.add(aiPlayer3);
         this.addObserver(userPlayer);
         this.addObserver(aiPlayer1);
         this.addObserver(aiPlayer2);
@@ -96,6 +102,29 @@ public class Model implements Observable {
         for (Observer o: observers) {
             o.update(playerHandCount);
         }
+    }
+
+    public void settleTurns() {
+        Deck turnDeck = new Deck();
+
+        for (int i = 0; i < this.players.size(); i++) {
+            Tile tile = turnDeck.drawTile();
+            this.playerOrder.put(this.players.get(i), tile.getRank());
+        }
+
+        // Credit: https://www.mkyong.com/java/how-to-sort-a-map-in-java/
+        List<Map.Entry<Player, Integer>> list = new LinkedList<Map.Entry<Player, Integer>>(this.playerOrder.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Player, Integer>>() {
+            public int compare(Map.Entry<Player, Integer> o1, Map.Entry<Player, Integer> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+        Map<Player, Integer> sortedPlayerOrder = new LinkedHashMap<Player, Integer>();
+        for (Map.Entry<Player, Integer> entry : list) {
+            sortedPlayerOrder.put(entry.getKey(), entry.getValue());
+        }
+
+        this.playerOrder = sortedPlayerOrder;
     }
 
     public void removeObserver(Observer observer) {

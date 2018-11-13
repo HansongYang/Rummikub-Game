@@ -40,7 +40,7 @@ public class GameTest extends TestCase {
     }
 
     public void testGameWinCheck() {
-        Game game = new Game();
+        Model game = new Model();
         game.createGamePlayers();
         game.getDeck().dealTiles(game.aiPlayer1);
         game.getDeck().dealTiles(game.aiPlayer2);

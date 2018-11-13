@@ -15,13 +15,13 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 			// If Strategy4 is unable to play 30 points, draw a card
 			// If Strategy 4 is able to play 30, play the 30
 			if(initial.size() == 0) {
-				Tile newTile = player.game.getDeck().drawTile();
+				Tile newTile = player.model.getDeck().drawTile();
 				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}
 			else {
 				player.initial30Played = true;
-				player.playMelds(player.game.getBoard(), initial);
+				player.playMelds(player.model.getBoard(), initial);
 			}		
 		}
 		
@@ -34,7 +34,7 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 	
 	public void getBoardTileColours(AIPlayer player) {
 		
-		for (Meld meld: player.game.getBoard().currentMelds) {
+		for (Meld meld: player.model.getBoard().currentMelds) {
 			for (Tile tile: meld.getTiles()) {
 				if (tile.getColour() == 'R') player.red++;
 				else if (tile.getColour() == 'B') player.blue++;

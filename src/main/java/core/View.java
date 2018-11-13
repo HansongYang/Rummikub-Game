@@ -25,4 +25,5 @@ public interface View {
     public void displayTileInSelectedMeldSelection();   
     public void displayTileToMeldPositionSelection();    
     public void displayTileSelection();
+    public void printTurns();
 }
