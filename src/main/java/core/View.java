@@ -3,7 +3,7 @@ package core;
 public interface View {
 
 	public void indicateTurn(Player player);
-    public void displayPlayerHand(Player player);  
+    public void displayPlayerHand();  
     public void displayHand(Hand hand);  
     public void displayBoard(Board board);
     public void displayMeld(Meld meld);
