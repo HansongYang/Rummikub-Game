@@ -50,6 +50,10 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 					}
 					else {
 						// This means Strategy4 can do its strategy
+						System.out.println("Strategy4 can do its strategy!");
+						System.out.println(remainingTiles);
+						
+						
 						
 					}
 				}
