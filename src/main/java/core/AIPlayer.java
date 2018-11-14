@@ -114,5 +114,7 @@ public class AIPlayer extends Player{
 
 		return tilesPlayed;
 	}
+	
+	
 
 }

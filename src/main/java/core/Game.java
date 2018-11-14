@@ -17,6 +17,7 @@ public class Game implements Observable{
     public AIPlayer aiPlayer1;
     public AIPlayer aiPlayer2;
     public AIPlayer aiPlayer3;
+    public AIPlayer aiPlayer4;
     public UserPlayer userPlayer;
 
     public static void main(String[] arg) {

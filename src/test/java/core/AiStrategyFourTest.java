@@ -2,6 +2,7 @@ package core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import junit.framework.TestCase;
 
@@ -119,9 +120,79 @@ public class AiStrategyFourTest extends TestCase {
 		assertEquals(testArrayLists, aiPlayer4.hand.getRunsOfTwo());
 	}
 	
+	public void testActualStrategy() {
+		
+		Game game = new Game();
+		game.observers = new ArrayList<Observer>();
+		game.playerHandCount = new HashMap<String, Integer>();
+		game.aiPlayer1 = aiPlayer1;
+		game.aiPlayer2 = aiPlayer2;
+		game.aiPlayer3 = aiPlayer3;
+		game.aiPlayer4 = aiPlayer4;
+		game.userPlayer = userPlayer;
+		game.addObserver(aiPlayer1);
+	    game.addObserver(aiPlayer2);
+	    game.addObserver(aiPlayer3);
+	    game.addObserver(userPlayer);
+	    game.addObserver(aiPlayer4);
+		
+		aiPlayer4.initial30Played = true;
+		
+		ArrayList<Tile> testArray = new ArrayList<Tile>();
+		ArrayList<ArrayList<Tile>> fakeBoard = new ArrayList<ArrayList<Tile>>();
+		
+		Meld meld = new Meld();
+		meld.add(B5);
+		meld.add(G5);
+		meld.add(O5);
+		
+		game.getBoard().addMeld(meld);
+		
+		aiPlayer4.hand.add(G3);
+		aiPlayer4.hand.add(O5);
+		aiPlayer4.hand.add(G4);
+		aiPlayer4.hand.add(B4);
+		aiPlayer4.hand.add(B5);
+		
+		Collections.sort(aiPlayer4.hand.getTiles());
+		
+		game.messageObservers();
+		System.out.println(userPlayer.hand.size());
+		System.out.println(aiPlayer1.hand.size());
+		System.out.println(aiPlayer2.hand.size());
+		System.out.println(aiPlayer3.hand.size());
+		System.out.println(aiPlayer4.hand.size());
+		
+		
+		
+		Meld testMeld = new Meld();
+		testMeld.add(B5);
+		testMeld.add(G5);
+		testMeld.add(O5);
+		System.out.println(game.getBoard().currentMelds.get(0).getTiles());
+		
+		
+		aiPlayer4.strategy.executeStrategy(aiPlayer4);
+		
+		assertEquals(game.getBoard().currentMelds.get(0).getTiles(), testMeld.getTiles());
+		
+	}
+	
 	Game game = new Game();
 	PlayerStrategy<? super AIPlayer> aiStrategyFour = new AIStrategyFour();
 	AIPlayer aiPlayer4 = new AIPlayer("AI4", game, aiStrategyFour);
+	
+	PlayerStrategy<? super AIPlayer> aiStrategyThree = new AIStrategyThree();
+	PlayerStrategy<? super AIPlayer> aiStrategyTwo = new AIStrategyTwo();
+	PlayerStrategy<? super AIPlayer> aiStrategyOne = new AIStrategyOne();
+	PlayerStrategy<? super UserPlayer> userPlayerStrategy = new UserStrategy();
+	
+	AIPlayer aiPlayer3 = new AIPlayer("AI3", game, aiStrategyThree);
+	AIPlayer aiPlayer2 = new AIPlayer("AI2", game, aiStrategyTwo);
+	AIPlayer aiPlayer1 = new AIPlayer("AI1", game, aiStrategyOne);
+	UserPlayer userPlayer = new UserPlayer("User",game, userPlayerStrategy);
+	
+	
 	ArrayList<Tile> testArrayList;
 	ArrayList<ArrayList<Tile>> testArrayLists;
 	
