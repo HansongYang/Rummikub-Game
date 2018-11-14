@@ -172,6 +172,47 @@ public class AiStrategyFourTest extends TestCase {
 		
 	}
 	
+	public void testFindMissingTiles() {
+		Game game = new Game();
+		
+		aiPlayer4.hand.add(G3);
+		aiPlayer4.hand.add(O5);
+		aiPlayer4.hand.add(G4);
+		aiPlayer4.hand.add(B4);
+		aiPlayer4.hand.add(B5);
+		aiPlayer4.hand.add(R5);
+		
+		Collections.sort(aiPlayer4.hand.getTiles());
+		
+		Meld assertMeld = new Meld();
+		assertMeld.add(B3);
+		assertMeld.add(R3);
+		assertMeld.add(O3);
+		assertMeld.add(G3);
+		
+		Meld testMeld = new Meld();
+		testMeld.add(B5);
+		testMeld.add(G5);
+		testMeld.add(O5);
+		
+		Meld notherMeld = new Meld();
+		notherMeld.add(G2);
+		
+		Meld thirdMeld = new Meld();
+		thirdMeld.add(B3);
+		thirdMeld.add(R3);
+		thirdMeld.add(O3);
+		
+		game.getBoard().addMeld(testMeld);
+		game.getBoard().addMeld(notherMeld);
+		game.getBoard().addMeld(thirdMeld);
+		
+		aiPlayer4.strategy.executeStrategy(aiPlayer4);
+		
+		assertEquals(game.getBoard().currentMelds.get(2).getTiles(), assertMeld.getTiles());	
+		
+	}
+	
 	Game game = new Game();
 	PlayerStrategy<? super AIPlayer> aiStrategyFour = new AIStrategyFour();
 	AIPlayer aiPlayer4 = new AIPlayer("AI4", game, aiStrategyFour);
@@ -198,5 +239,9 @@ public class AiStrategyFourTest extends TestCase {
 	Tile G2 = new Tile('G',2);
 	Tile G3 = new Tile('G',3);
 	Tile G4 = new Tile('G',4);
+	
+	Tile B3 = new Tile('B',3);
+	Tile O3 = new Tile('O',3);
+	Tile R3 = new Tile('R',3);
 
 }

@@ -54,8 +54,11 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 						System.out.println("REMAINING TILES: " + remainingTiles);
 						ArrayList<ArrayList<Tile>> setsOfTwo = player.hand.getSetsOfTwo(remainingTiles);
 						ArrayList<ArrayList<Tile>> runsOfTwo = player.hand.getRunsOfTwo(remainingTiles);
-						System.out.println(setsOfTwo);
-						System.out.println(runsOfTwo);
+						
+						for (ArrayList<Tile> setOfTwo : setsOfTwo) {
+							
+						}
+						
 						
 						
 						
