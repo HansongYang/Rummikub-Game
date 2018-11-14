@@ -174,21 +174,37 @@ public class AiStrategyFourTest extends TestCase {
 	
 	public void testFindMissingTiles() {
 		Game game = new Game();
+		game.observers = new ArrayList<Observer>();
+		game.playerHandCount = new HashMap<String, Integer>();
+		game.aiPlayer1 = aiPlayer1;
+		game.aiPlayer2 = aiPlayer2;
+		game.aiPlayer3 = aiPlayer3;
+		game.aiPlayer4 = aiPlayer4;
+		game.userPlayer = userPlayer;
+		game.addObserver(aiPlayer1);
+	    game.addObserver(aiPlayer2);
+	    game.addObserver(aiPlayer3);
+	    game.addObserver(userPlayer);
+	    game.addObserver(aiPlayer4);
 		
 		aiPlayer4.hand.add(G3);
-		aiPlayer4.hand.add(O5);
+//		aiPlayer4.hand.add(O5);
 		aiPlayer4.hand.add(G4);
-		aiPlayer4.hand.add(B4);
-		aiPlayer4.hand.add(B5);
-		aiPlayer4.hand.add(R5);
+//		aiPlayer4.hand.add(B4);
+//		aiPlayer4.hand.add(B5);
+//		aiPlayer4.hand.add(R5);
+		
+		aiPlayer4.initial30Played = true;
+		
+		game.messageObservers();
 		
 		Collections.sort(aiPlayer4.hand.getTiles());
 		
 		Meld assertMeld = new Meld();
+		assertMeld.add(G3);
 		assertMeld.add(B3);
 		assertMeld.add(R3);
 		assertMeld.add(O3);
-		assertMeld.add(G3);
 		
 		Meld testMeld = new Meld();
 		testMeld.add(B5);
@@ -203,13 +219,13 @@ public class AiStrategyFourTest extends TestCase {
 		thirdMeld.add(R3);
 		thirdMeld.add(O3);
 		
-		game.getBoard().addMeld(testMeld);
-		game.getBoard().addMeld(notherMeld);
-		game.getBoard().addMeld(thirdMeld);
+		aiPlayer4.game.getBoard().addMeld(testMeld);
+		aiPlayer4.game.getBoard().addMeld(notherMeld);
+		aiPlayer4.game.getBoard().addMeld(thirdMeld);
 		
 		aiPlayer4.strategy.executeStrategy(aiPlayer4);
 		
-		assertEquals(game.getBoard().currentMelds.get(2).getTiles(), assertMeld.getTiles());	
+		assertEquals(assertMeld.getTiles(), aiPlayer4.game.getBoard().currentMelds.get(2).getTiles());	
 		
 	}
 	
@@ -226,8 +242,7 @@ public class AiStrategyFourTest extends TestCase {
 	AIPlayer aiPlayer2 = new AIPlayer("AI2", game, aiStrategyTwo);
 	AIPlayer aiPlayer1 = new AIPlayer("AI1", game, aiStrategyOne);
 	UserPlayer userPlayer = new UserPlayer("User",game, userPlayerStrategy);
-	
-	
+
 	ArrayList<Tile> testArrayList;
 	ArrayList<ArrayList<Tile>> testArrayLists;
 	

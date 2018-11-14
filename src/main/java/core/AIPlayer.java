@@ -115,6 +115,46 @@ public class AIPlayer extends Player{
 		return tilesPlayed;
 	}
 	
+	public int strategyFourPlayWithTableTiles(ArrayList<Tile> remainingTiles) {
+	
+		int tilesPlayed = 0;
+		
+		if (remainingTiles.get(0).getRank() == remainingTiles.get(1).getRank()) {
+			//this means it's a set
+		}
+		else {
+			//this means it's a run
+			int oneRankLower = remainingTiles.get(0).getRank() - 1;
+			int oneRankHigher = remainingTiles.get(1).getRank() + 1;
+			char sameColour = remainingTiles.get(0).getColour();
+			boolean boolOneRankLower = false;
+			boolean boolOneRankHigher = false;
+			
+			for (Meld meld: game.getBoard().currentMelds) {
+				for (Tile tile: meld.getTiles()) {
+					if (tile.getRank() == oneRankLower) boolOneRankLower = true;
+					if (tile.getRank() == oneRankHigher) boolOneRankHigher = true;
+				}
+			}
+			
+			if (boolOneRankHigher && boolOneRankLower) {
+				//both sides of the run are already on the board
+				for (int i = 0 ; i < game.getBoard().currentMelds.size(); i++) {
+					ArrayList<Tile> tempMeld = new ArrayList<Tile>(game.getBoard().currentMelds.get(i).getTiles());
+					tempMeld.add(0, remainingTiles.get(0));
+					if (meldValidatorService.isValidMeld(tempMeld)) {
+						Meld newMeld = new Meld();
+						newMeld.add(remainingTiles.get(0));
+						game.getBoard().addTileToMeldBeginning(i, newMeld);
+					}
+				}
+			}
+			
+		}
+		
+		return tilesPlayed;
+	}
+	
 	
 
 }

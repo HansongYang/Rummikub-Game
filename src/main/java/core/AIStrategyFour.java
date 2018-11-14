@@ -37,27 +37,44 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 					ArrayList<Tile> remainingTiles = player.hand.getRemainingTiles(meldsToPlay);
 					
 					if(!otherPlayerHas3FewerTiles(player)) {
+						
+						System.out.println("Strategy4 can do its strategy with remaining tiles!");
+						
 						int tilesPlayed = 0;
-//						int tilesPlayed = player.playWithTableTiles(remainingTiles);
-						if(tilesPlayed == 0) {
-							if(player.game.getDeck().getDeckSize() == 0) {
-								return;
-							}
-							Tile newTile = player.game.getDeck().drawTile();
-							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
-							player.hand.add(newTile);
-						}
-					}
-					else {
-						// This means Strategy4 can do its strategy
-						System.out.println("Strategy4 can do its strategy!");
-						System.out.println("REMAINING TILES: " + remainingTiles);
+						
 						ArrayList<ArrayList<Tile>> setsOfTwo = player.hand.getSetsOfTwo(remainingTiles);
 						ArrayList<ArrayList<Tile>> runsOfTwo = player.hand.getRunsOfTwo(remainingTiles);
 						
-						for (ArrayList<Tile> setOfTwo : setsOfTwo) {
-							
+						if (!setsOfTwo.isEmpty()) { 
+							tilesPlayed = player.strategyFourPlayWithTableTiles(setsOfTwo.get(0));
+						} else if (!runsOfTwo.isEmpty()) {
+							tilesPlayed = player.strategyFourPlayWithTableTiles(runsOfTwo.get(0));
 						}
+						else {
+							tilesPlayed = player.playWithTableTiles(remainingTiles);
+							if(tilesPlayed == 0) {
+								if(player.game.getDeck().getDeckSize() == 0) {
+									return;
+								}
+								Tile newTile = player.game.getDeck().drawTile();
+								System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
+								player.hand.add(newTile);
+							}
+						}
+						
+						
+//						if(tilesPlayed == 0) {
+//							if(player.game.getDeck().getDeckSize() == 0) {
+//								return;
+//							}
+//							Tile newTile = player.game.getDeck().drawTile();
+//							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
+//							player.hand.add(newTile);
+//						}
+					}
+					else {
+						// This means Strategy4 can do its strategy
+						System.out.println("Player has 3 tiles fewer than S4");
 						
 						
 						
@@ -66,12 +83,6 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 						
 					}
 				}
-			
-			
-			
-			
-			
-			
 
 			}
 		}
