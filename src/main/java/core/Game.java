@@ -20,7 +20,7 @@ public class Game  {
     
     public Game() {
     	model = new Model();
-    	view = new ConsoleView(model);
+    	view = new JavaFxView(model);
     	controller = new ConsoleController(view,model);
 
     }

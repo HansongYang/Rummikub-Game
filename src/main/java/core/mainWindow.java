@@ -172,13 +172,13 @@ public class mainWindow extends Application implements View{
 	   launch(args);     
 	}
 
-	@Override
+
 	public void indicateTurn(Player player) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void displayPlayerHand() {
 		// TODO Auto-generated method stub
     	Label playername = new Label("");
@@ -270,7 +270,7 @@ public class mainWindow extends Application implements View{
     	}
 	}
 
-	@Override
+
 	public void displayHand(Hand hand) {
 		// TODO Auto-generated method stub
 		Label playername = new Label(playernumber +": "+ name);
@@ -278,7 +278,7 @@ public class mainWindow extends Application implements View{
     	hand.sortTilesByColour();
     	
 		for(int i = 0; i < 14; i++) {
-	    	Label tile = new Label("    " + Integer.toString(hand.getTile(i).getRank()));
+	    	final Label tile = new Label("    " + Integer.toString(hand.getTile(i).getRank()));
 	    	tile.setMinSize(40,50);
 	    	if(hand.getTile(i).getColour() == 'G') {
 	    		tile.setTextFill(Color.GREEN);
@@ -294,7 +294,7 @@ public class mainWindow extends Application implements View{
 	    	tile.setStyle("-fx-border-color: BLACK;");
 	    	
 	    	tile.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	            @Override
+
 	            public void handle(MouseEvent e) {
 	                if(panel.getRowIndex(tile) == 600) {
 	                	Label newTile = tile;
@@ -317,58 +317,58 @@ public class mainWindow extends Application implements View{
     	}
 	}
 
-	@Override
+
 	public void displayBoard(Board board) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void displayMeld(Meld meld) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void displayWinner(Player player) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void displayFinalTileCounts() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void displayTurnOptions_Pass() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void displayTurnOptions() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void indicateWrongInput() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void indicateUserEndsGame(Player player) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void displayDrawnTile(Tile tile) {
+
+	public void displayDrawnTile(final Tile tile) {
 		// TODO Auto-generated method stub
-    	Label t = new Label("    " + Integer.toString(tile.getRank()));
+    	final Label t = new Label("    " + Integer.toString(tile.getRank()));
     	t.setMinSize(40,50);
     	if(tile.getColour() == 'G') {
     		t.setTextFill(Color.GREEN);
@@ -384,7 +384,7 @@ public class mainWindow extends Application implements View{
     	t.setStyle("-fx-border-color: BLACK;");
     	
     	t.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
+           
             public void handle(MouseEvent e) {
                 if(panel.getRowIndex(t) == 600) {
                 	Label newTile = t;
@@ -407,73 +407,73 @@ public class mainWindow extends Application implements View{
     	position++;
 	}
 
-	@Override
+	
 	public void displayCreateAnotherMeldOption() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void indicateAvailableTiles() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void indicateMeldsLessThan30() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void indicateNoTileOnBoard() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void displayTileToExistingMeldOptions() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void displayTileToMeldSelection() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void displayMeldSelection() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void indicateInvalidMeld() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void displayTileInSelectedMeldSelection() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void displayTileToMeldPositionSelection() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void displayTileSelection() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void printTurns() {
 		// TODO Auto-generated method stub
 		
