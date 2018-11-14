@@ -127,13 +127,24 @@ public class AIPlayer extends Player{
 			int oneRankLower = remainingTiles.get(0).getRank() - 1;
 			int oneRankHigher = remainingTiles.get(1).getRank() + 1;
 			char sameColour = remainingTiles.get(0).getColour();
+			
+			// use these counters for probabilities of finishing run
+			int oneRankLowerCounter = 0;
+			int oneRankHigherCounter = 0;
+			
 			boolean boolOneRankLower = false;
 			boolean boolOneRankHigher = false;
 			
 			for (Meld meld: game.getBoard().currentMelds) {
 				for (Tile tile: meld.getTiles()) {
-					if (tile.getRank() == oneRankLower) boolOneRankLower = true;
-					if (tile.getRank() == oneRankHigher) boolOneRankHigher = true;
+					if (tile.getRank() == oneRankLower) {
+						boolOneRankLower = true;
+						oneRankLowerCounter++;
+					}
+					if (tile.getRank() == oneRankHigher) {
+						boolOneRankHigher = true;
+						oneRankHigherCounter++;
+					}
 				}
 			}
 			
@@ -146,7 +157,21 @@ public class AIPlayer extends Player{
 						Meld newMeld = new Meld();
 						newMeld.add(remainingTiles.get(0));
 						game.getBoard().addTileToMeldBeginning(i, newMeld);
+						hand.remove(remainingTiles.get(0));
+						tilesPlayed++;
+					} else {
+						// if it doesn't fit at the front, remove from the front and add to the back
+						tempMeld.remove(0);
+						tempMeld.add(remainingTiles.get(0));
+						if (meldValidatorService.isValidMeld(tempMeld)) {
+							Meld newMeld = new Meld();
+							newMeld.add(remainingTiles.get(0));
+							game.getBoard().addTileToMeldEnd(i, newMeld);
+							hand.remove(remainingTiles.get(0));
+							tilesPlayed++;
+						}
 					}
+					
 				}
 			}
 			
