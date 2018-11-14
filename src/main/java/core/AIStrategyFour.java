@@ -51,7 +51,13 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 					else {
 						// This means Strategy4 can do its strategy
 						System.out.println("Strategy4 can do its strategy!");
-						System.out.println(remainingTiles);
+						System.out.println("REMAINING TILES: " + remainingTiles);
+						ArrayList<ArrayList<Tile>> setsOfTwo = player.hand.getSetsOfTwo(remainingTiles);
+						ArrayList<ArrayList<Tile>> runsOfTwo = player.hand.getRunsOfTwo(remainingTiles);
+						System.out.println(setsOfTwo);
+						System.out.println(runsOfTwo);
+						
+						
 						
 						
 						
@@ -63,8 +69,7 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 			
 			
 			
-//			ArrayList<ArrayList<Tile>> setsOfTwo = player.hand.getSetsOfTwo();
-//			ArrayList<ArrayList<Tile>> runsOfTwo = player.hand.getRunsOfTwo();
+
 			}
 		}
 		
