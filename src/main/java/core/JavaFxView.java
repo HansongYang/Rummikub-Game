@@ -10,8 +10,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 
-public class JavaFxView extends Application implements View{
+public class JavaFxView extends Application implements View , Runnable{
 
+	private Thread t;
 	public Model model; 
 	public Scene scene;
 	public Stage stage;
@@ -19,11 +20,15 @@ public class JavaFxView extends Application implements View{
 	
 	public JavaFxView(Model model) {
 		this.model = model;
-		launch();
 	}
 	
 	public JavaFxView() {
 
+	}
+	
+	public void run() {
+		System.out.println("Running javafxthread");
+		launch();
 	}
 	
 	
@@ -43,7 +48,6 @@ public class JavaFxView extends Application implements View{
 
 	public void indicateTurn(Player player) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public void displayPlayerHand() {
@@ -167,5 +171,6 @@ public class JavaFxView extends Application implements View{
         }
 		
 	}
+	
 
 }

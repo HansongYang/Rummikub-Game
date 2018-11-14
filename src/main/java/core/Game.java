@@ -5,25 +5,37 @@ import java.util.*;
 import core.Model.GameStates;
 
 
-public class Game  {
+public class Game implements Runnable {
     
     public Model model;
     public View view;
     public Controller controller;
 
     public static void main(String[] arg) {
-        Game game = new Game();
-        game.model.initGame();
-        game.gameLoop();
-        
+    		 	
+    	Game game = new Game(); 	  	
+    	Thread gameThread = new Thread(game);
+    	gameThread.start();
+    	       
     }
     
     public Game() {
+		
     	model = new Model();
-    	view = new JavaFxView(model);
+    	
+    	view = new JavaFxView(model);	
+    	Thread viewThread = new Thread((Runnable) view);
+    	viewThread.start();
+    	
     	controller = new ConsoleController(view,model);
 
     }
+    
+	public void run() {
+		System.out.println("Running GameThread");
+    	this.model.initGame();
+	    this.gameLoop();
+	}
 
     public void gameLoop() {
        	view.printTurns();
@@ -345,5 +357,6 @@ public class Game  {
 			}
 		}
 	}
+
 
 }
