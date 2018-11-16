@@ -1,6 +1,8 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Map;
+
 import javafx.application.Application;
 import javafx.scene.layout.*;
 import javafx.scene.Group;
@@ -17,7 +19,7 @@ import javafx.scene.input.*;
 import javafx.scene.shape.*;
 
 
-public class mainWindow extends Application implements View{
+public class mainWindow extends Application {
 	public Model model;
 	private Scene scene;
 	private String playernumber;
@@ -116,7 +118,7 @@ public class mainWindow extends Application implements View{
 	public void game() {
 		model = new Model();
 		model.initGame();
-		displayPlayerHand();
+		displayPlayerHands();
     	displayHand(model.userPlayer.getHand());
     	
     	play();
@@ -179,7 +181,7 @@ public class mainWindow extends Application implements View{
 	}
 
 
-	public void displayPlayerHand() {
+	public void displayPlayerHands() {
 		// TODO Auto-generated method stub
     	Label playername = new Label("");
     	
@@ -475,6 +477,21 @@ public class mainWindow extends Application implements View{
 
 	
 	public void printTurns() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void displayInitialScreen() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void printTurns(Map<Player, Integer> order) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void displayPlayerHand(Player player, int num) {
 		// TODO Auto-generated method stub
 		
 	} 

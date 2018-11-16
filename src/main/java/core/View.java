@@ -1,9 +1,12 @@
 package core;
 
+import java.util.Map;
+
 public interface View {
 
 	public void indicateTurn(Player player);
-    public void displayPlayerHand();  
+    public void displayPlayerHands();  
+    public void displayPlayerHand(Player player, int playerNum);  
     public void displayHand(Hand hand);  
     public void displayBoard(Board board);
     public void displayMeld(Meld meld);
@@ -25,5 +28,6 @@ public interface View {
     public void displayTileInSelectedMeldSelection();   
     public void displayTileToMeldPositionSelection();    
     public void displayTileSelection();
-    public void printTurns();
+    public void printTurns(Map<Player, Integer> order);
+    public void displayInitialScreen();
 }
