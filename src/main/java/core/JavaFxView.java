@@ -1,58 +1,104 @@
 package core;
 
-import javafx.stage.Stage;
-
+import java.util.ArrayList;
 import java.util.Iterator;
+
 import java.util.Map;
 
-import javafx.application.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
-public class JavaFxView extends Application implements View , Runnable{
+public class JavaFxView implements View {
 
-	private Thread t;
-	public Model model; 
-	public Scene scene;
-	public Stage stage;
+	public Controller controller; 
+	public Model model;
 	public GridPane panel;
+	public ArrayList<Tile> selectedTiles;
 	
-	public JavaFxView(Model model) {
+	
+	public JavaFxView(Model model, Controller controller, GridPane panel) {
 		this.model = model;
+		this.controller = controller;
+		this.panel = panel;
+		this.selectedTiles = new ArrayList<Tile>();
+		
 	}
 	
 	public JavaFxView() {
 
 	}
 	
-	public void run() {
-		System.out.println("Running javafxthread");
-		launch();
-	}
-	
-	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		this.stage = primaryStage;
-		panel = new GridPane();
-		panel.setAlignment(Pos.CENTER); 
-	    panel.setStyle("-fx-background-color: PALEGREEN;");
-	    panel.setMinSize(1300, 800); 
+	public void refreshWindow() {
+		panel.getChildren().clear();
 		
-		scene = new Scene(panel); 
-		stage.setScene(scene);
-	    stage.setTitle("Rummikub Game");
-	    stage.show();
+		displayTurnOptions();
+    	displayPlayerHand(model.userPlayer, 1);
+    	displayPlayerHand(model.aiPlayer1, 2);
+    	displayPlayerHand(model.aiPlayer2, 3);
+    	displayPlayerHand(model.aiPlayer3, 4);
+		
 	}
+	
 
 	public void indicateTurn(Player player) {
-		// TODO Auto-generated method stub
+		System.out.println("INDICATE TURN " + player.name);
+		Label label = new Label(player.name + "'s turn");
+		label.setStyle("-fx-font: normal bold 30px 'serif'");
+		panel.add(label, 4, 4); 
+		
 	}
 
-	public void displayPlayerHand() {
-		// TODO Auto-generated method stub
+	public void displayPlayerHands() {
 		
+	}
+	
+	public void displayPlayerHand(Player player, int num) {
+		player.getHand().sortTilesByColour();
+		for(int i = 0; i < player.getHand().size(); i++) {
+			
+			final Tile tile = player.getHand().getTile(i);
+	    	final Label tileLabel = new Label("    " + Integer.toString(tile.getRank()));
+	    	  	
+	    	tileLabel.setMinSize(40,50);
+	    	if(player.getHand().getTile(i).getColour() == 'G') {
+	    		tileLabel.setTextFill(Color.GREEN);
+	    	}else if(player.getHand().getTile(i).getColour() == 'R') {
+	    		tileLabel.setTextFill(Color.RED);
+	    	} else if (player.getHand().getTile(i).getColour() == 'B'){
+	    		tileLabel.setTextFill(Color.BLUE);
+	    	} else if(player.getHand().getTile(i).getColour() == 'O') {
+	    		tileLabel.setTextFill(Color.ORANGE);
+	    	} else {
+	    		tileLabel.setTextFill(Color.BLACK);
+	    	}
+	    	tileLabel.setStyle("-fx-border-color: BLACK;");
+	    	panel.add(tileLabel, i+5, num);
+	    	
+	    	 tileLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {
+	    	        	
+	    	        	if(!selectedTiles.contains(tile)) {
+	    	        		tileLabel.setStyle("-fx-border-color: WHITE;");
+	    	        		selectedTiles.add(tile);
+	    	        	}else {
+	    	        		tileLabel.setStyle("-fx-border-color: BLACK;");
+	    	        		selectedTiles.remove(tile);
+	    	        	}
+	    	        }
+	    	    });
+	    	 
+    	}
 	}
 
 	public void displayHand(Hand hand) {
@@ -71,7 +117,10 @@ public class JavaFxView extends Application implements View , Runnable{
 	}
 
 	public void displayWinner(Player player) {
-		// TODO Auto-generated method stub
+		Label label = new Label(player.name + " wins the game!");
+		label.setStyle("-fx-font: normal bold 30px 'serif'");
+		panel.add(label, 0, 10); 
+		
 		
 	}
 
@@ -81,12 +130,100 @@ public class JavaFxView extends Application implements View , Runnable{
 	}
 
 	public void displayTurnOptions_Pass() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public void displayTurnOptions() {
-		// TODO Auto-generated method stub
+		final Button drawTile = new Button("Draw Tile"); 
+		drawTile.setStyle("-fx-background-color: red; -fx-textfill: black;"); 
+		final Button createMeld = new Button("Create Meld"); 
+		createMeld.setStyle("-fx-background-color: red; -fx-textfill: black;"); 
+		final Button playToTable = new Button("Play tiles on the table"); 
+		playToTable.setStyle("-fx-background-color: red; -fx-textfill: black;"); 
+		final Button endTurn = new Button("End turn"); 
+		endTurn.setStyle("-fx-background-color: red; -fx-textfill: black;"); 
+		
+		
+		panel.add(drawTile, 0, 1);
+		panel.add(createMeld, 0, 2);
+		panel.add(playToTable, 0, 3);
+		panel.add(endTurn, 0, 4);
+		
+		drawTile.setOnAction(new EventHandler<ActionEvent>() {
+	            public void handle(ActionEvent event) {
+	            	
+	                try {
+						Tile drawnTile = controller.drawTile();
+						//displayDrawnTile(drawnTile);
+						
+						if(controller.playAITurns()) {// AI wins on this turn
+							//Game over
+							displayWinner(model.gameWinner);
+						}
+						
+						refreshWindow();
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+	            }
+	        });
+		
+		createMeld.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+            	
+                try {
+					if(!controller.createMeld(selectedTiles)) {
+						indicateInvalidMeld();
+					}
+					else {
+						selectedTiles.clear();
+						if(model.gameWinCheck()) {
+							displayWinner(model.gameWinner);
+						}
+						
+						refreshWindow();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
+        });
+		
+		playToTable.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+            	
+              	
+                try {
+					controller.selectPlayTilesToBoard();
+					
+					refreshWindow();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
+        });
+		
+		endTurn.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+            	
+              	
+                try {
+                	
+					if(controller.playAITurns()) {// AI wins on this turn
+						//Game over
+						displayWinner(model.gameWinner);
+					}
+									
+					
+					refreshWindow();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
+        });
+		
 		
 	}
 
@@ -101,8 +238,23 @@ public class JavaFxView extends Application implements View , Runnable{
 	}
 
 	public void displayDrawnTile(Tile tile) {
-		// TODO Auto-generated method stub
+		System.out.println("DRAWN TILE");
 		
+		Label tileLabel = new Label("    " + tile.getRank());
+    	tileLabel.setMinSize(40,50);
+    	if(tile.getColour() == 'G') {
+    		tileLabel.setTextFill(Color.GREEN);
+    	}else if(tile.getColour() == 'R') {
+    		tileLabel.setTextFill(Color.RED);
+    	} else if (tile.getColour() == 'B'){
+    		tileLabel.setTextFill(Color.BLUE);
+    	} else if(tile.getColour() == 'O') {
+    		tileLabel.setTextFill(Color.ORANGE);
+    	} else {
+    		tileLabel.setTextFill(Color.BLACK);
+    	}
+    	tileLabel.setStyle("-fx-border-color: BLACK;");
+    	panel.add(tileLabel, 0, 0);
 	}
 
 	public void displayCreateAnotherMeldOption() {
@@ -141,7 +293,9 @@ public class JavaFxView extends Application implements View , Runnable{
 	}
 
 	public void indicateInvalidMeld() {
-		// TODO Auto-generated method stub
+		Label label = new Label("Invalid Meld");
+		label.setStyle("-fx-font: normal bold 30px 'serif'");
+		panel.add(label, 0, 10); 
 		
 	}
 
@@ -160,8 +314,8 @@ public class JavaFxView extends Application implements View , Runnable{
 		
 	}
 
-	public void printTurns() {
-        Iterator it = model.playerOrder.entrySet().iterator();
+	public void printTurns(Map<Player, Integer> order) {
+        Iterator it = order.entrySet().iterator();
         System.out.print("Turn Order: ");
 
         while (it.hasNext()) {
@@ -171,6 +325,13 @@ public class JavaFxView extends Application implements View , Runnable{
         }
 		
 	}
+	
+	public void displayInitialScreen() {
+		
+
+	}
+
+
 	
 
 }

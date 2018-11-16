@@ -4,41 +4,71 @@ import java.util.*;
 
 import core.Model.GameStates;
 
+import javafx.stage.Stage;
 
-public class Game implements Runnable {
+import java.util.Iterator;
+import java.util.Map;
+
+import javafx.application.*;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.animation.*;
+
+public class Game extends Application {
     
     public Model model;
     public View view;
     public Controller controller;
+    
+	public GridPane panel;
+	public Scene scene;
+	public Stage stage;
 
     public static void main(String[] arg) {
-    		 	
-    	Game game = new Game(); 	  	
-    	Thread gameThread = new Thread(game);
-    	gameThread.start();
-    	       
+    	launch(arg);
     }
     
     public Game() {
-		
-    	model = new Model();
-    	
-    	view = new JavaFxView(model);	
-    	Thread viewThread = new Thread((Runnable) view);
-    	viewThread.start();
-    	
-    	controller = new ConsoleController(view,model);
 
     }
     
-	public void run() {
-		System.out.println("Running GameThread");
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		// TODO Auto-generated method stub
+		this.stage = primaryStage;
+		System.out.println("Start");
+		panel = new GridPane();
+		panel.setAlignment(Pos.CENTER); 
+		panel.setGridLinesVisible(true);
+	
+	    panel.setStyle("-fx-background-color: PALEGREEN;");
+	    panel.setMinSize(1300, 800); 
+	    
+		
+		scene = new Scene(panel); 
+		stage.setScene(scene);
+	    stage.setTitle("Rummikub Game");
+	    stage.show();
+	    
+	    model = new Model();   	
+	    controller = new JavaFxController(model);
+    	view = new JavaFxView(model, controller, panel);	  	
+    	
+	    
     	this.model.initGame();
-	    this.gameLoop();
+    	//this.gameLoop();
+    	
+    	 this.loop();
 	}
+	
 
     public void gameLoop() {
-       	view.printTurns();
+       	view.printTurns(model.playerOrder);
         while(model.gameState == GameStates.PLAY) {
 			Iterator it = model.playerOrder.entrySet().iterator();
 
@@ -46,7 +76,7 @@ public class Game implements Runnable {
 				Map.Entry pair = (Map.Entry) it.next();
 				Player player = (Player) pair.getKey();
 				view.indicateTurn(player);
-				view.displayPlayerHand();
+				view.displayPlayerHands();
 				if (player instanceof UserPlayer) userPlayerTurnLoop(model.userPlayer);
 				else player.playTurn();
 				view.displayBoard(model.getBoard());
@@ -77,6 +107,16 @@ public class Game implements Runnable {
             
             if (model.gameWinCheck()) view.displayWinner(model.gameWinner);
         }
+    }
+    
+    public void loop() {
+    	view.printTurns(model.playerOrder);
+    	view.displayTurnOptions();
+    	view.displayPlayerHand(model.userPlayer, 1);
+    	view.displayPlayerHand(model.aiPlayer1, 2);
+    	view.displayPlayerHand(model.aiPlayer2, 3);
+    	view.displayPlayerHand(model.aiPlayer3, 4);
+    		
     }
     
     public void userPlayerTurnLoop(UserPlayer player) {
@@ -357,6 +397,7 @@ public class Game implements Runnable {
 			}
 		}
 	}
+
 
 
 }

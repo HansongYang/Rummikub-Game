@@ -15,7 +15,7 @@ public class ConsoleView implements View{
 		System.out.println("\nPlayer " + player.name + "'s turn");
 	}
 
-    public void displayPlayerHand(Player player) {
+    public void displayPlayerHand(Player player, int num) {
         player.getHand().sortTilesByColour();
         player.getHand().printHand();
     }
@@ -104,8 +104,8 @@ public class ConsoleView implements View{
     	System.out.println("Enter the index of the Tile you want to select. (-1) to stop selecting");
     }
 
-    public void printTurns() {
-        Iterator it = model.playerOrder.entrySet().iterator();
+    public void printTurns(Map<Player, Integer> order) {
+        Iterator it = order.entrySet().iterator();
         System.out.print("Turn Order: ");
 
         while (it.hasNext()) {
@@ -115,7 +115,12 @@ public class ConsoleView implements View{
         }
     }
 
-	public void displayPlayerHand() {
+	public void displayPlayerHands() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void displayInitialScreen() {
 		// TODO Auto-generated method stub
 		
 	}
