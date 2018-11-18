@@ -4,6 +4,8 @@ import java.util.*;
 
 import core.Model.GameStates;
 
+import javafx.geometry.Insets;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.util.Iterator;
@@ -22,10 +24,10 @@ import javafx.animation.*;
 public class Game extends Application {
     
     public Model model;
-    public View view;
+    public JavaFxView view;
     public Controller controller;
     
-	public GridPane panel;
+	public BorderPane panel;
 	public Scene scene;
 	public Stage stage;
 
@@ -42,15 +44,13 @@ public class Game extends Application {
 		// TODO Auto-generated method stub
 		this.stage = primaryStage;
 		System.out.println("Start");
-		panel = new GridPane();
-		panel.setAlignment(Pos.CENTER); 
-		panel.setGridLinesVisible(true);
-	
-	    panel.setStyle("-fx-background-color: PALEGREEN;");
-	    panel.setMinSize(1300, 800); 
-	    
-		
-		scene = new Scene(panel); 
+
+		panel = new BorderPane();
+
+	    panel.setStyle("-fx-background-color: #008000;");
+	    panel.setPadding(new Insets(10, 10, 10, 10));
+
+		scene = new Scene(panel, 1300, 800);
 		stage.setScene(scene);
 	    stage.setTitle("Rummikub Game");
 	    stage.show();
@@ -62,8 +62,8 @@ public class Game extends Application {
 	    
     	this.model.initGame();
     	//this.gameLoop();
-    	
-    	 this.loop();
+
+		this.loop();
 	}
 	
 
@@ -116,7 +116,7 @@ public class Game extends Application {
     	view.displayPlayerHand(model.aiPlayer1, 2);
     	view.displayPlayerHand(model.aiPlayer2, 3);
     	view.displayPlayerHand(model.aiPlayer3, 4);
-    		
+    	view.displayBoard(model.getBoard());
     }
     
     public void userPlayerTurnLoop(UserPlayer player) {
@@ -161,7 +161,7 @@ public class Game extends Application {
 				}
 				
 				Tile newTile = player.model.getDeck().drawTile();
-				view.displayDrawnTile(newTile);	
+//				view.displayDrawnTile(newTile);
 				player.hand.add(newTile);
 				break;
 			}
@@ -213,7 +213,7 @@ public class Game extends Application {
 			else if(choice == 3) {
 				if(player.model.getBoard().currentMelds.size() == 0) {
 					view.indicateNoTileOnBoard();
-					userPlayerTurnLoop(player);
+//					userPlayerTurnLoop(player);
 					return;
 				}
 				
