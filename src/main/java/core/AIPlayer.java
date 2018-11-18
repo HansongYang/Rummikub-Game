@@ -126,7 +126,7 @@ public class AIPlayer extends Player{
 			
 			ArrayList<Character> setColours = new ArrayList<Character>();
 			
-			// this is to find out which colours we're looking for
+			// this is to find out which colors we're looking for
 			for (Tile t: remainingTiles) {
 				switch (t.getColour()) {
 				case 'R':
@@ -146,16 +146,45 @@ public class AIPlayer extends Player{
 			int counter = 0;
 			
 			for (Meld meld: game.getBoard().currentMelds) {
-				System.out.println(meld.getTiles());
 				for (Tile tile: meld.getTiles()) {
-					System.out.println(tile.getColour());
 					if (tile.getRank() == targetRank && !setColours.contains(tile.getColour())) {
 						counter++;
 					}
 				}
 			}
 			
-			System.out.println("COUNTER" + counter);
+			// this 3 is an arbitrary amount - this is for Strategy4's condition thing
+			if (counter >= 3) { 
+				for (int i= 0; i < game.getBoard().currentMelds.size(); i++) {
+					
+					// Using remainingTiles.get(0):
+					// If you can, add to that meld and remove Tile from hand
+					ArrayList<Tile> tempMeld = new ArrayList<Tile>(game.getBoard().currentMelds.get(i).getTiles());
+					tempMeld.add(remainingTiles.get(0));
+					if (meldValidatorService.isValidMeld(tempMeld)) {
+						Meld newMeld = new Meld();
+						newMeld.add(remainingTiles.get(0));
+						game.getBoard().addTileToMeldBeginning(i, newMeld);
+						hand.remove(remainingTiles.get(0));
+						tilesPlayed++;
+						}
+					
+					// If not above condition,
+					// Using remainingTiles.get(1):
+					// If Tile makes a valid set, add to that set and remove from hand
+					else {
+						tempMeld.remove(0);
+						tempMeld.add(remainingTiles.get(1));
+						if (meldValidatorService.isValidMeld(tempMeld)) {
+							Meld nextNewMeld = new Meld();
+							nextNewMeld.add(remainingTiles.get(1));
+							game.getBoard().addTileToMeldBeginning(i, nextNewMeld);
+							hand.remove(remainingTiles.get(1));
+							tilesPlayed++;
+						}
+					}
+				}
+			}
 		}
 		//this means it's a run
 		else {
@@ -215,7 +244,4 @@ public class AIPlayer extends Player{
 		
 		return tilesPlayed;
 	}
-	
-	
-
 }
