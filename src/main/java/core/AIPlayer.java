@@ -145,7 +145,7 @@ public class AIPlayer extends Player{
 			
 			int counter = 0;
 			
-			for (Meld meld: game.getBoard().currentMelds) {
+			for (Meld meld: model.getBoard().currentMelds) {
 				for (Tile tile: meld.getTiles()) {
 					if (tile.getRank() == targetRank && !setColours.contains(tile.getColour())) {
 						counter++;
@@ -155,16 +155,16 @@ public class AIPlayer extends Player{
 			
 			// this 3 is an arbitrary amount - this is for Strategy4's condition thing
 			if (counter >= 3) { 
-				for (int i= 0; i < game.getBoard().currentMelds.size(); i++) {
+				for (int i= 0; i < model.getBoard().currentMelds.size(); i++) {
 					
 					// Using remainingTiles.get(0):
 					// If you can, add to that meld and remove Tile from hand
-					ArrayList<Tile> tempMeld = new ArrayList<Tile>(game.getBoard().currentMelds.get(i).getTiles());
+					ArrayList<Tile> tempMeld = new ArrayList<Tile>(model.getBoard().currentMelds.get(i).getTiles());
 					tempMeld.add(remainingTiles.get(0));
 					if (meldValidatorService.isValidMeld(tempMeld)) {
 						Meld newMeld = new Meld();
 						newMeld.add(remainingTiles.get(0));
-						game.getBoard().addTileToMeldBeginning(i, newMeld);
+						model.getBoard().addTileToMeldBeginning(i, newMeld);
 						hand.remove(remainingTiles.get(0));
 						tilesPlayed++;
 						}
@@ -178,7 +178,7 @@ public class AIPlayer extends Player{
 						if (meldValidatorService.isValidMeld(tempMeld)) {
 							Meld nextNewMeld = new Meld();
 							nextNewMeld.add(remainingTiles.get(1));
-							game.getBoard().addTileToMeldBeginning(i, nextNewMeld);
+							model.getBoard().addTileToMeldBeginning(i, nextNewMeld);
 							hand.remove(remainingTiles.get(1));
 							tilesPlayed++;
 						}
@@ -200,7 +200,7 @@ public class AIPlayer extends Player{
 			boolean boolOneRankHigher = false;
 			
 			//go through the board and find how many of the tiles you need have already been played
-			for (Meld meld: game.getBoard().currentMelds) {
+			for (Meld meld: model.getBoard().currentMelds) {
 				for (Tile tile: meld.getTiles()) {
 					if (tile.getRank() == oneRankLower) {
 						boolOneRankLower = true;
@@ -215,13 +215,13 @@ public class AIPlayer extends Player{
 			
 			if (boolOneRankHigher && boolOneRankLower) {
 				//both sides of the run are already on the board
-				for (int i = 0 ; i < game.getBoard().currentMelds.size(); i++) {
-					ArrayList<Tile> tempMeld = new ArrayList<Tile>(game.getBoard().currentMelds.get(i).getTiles());
+				for (int i = 0 ; i < model.getBoard().currentMelds.size(); i++) {
+					ArrayList<Tile> tempMeld = new ArrayList<Tile>(model.getBoard().currentMelds.get(i).getTiles());
 					tempMeld.add(0, remainingTiles.get(0));
 					if (meldValidatorService.isValidMeld(tempMeld)) {
 						Meld newMeld = new Meld();
 						newMeld.add(remainingTiles.get(0));
-						game.getBoard().addTileToMeldBeginning(i, newMeld);
+						model.getBoard().addTileToMeldBeginning(i, newMeld);
 						hand.remove(remainingTiles.get(0));
 						tilesPlayed++;
 					} else {
@@ -231,7 +231,7 @@ public class AIPlayer extends Player{
 						if (meldValidatorService.isValidMeld(tempMeld)) {
 							Meld newMeld = new Meld();
 							newMeld.add(remainingTiles.get(0));
-							game.getBoard().addTileToMeldEnd(i, newMeld);
+							model.getBoard().addTileToMeldEnd(i, newMeld);
 							hand.remove(remainingTiles.get(0));
 							tilesPlayed++;
 						}
