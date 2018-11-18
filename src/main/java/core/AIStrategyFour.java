@@ -75,12 +75,6 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 							}
 						}
 						player.playMelds(player.game.getBoard(), player.meldsInHand);
-						
-						
-						
-						
-						
-						
 					}
 				}
 
