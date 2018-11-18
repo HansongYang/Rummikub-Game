@@ -45,6 +45,7 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 						ArrayList<ArrayList<Tile>> setsOfTwo = player.hand.getSetsOfTwo(remainingTiles);
 						ArrayList<ArrayList<Tile>> runsOfTwo = player.hand.getRunsOfTwo(remainingTiles);
 						
+						// Try to do the strategy with board tile probabilities, if you can't just do playWithTableTiles() like in Strategy3
 						if (!setsOfTwo.isEmpty()) { 
 							tilesPlayed = player.strategyFourPlayWithTableTiles(setsOfTwo.get(0));
 						} else if (!runsOfTwo.isEmpty()) {
@@ -52,29 +53,28 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 						}
 						else {
 							tilesPlayed = player.playWithTableTiles(remainingTiles);
-							if(tilesPlayed == 0) {
-								if(player.game.getDeck().getDeckSize() == 0) {
-									return;
-								}
-								Tile newTile = player.game.getDeck().drawTile();
-								System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
-								player.hand.add(newTile);
-							}
 						}
 						
-						
-//						if(tilesPlayed == 0) {
-//							if(player.game.getDeck().getDeckSize() == 0) {
-//								return;
-//							}
-//							Tile newTile = player.game.getDeck().drawTile();
-//							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
-//							player.hand.add(newTile);
-//						}
+						if(tilesPlayed == 0) {
+							if(player.game.getDeck().getDeckSize() == 0) {
+								return;
+							}
+							Tile newTile = player.game.getDeck().drawTile();
+							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
+							player.hand.add(newTile);
+						}
 					}
+					
+					// This means Strategy4 can do its strategy
 					else {
-						// This means Strategy4 can do its strategy
 						System.out.println("Player has 3 tiles fewer than S4");
+						player.meldsInHand = meldsToPlay;
+						for(int i = 0; i < meldsToPlay.size(); i++) {
+							for(int j = 0; j < meldsToPlay.get(i).size();j++) {
+								player.hand.remove(meldsToPlay.get(i).getTile(j));
+							}
+						}
+						player.playMelds(player.game.getBoard(), player.meldsInHand);
 						
 						
 						
