@@ -107,4 +107,8 @@ public class Board {
             System.out.print("}\n\n");
         }
     }
+
+    public ArrayList<Meld> getCurrentMelds() {
+        return currentMelds;
+    }
 }
