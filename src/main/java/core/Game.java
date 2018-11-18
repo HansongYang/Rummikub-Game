@@ -12,10 +12,15 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javafx.application.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -30,13 +35,18 @@ public class Game extends Application {
 	public BorderPane panel;
 	public Scene scene;
 	public Stage stage;
+	public String name;
+	public boolean time;
+	public String playername;
 
     public static void main(String[] arg) {
     	launch(arg);
     }
     
     public Game() {
-
+    	name = "";
+    	time = false;
+    	playername = "";
     }
     
 	@Override
@@ -58,14 +68,77 @@ public class Game extends Application {
 	    model = new Model();   	
 	    controller = new JavaFxController(model);
     	view = new JavaFxView(model, controller, panel);	  	
-    	
-	    
-    	this.model.initGame();
-    	//this.gameLoop();
 
-		this.loop();
+    	this.model.initGame();
+    	this.startMenu();
 	}
 	
+	public void startMenu() {
+		Button start = new Button("Start Game"); 
+		start.setStyle("-fx-background-color: red; -fx-textfill: black;"); 
+		Text label = new Text("Welcome to Rummikub Game, what is your name?");
+		TextField nameText = new TextField(); 
+	    
+	    Text label2 = new Text("Which player do you want to choose?"); 
+	    ToggleGroup playerGroup = new ToggleGroup(); 
+	    RadioButton player1 = new RadioButton("Player 1"); 
+	    player1.setToggleGroup(playerGroup);
+	    player1.setSelected(true);
+	    RadioButton player2 = new RadioButton("Player 2"); 
+	    player2.setToggleGroup(playerGroup); 
+	    RadioButton player3 = new RadioButton("Player 3"); 
+	    player3.setToggleGroup(playerGroup); 
+	    RadioButton player4 = new RadioButton("Player 4"); 
+	    player4.setToggleGroup(playerGroup); 
+	    
+	    label.setStyle("-fx-font: normal bold 30px 'serif'");
+	    label2.setStyle("-fx-font: normal 20px 'serif'");
+	    
+	    Text label3 = new Text("Do you want to use 2 minutes timer for your turn?");
+	    label3.setStyle("-fx-font: normal 20px 'serif'"); 
+	    ToggleGroup timer = new ToggleGroup(); 
+	    RadioButton yes = new RadioButton("yes"); 
+	    yes.setToggleGroup(timer); 
+	    RadioButton no = new RadioButton("no"); 
+	    no.setToggleGroup(timer); 
+	    no.setSelected(true);
+	    
+	    GridPane boardGrid = new GridPane();
+	    panel.setCenter(boardGrid);
+	    boardGrid.setAlignment(Pos.CENTER);
+	    
+	    boardGrid.add(label, 0, 0); 
+	    boardGrid.add(nameText, 0, 1);
+	    boardGrid.add(label2, 0, 2);
+	    boardGrid.add(player1, 0, 3);       
+	    boardGrid.add(player2, 0, 4);
+	    boardGrid.add(player3, 0, 5);
+	    boardGrid.add(player4, 0, 6);
+	    boardGrid.add(label3, 0, 7);
+	    boardGrid.add(yes, 0, 8);
+	    boardGrid.add(no, 0, 9);
+	    boardGrid.add(start, 2, 11);
+
+	    start.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) { 
+            	name = nameText.getText();
+            	view.setName(name);
+            	String[] toggle = playerGroup.getSelectedToggle().toString().split("\\'");
+            	playername = toggle[1];
+            	view.setPlayerName(playername);
+            	toggle = timer.getSelectedToggle().toString().split("\\'");
+            	if(toggle[1].equals("yes")){
+            		time = true;
+            	}else {
+            		time = false;
+            	}
+            	view.setTime(time);
+            	
+            	view.refreshWindow();
+                loop();
+            }
+        });
+	}
 
     public void gameLoop() {
        	view.printTurns(model.playerOrder);
