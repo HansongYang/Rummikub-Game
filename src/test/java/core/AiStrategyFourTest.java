@@ -9,11 +9,12 @@ import junit.framework.TestCase;
 public class AiStrategyFourTest extends TestCase {
 	
 	public void testInitial() {
+		Model model = new Model();
 		Meld meld = new Meld();
 		meld.add(B5);
 		meld.add(G5);
 		meld.add(O5);
-		game.getBoard().addMeld(meld);
+		model.getBoard().addMeld(meld);
 		
 		aiPlayer4.initial30Played = true;
 		
@@ -264,7 +265,7 @@ public class AiStrategyFourTest extends TestCase {
 	    assertEquals(testMeld, aiPlayer4.game.getBoard().currentMelds.get(0));
 	}
 	
-	Game game = new Game();
+	Model game = new Model();
 	PlayerStrategy<? super AIPlayer> aiStrategyFour = new AIStrategyFour();
 	AIPlayer aiPlayer4 = new AIPlayer("AI4", game, aiStrategyFour);
 	

@@ -8,9 +8,9 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 
 	public void executeStrategy(AIPlayer player) {
 		
-		if(player.game.getBoard().currentMelds.size() == 0) {
+		if(player.model.getBoard().currentMelds.size() == 0) {
 			//Board is empty, so draw tile
-			Tile newTile = player.game.getDeck().drawTile();
+			Tile newTile = player.model.getDeck().drawTile();
 			System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 			player.hand.add(newTile);
 			return;
@@ -18,14 +18,14 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 			ArrayList<Meld> initial = player.getHand().getInitialTiles();
 			
 			if(initial.size() == 0) {//Can't make initial 30, draw tile
-				Tile newTile = player.game.getDeck().drawTile();
+				Tile newTile = player.model.getDeck().drawTile();
 				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 				return;
 			}
 			else {//Play initial 30
 				player.initial30Played = true;
-				player.playMelds(player.game.getBoard(), initial);
+				player.playMelds(player.model.getBoard(), initial);
 			}	
 		}else {
 			int initialHandSize = player.hand.size();
@@ -36,11 +36,11 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 			if(player.hand.size() == initialHandSize) {//Played 0 tiles
 				tryToWin(player,setsThenRuns);
 				if(player.hand.size() == initialHandSize) {//Played 0 tiles
-					if(player.game.getDeck().getDeckSize() == 0) {
+					if(player.model.getDeck().getDeckSize() == 0) {
 						return;
 					}
 					//Draw tile
-					Tile newTile = player.game.getDeck().drawTile();
+					Tile newTile = player.model.getDeck().drawTile();
 					System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 					player.hand.add(newTile);
 					return;
@@ -62,7 +62,7 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 					player.hand.remove(meldsInHand.get(i).getTile(j));
 				}
 			}
-			player.playMelds(player.game.getBoard(), player.meldsInHand);
+			player.playMelds(player.model.getBoard(), player.meldsInHand);
 		}
 		else {
 			ArrayList<Tile> remainingTiles = player.hand.getRemainingTiles(meldsInHand);
@@ -77,7 +77,7 @@ public class AIStrategyTwo implements PlayerStrategy<AIPlayer> {
 						player.hand.remove(meldsInHand.get(i).getTile(j));
 					}
 				}
-				player.playMelds(player.game.getBoard(), player.meldsInHand);		
+				player.playMelds(player.model.getBoard(), player.meldsInHand);		
 			}		
 		}
 	}

@@ -55,22 +55,44 @@ public class MeldValidatorServiceTest extends TestCase {
         assertFalse(meldValidatorService.isValidMeld(meld6));
 
         ArrayList<Tile> meld7 = new ArrayList<Tile>();
-        meld7.add(new Tile('R',1));
-        meld7.add(new Tile('R',2));
-        meld7.add(new Tile('R',3));
+        meld7.add(new Tile('R',9));
+        meld7.add(new Tile('R',10));
         meld7.add(new Tile('J',0));
-        meld7.add(new Tile('R',4));
+        meld7.add(new Tile('R',12));
+        meld7.add(new Tile('R',13));
 
         assertTrue(meldValidatorService.isValidMeld(meld7));
 
         ArrayList<Tile> meld8 = new ArrayList<Tile>();
-        meld8.add(new Tile('J',4));
         meld8.add(new Tile('R',4));
         meld8.add(new Tile('G',4));
         meld8.add(new Tile('B',4));
         meld8.add(new Tile('O',4));
+        meld8.add(new Tile('J',0));
 
         assertTrue(meldValidatorService.isValidMeld(meld8));
 
+    }
+
+    public void testGetJokerValue() {
+        MeldValidatorService meldValidatorService = new MeldValidatorService();
+
+        ArrayList<Tile> meld1 = new ArrayList<Tile>();
+        meld1.add(new Tile('R',9));
+        meld1.add(new Tile('R',10));
+        meld1.add(new Tile('R',11));
+        meld1.add(new Tile('J',0));
+        meld1.add(new Tile('R',13));
+
+        assertEquals(12, meldValidatorService.getJokerValue(meld1, 3));
+
+        ArrayList<Tile> meld2 = new ArrayList<Tile>();
+        meld2.add(new Tile('J',0));
+        meld2.add(new Tile('R',4));
+        meld2.add(new Tile('G',4));
+        meld2.add(new Tile('B',4));
+        meld2.add(new Tile('O',4));
+
+        assertEquals(4, meldValidatorService.getJokerValue(meld2, 0));
     }
 }

@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 public class UserPlayerTest extends TestCase {
 
 	public void testSelectTiles() {
-		UserPlayer player = new UserPlayer("player", new Game(), new UserStrategy());
+		UserPlayer player = new UserPlayer("player", new Model(), new UserStrategy());
 		Deck deck = new Deck();
 		
 		deck.dealTiles(player);
@@ -30,7 +30,7 @@ public class UserPlayerTest extends TestCase {
 	}
 	
 	public void testCreateMeld() {
-		UserPlayer player = new UserPlayer("player", new Game(), new UserStrategy());
+		UserPlayer player = new UserPlayer("player", new Model(), new UserStrategy());
 
 		Hand hand = new Hand();
 		hand.add(new Tile('R',6));
@@ -76,7 +76,7 @@ public class UserPlayerTest extends TestCase {
 	}
 	
 	public void testPlayTurn() {
-		Game game = new Game();
+		Model game = new Model();
 		UserPlayer player = new UserPlayer("player", game, new UserStrategy());
 		player.hand.add(new Tile('R',10));
 		player.hand.add(new Tile('R',11));

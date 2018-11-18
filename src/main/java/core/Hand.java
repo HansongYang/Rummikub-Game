@@ -289,7 +289,7 @@ public class Hand {
 				possibleRun.add(hand.getTile(i));
 				
 				for(int j = i+1; j < hand.size(); j++){
-					if(hand.getTile(j-1).getRank() == hand.getTile(j).getRank() - 1) {
+					if(hand.getTile(j-1).getRank() == hand.getTile(j).getRank() - 1 || hand.getTile(j-1).getColour() == 'J') {
 						possibleRun.add(hand.getTile(j));
 					}
 					else {

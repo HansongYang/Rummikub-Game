@@ -7,7 +7,7 @@ public class AIStrategyOneTest extends TestCase {
 	public void testExecuteStrategy() {
 		
 		//Play all melds
-		Game game = new Game();
+		Model game = new Model();
 		AIPlayer player = new AIPlayer("AI", game, new AIStrategyOne());
 		
 		player.hand.add(new Tile('R',11));
@@ -20,7 +20,7 @@ public class AIStrategyOneTest extends TestCase {
 		assertEquals(1,game.getBoard().currentMelds.size());
 		
 		
-		Game game2 = new Game();
+		Model game2 = new Model();
 		AIPlayer player2 = new AIPlayer("AI", game2, new AIStrategyOne());
 			
 		player2.hand.add(new Tile('R',11));
@@ -56,7 +56,7 @@ public class AIStrategyOneTest extends TestCase {
 		assertEquals(4,game2.getBoard().currentMelds.size());
 		
 		
-		Game game3 = new Game();
+		Model game3 = new Model();
 		AIPlayer player3 = new AIPlayer("AI", game3, new AIStrategyOne());	
 		player3.strategy.executeStrategy(player3);
 		

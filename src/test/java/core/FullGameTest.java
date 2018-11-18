@@ -1,6 +1,7 @@
 package core;
 
-import core.Game.GameStates;
+
+import core.Model.GameStates;
 import junit.framework.TestCase;
 
 public class FullGameTest extends TestCase{
@@ -9,27 +10,27 @@ public class FullGameTest extends TestCase{
 	public void testGame() {
 		
 		Game game = new Game();
-		game.createGamePlayers();
+		game.model.createGamePlayers();
 		
 		
-		createUserPlayerHand(game);//Custom deal
+		createUserPlayerHand(game.model);//Custom deal
 		//game.getDeck().dealTiles(game.userPlayer);//Random deal
 		
-		createAI1Hand(game);//Custom deal
+		createAI1Hand(game.model);//Custom deal
 		//game.getDeck().dealTiles(game.aiPlayer1);//Random deal
 		
-		createAI2Hand(game);//Custom deal
+		createAI2Hand(game.model);//Custom deal
 		//game.getDeck().dealTiles(game.aiPlayer2);//Random deal
 		
-		createAI3Hand(game);//Custom deal
+		createAI3Hand(game.model);//Custom deal
 		//game.getDeck().dealTiles(game.aiPlayer3);//Random deal
 		
 		
-		game.gameState = GameStates.PLAY;
+		game.model.gameState = GameStates.PLAY;
 		game.gameLoop();
 	}
 	
-	public void createUserPlayerHand(Game game){		
+	public void createUserPlayerHand(Model game){		
 		game.userPlayer.hand.add(new Tile('R',1));
 		game.userPlayer.hand.add(new Tile('R',2));
 		game.userPlayer.hand.add(new Tile('R',3));
@@ -50,7 +51,7 @@ public class FullGameTest extends TestCase{
 		}
 	}
 	
-	public void createAI1Hand(Game game){
+	public void createAI1Hand(Model game){
 		game.aiPlayer1.hand.add(new Tile('B',1));
 		game.aiPlayer1.hand.add(new Tile('B',2));
 		game.aiPlayer1.hand.add(new Tile('B',3));
@@ -71,7 +72,7 @@ public class FullGameTest extends TestCase{
 		}
 	}
 	
-	public void createAI2Hand(Game game){
+	public void createAI2Hand(Model game){
 		game.aiPlayer2.hand.add(new Tile('G',1));
 		game.aiPlayer2.hand.add(new Tile('G',2));
 		game.aiPlayer2.hand.add(new Tile('G',3));
@@ -92,7 +93,7 @@ public class FullGameTest extends TestCase{
 		}
 	}
 	
-	public void createAI3Hand(Game game){
+	public void createAI3Hand(Model game){
 		game.aiPlayer3.hand.add(new Tile('O',1));
 		game.aiPlayer3.hand.add(new Tile('O',2));
 		game.aiPlayer3.hand.add(new Tile('O',3));

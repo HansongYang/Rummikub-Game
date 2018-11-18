@@ -17,8 +17,8 @@ public class AIPlayer extends Player{
 		super();
 	}
 	
-	public AIPlayer(String name, Game game, PlayerStrategy<? super AIPlayer> strategy) {
-		super(name, game);
+	public AIPlayer(String name, Model model, PlayerStrategy<? super AIPlayer> strategy) {
+		super(name, model);
 		this.strategy = strategy;
 	}
 	
@@ -94,18 +94,18 @@ public class AIPlayer extends Player{
 			Meld meldToAdd = new Meld();
 			meldToAdd.add(tile);
 	
-			for (int i = 0; i < game.getBoard().currentMelds.size(); i++) {
-				Meld meldTempA = new Meld(game.getBoard().currentMelds.get(i).getTiles());  // Meld for testing tile add to back
-				Meld meldTempB = new Meld(game.getBoard().currentMelds.get(i).getTiles());   // Meld for testing tile add to front
+			for (int i = 0; i < model.getBoard().currentMelds.size(); i++) {
+				Meld meldTempA = new Meld(model.getBoard().currentMelds.get(i).getTiles());  // Meld for testing tile add to back
+				Meld meldTempB = new Meld(model.getBoard().currentMelds.get(i).getTiles());   // Meld for testing tile add to front
 				
 				meldTempA.add(tile);
 				meldTempB.add(0, tile);
 				if (meldValidatorService.isValidMeld(meldTempA.getTiles())) {
-					game.getBoard().addTileToMeldEnd(i, meldToAdd);
+					model.getBoard().addTileToMeldEnd(i, meldToAdd);
 					hand.remove(tile);
 					tilesPlayed++;
 				} else if (meldValidatorService.isValidMeld(meldTempB.getTiles())) {
-					game.getBoard().addTileToMeldBeginning(i, meldToAdd);
+					model.getBoard().addTileToMeldBeginning(i, meldToAdd);
 					hand.remove(tile);
 					tilesPlayed++;
 				}
