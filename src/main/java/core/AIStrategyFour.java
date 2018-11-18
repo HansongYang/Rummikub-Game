@@ -56,10 +56,10 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 						}
 						
 						if(tilesPlayed == 0) {
-							if(player.game.getDeck().getDeckSize() == 0) {
+							if(player.model.getDeck().getDeckSize() == 0) {
 								return;
 							}
-							Tile newTile = player.game.getDeck().drawTile();
+							Tile newTile = player.model.getDeck().drawTile();
 							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 							player.hand.add(newTile);
 						}
@@ -74,13 +74,7 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 								player.hand.remove(meldsToPlay.get(i).getTile(j));
 							}
 						}
-						player.playMelds(player.game.getBoard(), player.meldsInHand);
-						
-						
-						
-						
-						
-						
+						player.playMelds(player.model.getBoard(), player.meldsInHand);
 					}
 				}
 
@@ -112,7 +106,7 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 					player.hand.remove(meldsInHand.get(i).getTile(j));
 				}
 			}
-			player.playMelds(player.game.getBoard(), player.meldsInHand);
+			player.playMelds(player.model.getBoard(), player.meldsInHand);
 		}
 		else {
 			ArrayList<Tile> remainingTiles = player.hand.getRemainingTiles(meldsInHand);
@@ -128,7 +122,7 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 						player.hand.remove(meldsInHand.get(i).getTile(j));
 					}
 				}
-				player.playMelds(player.game.getBoard(), player.meldsInHand);	
+				player.playMelds(player.model.getBoard(), player.meldsInHand);	
 			}				
 		}
 	}
@@ -140,9 +134,9 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 			Meld meldToAdd = new Meld();
 			meldToAdd.add(tile);
 	
-			for (int i = 0; i < player.game.getBoard().currentMelds.size(); i++) {
-				Meld meldTempA = new Meld(player.game.getBoard().currentMelds.get(i).getTiles());  // Meld for testing tile add to back
-				Meld meldTempB = new Meld(player.game.getBoard().currentMelds.get(i).getTiles());   // Meld for testing tile add to front
+			for (int i = 0; i < player.model.getBoard().currentMelds.size(); i++) {
+				Meld meldTempA = new Meld(player.model.getBoard().currentMelds.get(i).getTiles());  // Meld for testing tile add to back
+				Meld meldTempB = new Meld(player.model.getBoard().currentMelds.get(i).getTiles());   // Meld for testing tile add to front
 				
 				meldTempA.add(tile);
 				meldTempB.add(0, tile);
