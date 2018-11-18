@@ -9,13 +9,13 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 		if(!player.initial30Played) {
 			ArrayList<Meld> initial = player.hand.getInitialTiles();
 			if(initial.size() == 0) {
-				Tile newTile = player.game.getDeck().drawTile();
+				Tile newTile = player.model.getDeck().drawTile();
 				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}
 			else {
 				player.initial30Played = true;
-				player.playMelds(player.game.getBoard(), initial);
+				player.playMelds(player.model.getBoard(), initial);
 			}
 		}
 		else {
@@ -40,14 +40,14 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 					setsThenRuns = player.meldSetsFirst();
 					player.meldsInHand = player.findBestPlay(runsThenSets, setsThenRuns);
 				}
-				player.playMelds(player.game.getBoard(), noDuplication);
+				player.playMelds(player.model.getBoard(), noDuplication);
 			}
 			else if(player.hand.size() == initialHandSize){//No tiles played to board
-				if(player.game.getDeck().getDeckSize() == 0) {
+				if(player.model.getDeck().getDeckSize() == 0) {
 					return;
 				}
 				//Draw tile
-				Tile newTile = player.game.getDeck().drawTile();
+				Tile newTile = player.model.getDeck().drawTile();
 				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}

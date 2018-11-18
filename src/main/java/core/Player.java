@@ -7,7 +7,7 @@ public class Player implements Observer {
 
 	public String name = "Default";
 	protected Hand hand;
-	public Game game;
+	public Model model;
 	public boolean initial30Played = false;
 	protected ArrayList<Meld> meldsInHand;
 	protected MeldValidatorService meldValidatorService = new MeldValidatorService();
@@ -18,10 +18,10 @@ public class Player implements Observer {
 		this.meldsInHand = new ArrayList<Meld>();
 	}
 	
-	public Player(String name, Game game) {
+	public Player(String name, Model model) {
 		this.name = name;
 		this.hand = new Hand();
-		this.game = game;
+		this.model = model;
 		this.meldsInHand = new ArrayList<Meld>();
 	}
 

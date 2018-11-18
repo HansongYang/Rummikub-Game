@@ -10,13 +10,13 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 		if(!player.initial30Played) {
 			ArrayList<Meld> initial = player.hand.getInitialTiles();
 			if(initial.size() == 0) {
-				Tile newTile = player.game.getDeck().drawTile();
+				Tile newTile = player.model.getDeck().drawTile();
 				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}
 			else {
 				player.initial30Played = true;
-				player.playMelds(player.game.getBoard(), initial);
+				player.playMelds(player.model.getBoard(), initial);
 			}		
 		}else {
 			int initialHandSize = player.hand.size();
@@ -36,10 +36,10 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 						
 						int tilesPlayed = player.playWithTableTiles(remainingTiles);
 						if(tilesPlayed == 0) {
-							if(player.game.getDeck().getDeckSize() == 0) {
+							if(player.model.getDeck().getDeckSize() == 0) {
 								return;
 							}
-							Tile newTile = player.game.getDeck().drawTile();
+							Tile newTile = player.model.getDeck().drawTile();
 							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 							player.hand.add(newTile);
 						}
@@ -48,11 +48,11 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 						int tilesPlayed = player.playWithTableTiles(remainingTiles);
 						
 						if(tilesPlayed == 0 && meldsToPlay.size() == 0) {//0 Tiles can be played. Draw tile
-							if(player.game.getDeck().getDeckSize() == 0) {
+							if(player.model.getDeck().getDeckSize() == 0) {
 								return;
 							}
 							System.out.println(player.name + " could play but has no tile to play");
-							Tile newTile = player.game.getDeck().drawTile();
+							Tile newTile = player.model.getDeck().drawTile();
 							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 							player.hand.add(newTile);
 
@@ -64,7 +64,7 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 									player.hand.remove(meldsToPlay.get(i).getTile(j));
 								}
 							}
-							player.playMelds(player.game.getBoard(), player.meldsInHand);
+							player.playMelds(player.model.getBoard(), player.meldsInHand);
 							
 						}
 					}				
@@ -84,7 +84,7 @@ public void tryToWin(AIPlayer player, ArrayList<Meld> meldsInHand) {
 					player.hand.remove(meldsInHand.get(i).getTile(j));
 				}
 			}
-			player.playMelds(player.game.getBoard(), player.meldsInHand);
+			player.playMelds(player.model.getBoard(), player.meldsInHand);
 		}
 		else {
 			ArrayList<Tile> remainingTiles = player.hand.getRemainingTiles(meldsInHand);
@@ -100,7 +100,7 @@ public void tryToWin(AIPlayer player, ArrayList<Meld> meldsInHand) {
 						player.hand.remove(meldsInHand.get(i).getTile(j));
 					}
 				}
-				player.playMelds(player.game.getBoard(), player.meldsInHand);	
+				player.playMelds(player.model.getBoard(), player.meldsInHand);	
 			}				
 		}
 	}
@@ -112,9 +112,9 @@ public void tryToWin(AIPlayer player, ArrayList<Meld> meldsInHand) {
 			Meld meldToAdd = new Meld();
 			meldToAdd.add(tile);
 	
-			for (int i = 0; i < player.game.getBoard().currentMelds.size(); i++) {
-				Meld meldTempA = new Meld(player.game.getBoard().currentMelds.get(i).getTiles());  // Meld for testing tile add to back
-				Meld meldTempB = new Meld(player.game.getBoard().currentMelds.get(i).getTiles());   // Meld for testing tile add to front
+			for (int i = 0; i < player.model.getBoard().currentMelds.size(); i++) {
+				Meld meldTempA = new Meld(player.model.getBoard().currentMelds.get(i).getTiles());  // Meld for testing tile add to back
+				Meld meldTempB = new Meld(player.model.getBoard().currentMelds.get(i).getTiles());   // Meld for testing tile add to front
 				
 				meldTempA.add(tile);
 				meldTempB.add(0, tile);

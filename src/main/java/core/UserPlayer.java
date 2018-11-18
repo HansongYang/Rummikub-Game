@@ -12,8 +12,8 @@ public class UserPlayer extends Player{
 		super();
 	}
 	
-	public UserPlayer(String name, Game game, PlayerStrategy<? super UserPlayer> strategy) {
-		super(name, game);
+	public UserPlayer(String name, Model model, PlayerStrategy<? super UserPlayer> strategy) {
+		super(name, model);
 		this.strategy = strategy;
 	}
 	

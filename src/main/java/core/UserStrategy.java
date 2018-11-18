@@ -30,13 +30,13 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 			
 			choice = reader.nextInt();
 			if(choice == -1) {
-				player.game.endGame();
+				player.model.endGame();
 				System.out.println("User ends the game.");
 				break;
 			}
 		
 			if(choice == 1) {//Draw tile
-				if(player.game.getDeck().getDeckSize() == 0) {
+				if(player.model.getDeck().getDeckSize() == 0) {
 					break;
 				}
 				if(pass) {
@@ -44,7 +44,7 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 					break;
 				}
 				
-				Tile newTile = player.game.getDeck().drawTile();
+				Tile newTile = player.model.getDeck().drawTile();
 				System.out.println("You drew: " + newTile.getColour() + ", " + newTile.getRank());		
 				player.hand.add(newTile);
 				break;
@@ -85,16 +85,16 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 						System.out.println("The total of all your melds does not exceed 30.");
 					}
 					else {
-						player.playMelds(player.game.getBoard(), player.meldsInHand);
+						player.playMelds(player.model.getBoard(), player.meldsInHand);
 						player.initial30Played = true;
 					}
 				}
 				else {
-					player.playMelds(player.game.getBoard(), player.meldsInHand);
+					player.playMelds(player.model.getBoard(), player.meldsInHand);
 				}
 			}
 			else if(choice == 3) {
-				if(player.game.getBoard().currentMelds.size() == 0) {
+				if(player.model.getBoard().currentMelds.size() == 0) {
 					System.out.println("No tile on the board.");
 					executeStrategy(player);
 					return;
@@ -125,18 +125,18 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 								System.out.println("Invalid input, please try again.");
 							}else {
 								while(true) {
-									player.game.getBoard().printBoard();
+									player.model.getBoard().printBoard();
 									System.out.println("Enter the index of the meld you want to select. Enter -1 to quit.");
 									int meldSelected = reader.nextInt();
 									if(meldSelected == -1) { break;}
-									if(meldSelected >=  player.game.getBoard().currentMelds.size() || meldSelected < 0) {//Invalid Tile
+									if(meldSelected >=  player.model.getBoard().currentMelds.size() || meldSelected < 0) {//Invalid Tile
 										System.out.println("Invalid input, please try again.");
 									}else {
 										Meld meld = new Meld();
 										meld.add(player.hand.getTile(tileSelected));
-										if(player.game.getBoard().addTileToMeldEnd(meldSelected, meld)) {
+										if(player.model.getBoard().addTileToMeldEnd(meldSelected, meld)) {
 											player.getHand().remove(player.hand.getTile(tileSelected));
-											player.game.getBoard().printBoard();
+											player.model.getBoard().printBoard();
 											player.getHand().printHand();
 										}else {
 											System.out.println("Invalid meld!");
@@ -158,18 +158,18 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 								System.out.println("Invalid input, please try again.");
 							}else {
 								while(true) {
-									player.game.getBoard().printBoard();
+									player.model.getBoard().printBoard();
 									System.out.println("Enter the index of the meld you want to select. Enter -1 to quit.");
 									int meldSelected = reader.nextInt();
 									if(meldSelected == -1) { break;}
-									if(meldSelected >= player.game.getBoard().currentMelds.size() || meldSelected < 0) {//Invalid Tile
+									if(meldSelected >= player.model.getBoard().currentMelds.size() || meldSelected < 0) {//Invalid Tile
 										System.out.println("Invalid input, please try again.");
 									}else {
 										Meld meld = new Meld();
 										meld.add(player.hand.getTile(tileSelected));
-										if(player.game.getBoard().addTileToMeldBeginning(meldSelected, meld)) {
+										if(player.model.getBoard().addTileToMeldBeginning(meldSelected, meld)) {
 											player.getHand().remove(player.hand.getTile(tileSelected));
-											player.game.getBoard().printBoard();
+											player.model.getBoard().printBoard();
 											player.getHand().printHand();
 										}else {
 											System.out.println("Invalid meld!");
@@ -195,19 +195,19 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 								}
 							}
 							while(true) {
-								player.game.getBoard().printBoard();
+								player.model.getBoard().printBoard();
 								System.out.println("Enter the index of the meld you want to select. Enter -1 to go back.");
 								int meldSelected = reader.nextInt();
 								if(meldSelected == -1) { break;}
-								if(meldSelected >= player.game.getBoard().currentMelds.size() || meldSelected < 0) {//Invalid Tile
+								if(meldSelected >= player.model.getBoard().currentMelds.size() || meldSelected < 0) {//Invalid Tile
 									System.out.println("Invalid input, please try again.");
 								}else {
 									while(true) {
-										player.game.getBoard().currentMelds.get(meldSelected).printMeld();
+										player.model.getBoard().currentMelds.get(meldSelected).printMeld();
 										System.out.println("\nEnter the index of a tile in your selected meld that you want to choose. Enter -1 to go back.");
 										int tileOfMeld = reader.nextInt();
 										if(tileOfMeld == -1) { break;}
-										if(tileOfMeld >= player.game.getBoard().currentMelds.get(meldSelected).size() || tileOfMeld < 0) {
+										if(tileOfMeld >= player.model.getBoard().currentMelds.get(meldSelected).size() || tileOfMeld < 0) {
 											System.out.println("Invalid input, please try again.");
 										}else {
 											while(true) {
@@ -217,11 +217,11 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 												if(positionOfMeld < 0 || positionOfMeld >= meld.size()) {
 														System.out.println("Invalid input, please try again.");
 												}else {
-													if(player.game.getBoard().takeTileToFormNewMeld(meldSelected,tileOfMeld, positionOfMeld, meld)) {
+													if(player.model.getBoard().takeTileToFormNewMeld(meldSelected,tileOfMeld, positionOfMeld, meld)) {
 														for(int i = 0; i < meld.size(); i++) {
 															player.getHand().remove(meld.getTile(i));
 														}
-														player.game.getBoard().printBoard();
+														player.model.getBoard().printBoard();
 														player.getHand().printHand();
 													}
 													else {
