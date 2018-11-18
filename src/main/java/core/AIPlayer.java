@@ -116,14 +116,49 @@ public class AIPlayer extends Player{
 	}
 	
 	public int strategyFourPlayWithTableTiles(ArrayList<Tile> remainingTiles) {
-	
+		
 		int tilesPlayed = 0;
 		
+		//this means it's a set
 		if (remainingTiles.get(0).getRank() == remainingTiles.get(1).getRank()) {
-			//this means it's a set
+			
+			int targetRank = remainingTiles.get(0).getRank();
+			
+			ArrayList<Character> setColours = new ArrayList<Character>();
+			
+			// this is to find out which colours we're looking for
+			for (Tile t: remainingTiles) {
+				switch (t.getColour()) {
+				case 'R':
+					setColours.add('R');
+					break;
+				case 'B':
+					setColours.add('B');
+					break;
+				case 'G':
+					setColours.add('G');
+					break;
+				default:
+					setColours.add('O');
+				}
+			}
+			
+			int counter = 0;
+			
+			for (Meld meld: game.getBoard().currentMelds) {
+				System.out.println(meld.getTiles());
+				for (Tile tile: meld.getTiles()) {
+					System.out.println(tile.getColour());
+					if (tile.getRank() == targetRank && !setColours.contains(tile.getColour())) {
+						counter++;
+					}
+				}
+			}
+			
+			System.out.println("COUNTER" + counter);
 		}
+		//this means it's a run
 		else {
-			//this means it's a run
 			int oneRankLower = remainingTiles.get(0).getRank() - 1;
 			int oneRankHigher = remainingTiles.get(1).getRank() + 1;
 			char sameColour = remainingTiles.get(0).getColour();
@@ -135,6 +170,7 @@ public class AIPlayer extends Player{
 			boolean boolOneRankLower = false;
 			boolean boolOneRankHigher = false;
 			
+			//go through the board and find how many of the tiles you need have already been played
 			for (Meld meld: game.getBoard().currentMelds) {
 				for (Tile tile: meld.getTiles()) {
 					if (tile.getRank() == oneRankLower) {

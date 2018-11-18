@@ -246,8 +246,8 @@ public class AiStrategyFourTest extends TestCase {
 	    
 	    aiPlayer4.hand.add(G2);
 	    aiPlayer4.hand.add(B2);
-	    aiPlayer4.hand.add(B5);
-	    aiPlayer4.hand.add(O5);
+	    //aiPlayer4.hand.add(B5);
+	    //aiPlayer4.hand.add(O5);
 	    Collections.sort(aiPlayer4.hand.getTiles());
 	    
 	    aiPlayer4.initial30Played = true;
@@ -258,6 +258,8 @@ public class AiStrategyFourTest extends TestCase {
 	    testMeld.add(O2);
 	    
 	    aiPlayer4.game.getBoard().addMeld(testMeld);
+	    
+	    aiStrategyFour.executeStrategy(aiPlayer4);
 	    
 	    assertEquals(testMeld, aiPlayer4.game.getBoard().currentMelds.get(0));
 	}
