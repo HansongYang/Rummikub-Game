@@ -8,5 +8,6 @@ public interface Controller {
 	public Tile drawTile();
 	public boolean createMeld(ArrayList<Tile> tiles);
 	public boolean playAITurns();
-	public void selectPlayTilesToBoard();
+	public void playTilestoMeldFront(ArrayList<Tile> tiles,int meldId);
+	public void playTilestoMeldBack(ArrayList<Tile> tiles,int meldId);
 }

@@ -39,16 +39,13 @@ public class JavaFxController implements Controller {
 		Meld meld = player.createMeld(tiles, player.hand);
 		
 		if(meld != null) {
+			
+			model.getBoard().addMeld(meld);
+			
 			return true;
 		}else {
 			return false;
 		}
-		
-	}
-
-
-	public void selectPlayTilesToBoard() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -71,6 +68,33 @@ public class JavaFxController implements Controller {
 		}
 		
 		return false;
+	}
+
+	public void playTilestoMeldFront(ArrayList<Tile> tiles, int meldId) {
+		Meld meldToAdd = new Meld();
+		for(Tile t : tiles) {
+			meldToAdd.add(t);		
+		}
+		
+		if(model.getBoard().addTileToMeldBeginning(meldId, meldToAdd)) {
+			for(Tile t : tiles) {
+				model.userPlayer.hand.remove(t);
+			}
+		}
+		
+	}
+
+	public void playTilestoMeldBack(ArrayList<Tile> tiles, int meldId) {
+		Meld meldToAdd = new Meld();
+		for(Tile t : tiles) {
+			meldToAdd.add(t);		
+		}
+		
+		if(model.getBoard().addTileToMeldEnd(meldId, meldToAdd)) {
+			for(Tile t : tiles) {
+				model.userPlayer.hand.remove(t);
+			}
+		}
 	}
 
 	

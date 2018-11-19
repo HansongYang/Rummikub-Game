@@ -34,7 +34,12 @@ public class Board {
             return true;
         } else {
             meld.resetAllJustPlayedFlag();
-            checkMeld.remove(checkMeld.size()-1); 
+           
+            
+            for(int i = 0; i < meld.size(); i++) {
+            	checkMeld.remove(checkMeld.size() - 1);
+            }
+            
             return false; // Invalid meld created
         }
     }
@@ -58,7 +63,11 @@ public class Board {
             return true;
         } else {
         	meld.resetAllJustPlayedFlag(); 
-        	checkMeld.remove(0); 
+        	
+        	for(int i = 0; i < meld.size(); i++) {
+            	checkMeld.remove(0);
+            }
+        	
             return false; // Invalid meld created
         }
         
