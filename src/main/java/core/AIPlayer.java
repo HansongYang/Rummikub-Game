@@ -10,7 +10,6 @@ public class AIPlayer extends Player{
 	public int red = 0;
 	public int orange = 0;
 	public int green = 0;
-	ArrayList<Tile> setsOfTwo;
 	
 	PlayerStrategy<? super AIPlayer> strategy;
 	
@@ -115,5 +114,134 @@ public class AIPlayer extends Player{
 
 		return tilesPlayed;
 	}
-
+	
+	public int strategyFourPlayWithTableTiles(ArrayList<Tile> remainingTiles) {
+		
+		int tilesPlayed = 0;
+		
+		//this means it's a set
+		if (remainingTiles.get(0).getRank() == remainingTiles.get(1).getRank()) {
+			
+			int targetRank = remainingTiles.get(0).getRank();
+			
+			ArrayList<Character> setColours = new ArrayList<Character>();
+			
+			// this is to find out which colors we're looking for
+			for (Tile t: remainingTiles) {
+				switch (t.getColour()) {
+				case 'R':
+					setColours.add('R');
+					break;
+				case 'B':
+					setColours.add('B');
+					break;
+				case 'G':
+					setColours.add('G');
+					break;
+				default:
+					setColours.add('O');
+				}
+			}
+			
+			int counter = 0;
+			
+			for (Meld meld: model.getBoard().currentMelds) {
+				for (Tile tile: meld.getTiles()) {
+					if (tile.getRank() == targetRank && !setColours.contains(tile.getColour())) {
+						counter++;
+					}
+				}
+			}
+			
+			// this 3 is an arbitrary amount - this is for Strategy4's condition thing
+			if (counter >= 3) { 
+				for (int i= 0; i < model.getBoard().currentMelds.size(); i++) {
+					
+					// Using remainingTiles.get(0):
+					// If you can, add to that meld and remove Tile from hand
+					ArrayList<Tile> tempMeld = new ArrayList<Tile>(model.getBoard().currentMelds.get(i).getTiles());
+					tempMeld.add(remainingTiles.get(0));
+					if (meldValidatorService.isValidMeld(tempMeld)) {
+						Meld newMeld = new Meld();
+						newMeld.add(remainingTiles.get(0));
+						model.getBoard().addTileToMeldBeginning(i, newMeld);
+						hand.remove(remainingTiles.get(0));
+						tilesPlayed++;
+						}
+					
+					// If not above condition,
+					// Using remainingTiles.get(1):
+					// If Tile makes a valid set, add to that set and remove from hand
+					else {
+						tempMeld.remove(0);
+						tempMeld.add(remainingTiles.get(1));
+						if (meldValidatorService.isValidMeld(tempMeld)) {
+							Meld nextNewMeld = new Meld();
+							nextNewMeld.add(remainingTiles.get(1));
+							model.getBoard().addTileToMeldBeginning(i, nextNewMeld);
+							hand.remove(remainingTiles.get(1));
+							tilesPlayed++;
+						}
+					}
+				}
+			}
+		}
+		//this means it's a run
+		else {
+			int oneRankLower = remainingTiles.get(0).getRank() - 1;
+			int oneRankHigher = remainingTiles.get(1).getRank() + 1;
+			char sameColour = remainingTiles.get(0).getColour();
+			
+			// use these counters for probabilities of finishing run
+			int oneRankLowerCounter = 0;
+			int oneRankHigherCounter = 0;
+			
+			boolean boolOneRankLower = false;
+			boolean boolOneRankHigher = false;
+			
+			//go through the board and find how many of the tiles you need have already been played
+			for (Meld meld: model.getBoard().currentMelds) {
+				for (Tile tile: meld.getTiles()) {
+					if (tile.getRank() == oneRankLower) {
+						boolOneRankLower = true;
+						oneRankLowerCounter++;
+					}
+					if (tile.getRank() == oneRankHigher) {
+						boolOneRankHigher = true;
+						oneRankHigherCounter++;
+					}
+				}
+			}
+			
+			if (boolOneRankHigher && boolOneRankLower) {
+				//both sides of the run are already on the board
+				for (int i = 0 ; i < model.getBoard().currentMelds.size(); i++) {
+					ArrayList<Tile> tempMeld = new ArrayList<Tile>(model.getBoard().currentMelds.get(i).getTiles());
+					tempMeld.add(0, remainingTiles.get(0));
+					if (meldValidatorService.isValidMeld(tempMeld)) {
+						Meld newMeld = new Meld();
+						newMeld.add(remainingTiles.get(0));
+						model.getBoard().addTileToMeldBeginning(i, newMeld);
+						hand.remove(remainingTiles.get(0));
+						tilesPlayed++;
+					} else {
+						// if it doesn't fit at the front, remove from the front and add to the back
+						tempMeld.remove(0);
+						tempMeld.add(remainingTiles.get(0));
+						if (meldValidatorService.isValidMeld(tempMeld)) {
+							Meld newMeld = new Meld();
+							newMeld.add(remainingTiles.get(0));
+							model.getBoard().addTileToMeldEnd(i, newMeld);
+							hand.remove(remainingTiles.get(0));
+							tilesPlayed++;
+						}
+					}
+					
+				}
+			}
+			
+		}
+		
+		return tilesPlayed;
+	}
 }

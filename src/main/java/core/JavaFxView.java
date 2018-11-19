@@ -26,10 +26,13 @@ public class JavaFxView {
 	public BorderPane panel;
 	public BorderPane centerGamePane;
 	public ArrayList<Tile> selectedTiles;
-	public int selectedMeldID = -1;
-	
+	public int selectedMeldID = -1;	
 	public enum LocationOnMeld { FRONT, BACK }
 	public LocationOnMeld locationOnMeld;
+
+	public boolean time;
+	public String playername;
+	public String name;
 	
 	
 	public JavaFxView(Model model, Controller controller, BorderPane panel) {
@@ -38,6 +41,9 @@ public class JavaFxView {
 		this.panel = panel;
 		this.selectedTiles = new ArrayList<Tile>();
 		this.panel.setCenter(centerGamePane = new BorderPane());
+		this.time = false;
+		this.name = "";
+		this.playername = "";
 	}
 	
 	public JavaFxView() {
@@ -57,7 +63,18 @@ public class JavaFxView {
     	displayBoard(this.model.getBoard());
 	}
 	
-
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setPlayerName(String playername) {
+		this.playername = playername;
+	}
+	
+	public void setTime(Boolean time) {
+		this.time = time;
+	}
+	
 	public void indicateTurn(Player player) {
 		System.out.println("INDICATE TURN " + player.name);
 		Label label = new Label(player.name + "'s turn");
@@ -74,12 +91,37 @@ public class JavaFxView {
 		player.getHand().sortTilesByColour();
 		FlowPane flowPane = new FlowPane(5, 5);
 		flowPane.setAlignment(Pos.CENTER);
-
+		
 		switch(num) {
-			case 1: panel.setBottom(flowPane); flowPane.setOrientation(Orientation.HORIZONTAL); break;
-			case 2: panel.setLeft(flowPane); flowPane.setOrientation(Orientation.VERTICAL); break;
-			case 3: panel.setTop(flowPane); flowPane.setOrientation(Orientation.HORIZONTAL); break;
-			case 4: panel.setRight(flowPane); flowPane.setOrientation(Orientation.VERTICAL); break;
+			case 1: panel.setBottom(flowPane); 
+					flowPane.setOrientation(Orientation.HORIZONTAL); 
+					flowPane.getChildren().add(new Label(playername + ":  " + name));
+					break;
+			case 2: panel.setLeft(flowPane); flowPane.setOrientation(Orientation.VERTICAL); 
+					if(!playername.equals("Player 1")) {
+			    		flowPane.getChildren().add(new Label("Player 1   "));
+			    	}else {
+			    		flowPane.getChildren().add(new Label("Player 2   "));
+			    	}
+					break;
+			case 3: panel.setTop(flowPane);
+					flowPane.setOrientation(Orientation.HORIZONTAL);
+					if(playername.equals("Player 4")) {
+			    		flowPane.getChildren().add(new Label("Player 2   "));
+			    	} else if(!playername.equals("Player 3")) {
+			    		flowPane.getChildren().add(new Label("Player 3    "));
+			    	} else {
+			    		flowPane.getChildren().add(new Label("Player 2   "));
+			    	}
+					break;
+			case 4: panel.setRight(flowPane);
+					flowPane.setOrientation(Orientation.VERTICAL);
+					if(!playername.equals("Player 4")) {
+						flowPane.getChildren().add(new Label("Player 4   "));
+			    	}else {
+			    		flowPane.getChildren().add(new Label("Player 3   "));
+			    	}
+					break;
 		}
 
 		for(int i = 0; i < player.getHand().size(); i++) {
@@ -100,25 +142,30 @@ public class JavaFxView {
 	    	} else {
 	    		tileLabel.setTextFill(Color.BLACK);
 	    	}
+	    	
+	    	if(num == 4) {
+	    		tileLabel.setRotate(-90);
+	    	}
+	    	if(num == 2) {
+	    		tileLabel.setRotate(90);
+	    	}
+	    	
 	    	tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
 
 	    	flowPane.getChildren().add(tileLabel);
 
 	    	 tileLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	        	
-	    	        	if(!selectedTiles.contains(tile)) {
-	    	        		tileLabel.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
-	    	        		selectedTiles.add(tile);
-	    	        	}else {
-	    	        		tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
-	    	        		selectedTiles.remove(tile);
-	    	        	}
+	    	     public void handle(MouseEvent e) {   	
+	    	        if(!selectedTiles.contains(tile)) {
+	    	        	tileLabel.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
+	    	        	selectedTiles.add(tile);
+	    	        }else {
+	    	        	tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+	    	        	selectedTiles.remove(tile);
 	    	        }
-	    	    });
-	    	 
+	    	     }
+	    	 });
     	}
-
 	}
 
 	public void displayHand(Hand hand) {
@@ -413,8 +460,4 @@ public class JavaFxView {
 		
 
 	}
-
-
-	
-
 }

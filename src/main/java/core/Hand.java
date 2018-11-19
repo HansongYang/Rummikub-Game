@@ -149,7 +149,7 @@ public class Hand {
 		return sets;
 	}
 	
-	public ArrayList<ArrayList<Tile>> getSetsOfTwo(){
+	public ArrayList<ArrayList<Tile>> getSetsOfTwo(ArrayList<Tile> remainingTiles){
 		
 		ArrayList<ArrayList<Tile>> setsTwo = new ArrayList<ArrayList<Tile>>();
 		
@@ -161,14 +161,15 @@ public class Hand {
 		// However, since [B2, G2] and [G2, B2] are the same thing, setsTwo is converted to a set and then back to an ArrayList
 		// to erase duplicates
 		
+		Collections.sort(remainingTiles);
 		
-		for (Tile currentTile: this.getTiles()) {
+		for (Tile currentTile: remainingTiles) {
 			ArrayList<Tile> possibleSet = new ArrayList<Tile>();
 			possibleSet.add(currentTile);
 			ArrayList<Character> prevColours = new ArrayList<Character>();
 			prevColours.add(currentTile.getColour());
 			
-			for (Tile possibleTile: this.getTiles()) {
+			for (Tile possibleTile: remainingTiles) {
 				if (possibleTile.getRank() == currentTile.getRank() && !prevColours.contains(possibleTile.getColour())) {
 					possibleSet.add(possibleTile);
 					prevColours.add(possibleTile.getColour());
@@ -188,6 +189,49 @@ public class Hand {
 		
 		return setsTwo;
 	}
+	
+	public ArrayList<ArrayList<Tile>> getRunsOfTwo(ArrayList<Tile> remainingTiles){
+		
+		ArrayList<ArrayList<Tile>> runsTwo = new ArrayList<ArrayList<Tile>>();
+		
+		char initialColour;
+		
+		Collections.sort(remainingTiles);
+		for (Tile currentTile: remainingTiles) {
+			ArrayList<Tile> possibleRun = new ArrayList<Tile>();
+			possibleRun.add(currentTile);
+			initialColour = currentTile.getColour();
+			
+			int currentNum = currentTile.getRank();
+			for (Tile possibleTile: remainingTiles) {
+				if (possibleTile.getColour() == initialColour && (possibleTile.getRank() == currentNum + 1)) {
+					possibleRun.add(possibleTile);
+					currentNum = possibleTile.getRank();
+				}
+			}
+			
+			if (possibleRun.size() == 2 && !helpRun2(possibleRun)) {
+				runsTwo.add(possibleRun);
+			}
+		}
+		
+		return runsTwo;
+	}
+	
+	// helper function for seeing getRunsOfTwo() to see if the run of 2 is actually part of a bigger run
+	public boolean helpRun2(ArrayList<Tile> possibleRun) {
+		
+		char targetColour = possibleRun.get(0).getColour();
+		int targetRank = possibleRun.get(0).getRank() - 1;
+		
+		for (Tile tile: this.getTiles()) {
+			if (tile.getColour() == targetColour && tile.getRank() == targetRank) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	//Find all of the possible meld of sets that this hand can get
 	public ArrayList<Meld> getMeldSets() {
