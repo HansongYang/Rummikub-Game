@@ -3,7 +3,7 @@ package core;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ConsoleController implements Controller {
+public class ConsoleController  {
 
 	Scanner reader = new Scanner(System.in);
 	public View view;

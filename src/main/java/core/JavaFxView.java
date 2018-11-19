@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import java.util.Map;
 
+import core.Model.GameStates;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -25,6 +26,10 @@ public class JavaFxView {
 	public BorderPane panel;
 	public BorderPane centerGamePane;
 	public ArrayList<Tile> selectedTiles;
+	public int selectedMeldID = -1;
+	
+	public enum LocationOnMeld { FRONT, BACK }
+	public LocationOnMeld locationOnMeld;
 	
 	
 	public JavaFxView(Model model, Controller controller, BorderPane panel) {
@@ -129,20 +134,45 @@ public class JavaFxView {
 		boardGrid.setVgap(5);
 
 		for (int i = 0; i < board.getCurrentMelds().size(); i++) {
-			for (int j = 0; j < board.getCurrentMelds().get(i).size(); j++) {
+			final Meld meld = board.getCurrentMelds().get(i);
+			final int meldID = i;
+			
+			final Label plusLabelLeft = new Label("+");
+			plusLabelLeft.setAlignment(Pos.CENTER);
+			plusLabelLeft.setMinSize(30,40);
+			boardGrid.add(plusLabelLeft, 0, i);
+			plusLabelLeft.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
+			
+			plusLabelLeft.setOnMouseClicked(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {
+	    	        	if(selectedMeldID == -1) {
+	    	        		plusLabelLeft.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
+	    	        		selectedMeldID = meldID;
+	    	        		locationOnMeld = LocationOnMeld.FRONT;
+	    	        		
+	    	        	}else if(selectedMeldID == meldID && locationOnMeld == LocationOnMeld.FRONT) {
+	    	        		plusLabelLeft.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+	    	        		selectedMeldID = -1;
+	    	        	}
+	    	        	
+	    	        
+	    	        }
+	    	    });
+			
+			for (int j = 1; j < meld.size() + 1; j++) {
 
-				final Tile tile = board.getCurrentMelds().get(i).getTile(j);
+				final Tile tile = meld.getTile(j - 1);
 				final Label tileLabel = new Label(Integer.toString(tile.getRank()));
 				tileLabel.setAlignment(Pos.CENTER);
 
 				tileLabel.setMinSize(30,40);
-				if(board.getCurrentMelds().get(i).getTile(j).getColour() == 'G') {
+				if(tile.getColour() == 'G') {
 					tileLabel.setTextFill(Color.GREEN);
-				}else if(board.getCurrentMelds().get(i).getTile(j).getColour() == 'R') {
+				}else if(tile.getColour() == 'R') {
 					tileLabel.setTextFill(Color.RED);
-				} else if (board.getCurrentMelds().get(i).getTile(j).getColour() == 'B'){
+				} else if (tile.getColour() == 'B'){
 					tileLabel.setTextFill(Color.BLUE);
-				} else if(board.getCurrentMelds().get(i).getTile(j).getColour() == 'O') {
+				} else if(tile.getColour() == 'O') {
 					tileLabel.setTextFill(Color.ORANGE);
 				} else {
 					tileLabel.setTextFill(Color.BLACK);
@@ -151,6 +181,27 @@ public class JavaFxView {
 
 				boardGrid.add(tileLabel, j, i);
 			}
+			
+			final Label plusLabelRight = new Label("+");
+			plusLabelRight.setAlignment(Pos.CENTER);
+			plusLabelRight.setMinSize(30,40);
+			boardGrid.add(plusLabelRight, board.getCurrentMelds().get(i).size() + 1, i);
+			plusLabelRight.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
+			
+			plusLabelRight.setOnMouseClicked(new EventHandler<MouseEvent>() {
+    	        public void handle(MouseEvent e) {
+    	        	if(selectedMeldID == -1) {
+    	        		plusLabelRight.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
+    	        		selectedMeldID = meldID;
+    	        		locationOnMeld = LocationOnMeld.BACK;
+    	        		
+    	        	}else if(selectedMeldID == meldID && locationOnMeld == LocationOnMeld.BACK) {
+    	        		plusLabelRight.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+    	        		selectedMeldID = -1;
+    	        	}
+    	        
+    	        }
+    	    });
 		}
 	}
 
@@ -238,7 +289,19 @@ public class JavaFxView {
 
 
                 try {
-					controller.selectPlayTilesToBoard();
+					if(selectedMeldID != -1) {
+						
+						if(locationOnMeld == LocationOnMeld.FRONT) {//Add to front
+							controller.playTilestoMeldFront(selectedTiles, selectedMeldID);
+						}
+						else {//Add to back
+							controller.playTilestoMeldBack(selectedTiles, selectedMeldID);
+						}
+						selectedTiles.clear();
+						selectedMeldID = -1;
+						locationOnMeld = null;
+						
+					}
 
 					refreshWindow();
 				} catch (Exception e) {
