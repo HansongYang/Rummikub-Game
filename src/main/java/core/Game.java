@@ -18,15 +18,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.animation.*;
+import javafx.beans.value.*;
 
 public class Game extends Application {
     
@@ -40,6 +37,8 @@ public class Game extends Application {
 	public String name;
 	public boolean time;
 	public String playername;
+	public int numPlayer;
+	public String[] strategy;
 
     public static void main(String[] arg) {
     	launch(arg);
@@ -49,6 +48,8 @@ public class Game extends Application {
     	name = "";
     	time = false;
     	playername = "";
+    	numPlayer = 0;
+    	strategy = new String[3];
     }
     
 	@Override
@@ -58,8 +59,6 @@ public class Game extends Application {
 		System.out.println("Start");
 
 		panel = new BorderPane();
-
-	    panel.setStyle("-fx-background-color: #008000;");
 	    panel.setPadding(new Insets(10, 10, 10, 10));
 
 		scene = new Scene(panel, 1300, 800);
@@ -71,19 +70,25 @@ public class Game extends Application {
 	    controller = new JavaFxController(model);
     	view = new JavaFxView(model, controller, panel);	  	
 
-    	this.model.initGame();
     	this.startMenu();
 	}
 	
 	public void startMenu() {
-		Button start = new Button("Start Game"); 
+		final Button start = new Button("Start Game"); 
 		start.setStyle("-fx-background-color: red; -fx-textfill: black;"); 
-		Text label = new Text("Welcome to Rummikub Game, what is your name?");
-		TextField nameText = new TextField(); 
+		final Text label = new Text("Welcome to Rummikub Game, what is your name?");
+		final TextField nameText = new TextField(); 
+		
+		final Text label4 = new Text("How many players do you want to play with?");
+		final ComboBox playerComboBox = new ComboBox();
+	    playerComboBox.getItems().addAll(
+	            2,3,4  
+	    );
 	    
-	    Text label2 = new Text("Which player do you want to choose?"); 
-	    ToggleGroup playerGroup = new ToggleGroup(); 
-	    RadioButton player1 = new RadioButton("Player 1"); 
+	    playerComboBox.getSelectionModel().selectFirst();
+	    final Text label2 = new Text("Which player do you want to choose?"); 
+	    final ToggleGroup playerGroup = new ToggleGroup(); 
+	    final RadioButton player1 = new RadioButton("Player 1"); 
 	    player1.setToggleGroup(playerGroup);
 	    player1.setSelected(true);
 	    RadioButton player2 = new RadioButton("Player 2"); 
@@ -95,8 +100,9 @@ public class Game extends Application {
 	    
 	    label.setStyle("-fx-font: normal bold 30px 'serif'");
 	    label2.setStyle("-fx-font: normal 20px 'serif'");
+	    label4.setStyle("-fx-font: normal 20px 'serif'");
 	    
-	    Text label3 = new Text("Do you want to use 2 minutes timer for your turn?");
+	    final Text label3 = new Text("Do you want to use 2 minutes timer for your turn?");
 	    label3.setStyle("-fx-font: normal 20px 'serif'"); 
 	    ToggleGroup timer = new ToggleGroup(); 
 	    RadioButton yes = new RadioButton("yes"); 
@@ -108,18 +114,48 @@ public class Game extends Application {
 	    GridPane boardGrid = new GridPane();
 	    panel.setCenter(boardGrid);
 	    boardGrid.setAlignment(Pos.CENTER);
+	    panel.setStyle("-fx-background-color: PALEGREEN;");
 	    
+	    final ComboBox aiComboBox1 = new ComboBox();
+	    final ComboBox aiComboBox2 = new ComboBox();
+	    final ComboBox aiComboBox3 = new ComboBox();
+	    final Label ai1 = new Label("AI player 1:  ");
+	    final Label ai2 = new Label("AI player 2:  ");
+	    final Label ai3 = new Label("AI player 3:  ");
+	    final Text label5 = new Text("Please select strategy for each AI player.");
+	    label5.setStyle("-fx-font: normal 20px 'serif'");
+	    
+    	aiComboBox1.getItems().addAll(
+    	    "AI Strategy 1","AI Strategy 2","AI Strategy 3"  
+    	);
+    	aiComboBox2.getItems().addAll(
+	            "AI Strategy 1","AI Strategy 2","AI Strategy 3"  
+	    );
+		aiComboBox3.getItems().addAll(
+	            "AI Strategy 1","AI Strategy 2","AI Strategy 3"  
+	    );
+		strategy[0] = (String) aiComboBox1.getValue();
+    		
+    	aiComboBox1.getSelectionModel().selectFirst();
+    	aiComboBox2.getSelectionModel().selectFirst();
+		aiComboBox3.getSelectionModel().selectFirst();
+		
 	    boardGrid.add(label, 0, 0); 
 	    boardGrid.add(nameText, 0, 1);
-	    boardGrid.add(label2, 0, 2);
-	    boardGrid.add(player1, 0, 3);       
-	    boardGrid.add(player2, 0, 4);
-	    boardGrid.add(player3, 0, 5);
-	    boardGrid.add(player4, 0, 6);
-	    boardGrid.add(label3, 0, 7);
-	    boardGrid.add(yes, 0, 8);
-	    boardGrid.add(no, 0, 9);
-	    boardGrid.add(start, 2, 11);
+	    boardGrid.add(label4, 0, 2); 
+	    boardGrid.add(playerComboBox, 0, 3);
+	    boardGrid.add(label2, 0, 4);
+	    boardGrid.add(player1, 0, 5);       
+	    boardGrid.add(player2, 0, 6);
+	    boardGrid.add(player3, 0, 7);
+	    boardGrid.add(player4, 0, 8);
+	    boardGrid.add(label5, 0, 9);
+    	boardGrid.add(ai1, 0, 10);
+    	boardGrid.add(aiComboBox1, 0, 11);
+	    boardGrid.add(label3, 0, 16);
+	    boardGrid.add(yes, 0, 17);
+	    boardGrid.add(no, 0, 18);
+	    boardGrid.add(start, 2, 20);
 
 	    start.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) { 
@@ -135,11 +171,47 @@ public class Game extends Application {
             		time = false;
             	}
             	view.setTime(time);
+            	numPlayer = (int) playerComboBox.getValue();
+            	strategy[0] = (String) aiComboBox1.getValue();
+            	strategy[1] = (String) aiComboBox2.getValue();
+            	strategy[2] = (String) aiComboBox3.getValue();
+            	view.setNumPlayer(numPlayer);
+            	view.setStrategy(strategy);
+            	model.setNumPlayer(numPlayer);
+            	model.setStrategy(strategy);
             	
+            	model.initGame();
             	view.refreshWindow();
-                loop();
+              	loop();
             }
         });
+	    
+	    playerComboBox.valueProperty().addListener(new ChangeListener<Number>() {
+          	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				// TODO Auto-generated method stub
+          		if((int) playerComboBox.getValue() == 2) {
+          			boardGrid.getChildren().remove(ai2);
+          			boardGrid.getChildren().remove(ai3);
+          			boardGrid.getChildren().remove(aiComboBox2);
+          			boardGrid.getChildren().remove(aiComboBox3); 
+            	}else if ((int) playerComboBox.getValue() == 3){
+            		boardGrid.getChildren().remove(ai3);
+            		boardGrid.getChildren().remove(aiComboBox3);
+            		boardGrid.getChildren().remove(ai2);
+            		boardGrid.getChildren().remove(aiComboBox2);
+            		aiComboBox2.getSelectionModel().selectFirst();
+            		boardGrid.add(ai2, 0, 12);
+            		boardGrid.add(aiComboBox2, 0, 13);
+            	}else {
+          			boardGrid.getChildren().remove(aiComboBox2);
+          			boardGrid.getChildren().remove(ai2);
+            		boardGrid.add(ai2, 0, 12);
+            		boardGrid.add(aiComboBox2, 0, 13);
+            		boardGrid.add(ai3, 0, 14);
+            		boardGrid.add(aiComboBox3, 0, 15);
+            	}
+			}
+		});
 	}
 
     public void gameLoop() {
@@ -188,9 +260,52 @@ public class Game extends Application {
     	view.printTurns(model.playerOrder);
     	view.displayTurnOptions();
     	view.displayPlayerHand(model.userPlayer, 1);
-    	view.displayPlayerHand(model.aiPlayer1, 2);
-    	view.displayPlayerHand(model.aiPlayer2, 3);
-    	view.displayPlayerHand(model.aiPlayer3, 4);
+    	if(numPlayer == 2) {
+    		if(strategy[0].equals("AI Strategy 1")) {
+    			view.displayPlayerHand(model.aiPlayer1, 2);
+    		}else if(strategy[0].equals("AI Strategy 2")) {
+    			view.displayPlayerHand(model.aiPlayer1, 2);
+    		}else {
+    			view.displayPlayerHand(model.aiPlayer1, 2);
+    		}
+    	}else if(numPlayer == 3) {
+    		if(strategy[0].equals("AI Strategy 1")) {
+    			view.displayPlayerHand(model.aiPlayer1, 2);
+    		}else if(strategy[0].equals("AI Strategy 2")) {
+    			view.displayPlayerHand(model.aiPlayer1, 2);
+    		}else if(strategy[0].equals("AI Strategy 3")){
+    			view.displayPlayerHand(model.aiPlayer1, 2);
+    		}
+    		if(strategy[1].equals("AI Strategy 1")) {
+    			view.displayPlayerHand(model.aiPlayer2, 3);
+    		}else if(strategy[1].equals("AI Strategy 2")) {
+    			view.displayPlayerHand(model.aiPlayer2, 3);
+    		}else {
+    			view.displayPlayerHand(model.aiPlayer2, 3);
+    		}
+    	}else {
+    		if(strategy[0].equals("AI Strategy 1")) {
+    			view.displayPlayerHand(model.aiPlayer1, 2);
+    		}else if(strategy[0].equals("AI Strategy 2")) {
+    			view.displayPlayerHand(model.aiPlayer1, 2);
+    		}else if(strategy[0].equals("AI Strategy 3")){
+    			view.displayPlayerHand(model.aiPlayer1, 2);
+    		}
+    		if(strategy[1].equals("AI Strategy 1")) {
+    			view.displayPlayerHand(model.aiPlayer2, 3);
+    		}else if(strategy[1].equals("AI Strategy 2")) {
+    			view.displayPlayerHand(model.aiPlayer2, 3);
+    		}else if(strategy[1].equals("AI Strategy 3")){
+    			view.displayPlayerHand(model.aiPlayer2, 3);
+    		}
+    		if(strategy[2].equals("AI Strategy 1")) {
+    			view.displayPlayerHand(model.aiPlayer3, 4);
+    		}else if(strategy[2].equals("AI Strategy 2")) {
+    			view.displayPlayerHand(model.aiPlayer3, 4);
+    		}else {
+    			view.displayPlayerHand(model.aiPlayer3, 4);
+    		}
+    	}
     	view.displayBoard(model.getBoard());
     }
     
