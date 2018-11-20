@@ -18,6 +18,10 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.binding.Bindings;
 
 public class JavaFxView {
 
@@ -33,6 +37,8 @@ public class JavaFxView {
 	public boolean time;
 	public String playername;
 	public String name;
+	public int numPlayer;
+	public String [] strategy;
 	
 	
 	public JavaFxView(Model model, Controller controller, BorderPane panel) {
@@ -44,6 +50,7 @@ public class JavaFxView {
 		this.time = false;
 		this.name = "";
 		this.playername = "";
+		strategy = new String[3];
 	}
 	
 	public JavaFxView() {
@@ -57,10 +64,62 @@ public class JavaFxView {
 		panel.setCenter(centerGamePane);
 		displayTurnOptions();
     	displayPlayerHand(model.userPlayer, 1);
-    	displayPlayerHand(model.aiPlayer1, 2);
-    	displayPlayerHand(model.aiPlayer2, 3);
-    	displayPlayerHand(model.aiPlayer3, 4);
+    	if(numPlayer == 2) {
+    		if(strategy[0].equals("AI Strategy 1")) {
+    			displayPlayerHand(model.aiPlayer1, 2);
+    		}else if(strategy[0].equals("AI Strategy 2")) {
+    			displayPlayerHand(model.aiPlayer1, 2);
+    		}else {
+    			displayPlayerHand(model.aiPlayer1, 2);
+    		}
+    	}else if(numPlayer == 3) {
+    		if(strategy[0].equals("AI Strategy 1")) {
+    			displayPlayerHand(model.aiPlayer1, 2);
+    		}else if(strategy[0].equals("AI Strategy 2")) {
+    			displayPlayerHand(model.aiPlayer1, 2);
+    		}else if(strategy[0].equals("AI Strategy 3")){
+    			displayPlayerHand(model.aiPlayer1, 2);
+    		}
+    		if(strategy[1].equals("AI Strategy 1")) {
+    			displayPlayerHand(model.aiPlayer2, 3);
+    		}else if(strategy[1].equals("AI Strategy 2")) {
+    			displayPlayerHand(model.aiPlayer2, 3);
+    		}else {
+    			displayPlayerHand(model.aiPlayer2, 3);
+    		}
+    	}else {
+    		if(strategy[0].equals("AI Strategy 1")) {
+    			displayPlayerHand(model.aiPlayer1, 2);
+    		}else if(strategy[0].equals("AI Strategy 2")) {
+    			displayPlayerHand(model.aiPlayer1, 2);
+    		}else if(strategy[0].equals("AI Strategy 3")){
+    			displayPlayerHand(model.aiPlayer1, 2);
+    		}
+    		if(strategy[1].equals("AI Strategy 1")) {
+    			displayPlayerHand(model.aiPlayer2, 3);
+    		}else if(strategy[1].equals("AI Strategy 2")) {
+    			displayPlayerHand(model.aiPlayer2, 3);
+    		}else if(strategy[1].equals("AI Strategy 3")){
+    			displayPlayerHand(model.aiPlayer2, 3);
+    		}
+    		if(strategy[2].equals("AI Strategy 1")) {
+    			displayPlayerHand(model.aiPlayer3, 4);
+    		}else if(strategy[2].equals("AI Strategy 2")) {
+    			displayPlayerHand(model.aiPlayer3, 4);
+    		}else {
+    			displayPlayerHand(model.aiPlayer3, 4);
+    		}
+    		System.out.println(strategy[2]);
+    	}
     	displayBoard(this.model.getBoard());
+	}
+	
+	public void setNumPlayer(int numPlayer) {
+		this.numPlayer = numPlayer;
+	}
+	
+	public void setStrategy(String[] strategy) {
+		this.strategy = strategy;
 	}
 	
 	public void setName(String name) {
@@ -91,7 +150,7 @@ public class JavaFxView {
 		player.getHand().sortTilesByColour();
 		FlowPane flowPane = new FlowPane(5, 5);
 		flowPane.setAlignment(Pos.CENTER);
-		
+
 		switch(num) {
 			case 1: panel.setBottom(flowPane); 
 					flowPane.setOrientation(Orientation.HORIZONTAL); 
@@ -201,8 +260,6 @@ public class JavaFxView {
 	    	        		plusLabelLeft.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
 	    	        		selectedMeldID = -1;
 	    	        	}
-	    	        	
-	    	        
 	    	        }
 	    	    });
 			
@@ -283,27 +340,45 @@ public class JavaFxView {
 		playToTable.setStyle("-fx-background-color: #f5f6fa");
 		final Button endTurn = new Button("End turn");
 		endTurn.setStyle("-fx-background-color: #f5f6fa");
+		final Label timer = new Label("120");
+		timer.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
 
 		HBox hbox = new HBox(5);
 		hbox.setPadding(new Insets(10));
-		hbox.getChildren().addAll(drawTile, createMeld, playToTable, endTurn);
+		if(time) {
+			model.startClock();
+			hbox.getChildren().addAll(drawTile, createMeld, playToTable, endTurn, timer);
+		}else {
+			hbox.getChildren().addAll(drawTile, createMeld, playToTable, endTurn);
+		}
 		centerGamePane.setBottom(hbox);
 		hbox.setAlignment(Pos.BOTTOM_CENTER);
-
+		
+		model.valueProperty().addListener(new ChangeListener<String>() {
+          	public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+          			timer.textProperty().bind(Bindings.convert(model.valueProperty()));
+          			if(Integer.parseInt(model.getValue()) < 1){
+          				if(controller.playAITurns()) {// AI wins on this turn
+    						//Game over
+    						displayWinner(model.gameWinner);
+    					}
+          				model.stopClock();
+          			}
+          		}
+          	});
+		
+		
 		drawTile.setOnAction(new EventHandler<ActionEvent>() {
 	            public void handle(ActionEvent event) {
-
 	                try {
 						Tile drawnTile = controller.drawTile();
 						//displayDrawnTile(drawnTile);
-
 						if(controller.playAITurns()) {// AI wins on this turn
 							//Game over
 							displayWinner(model.gameWinner);
 						}
 
 						refreshWindow();
-
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -312,7 +387,6 @@ public class JavaFxView {
 
 		createMeld.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-
                 try {
 					if(!controller.createMeld(selectedTiles)) {
 						indicateInvalidMeld();
@@ -322,7 +396,6 @@ public class JavaFxView {
 						if(model.gameWinCheck()) {
 							displayWinner(model.gameWinner);
 						}
-
 						refreshWindow();
 					}
 				} catch (Exception e) {
@@ -333,11 +406,8 @@ public class JavaFxView {
 
 		playToTable.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-
-
                 try {
 					if(selectedMeldID != -1) {
-						
 						if(locationOnMeld == LocationOnMeld.FRONT) {//Add to front
 							controller.playTilestoMeldFront(selectedTiles, selectedMeldID);
 						}
@@ -347,7 +417,6 @@ public class JavaFxView {
 						selectedTiles.clear();
 						selectedMeldID = -1;
 						locationOnMeld = null;
-						
 					}
 
 					refreshWindow();
@@ -359,16 +428,13 @@ public class JavaFxView {
 
 		endTurn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-
-
                 try {
-
 					if(controller.playAITurns()) {// AI wins on this turn
 						//Game over
 						displayWinner(model.gameWinner);
 					}
-
-
+					model.stopClock();
+					model.startClock();
 					refreshWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -425,6 +491,7 @@ public class JavaFxView {
 	public void indicateInvalidMeld() {
 		Label label = new Label("Invalid Meld");
 		label.setStyle("-fx-font: normal bold 30px 'serif'");
+		label.setTextFill(Color.RED);
 		centerGamePane.setTop(label);
 		label.setAlignment(Pos.CENTER);
 	}
@@ -458,6 +525,6 @@ public class JavaFxView {
 	
 	public void displayInitialScreen() {
 		
-
+		
 	}
 }

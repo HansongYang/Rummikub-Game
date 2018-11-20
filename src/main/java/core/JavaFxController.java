@@ -51,20 +51,39 @@ public class JavaFxController implements Controller {
 
 	//Returns true if an AI player wins on this turn
 	public boolean playAITurns() {
-		model.aiPlayer1.playTurn();
-		model.messageObservers();
-		if (model.gameWinCheck()) {
-			return true;
-		}
-		model.aiPlayer2.playTurn();
-		model.messageObservers();
-		if (model.gameWinCheck()) {
-			return true;
-		}
-		model.aiPlayer3.playTurn();
-		model.messageObservers();
-		if (model.gameWinCheck()) {
-			return true;
+		if(model.numPlayer == 2) {
+			model.aiPlayer1.playTurn();
+			model.messageObservers();
+			if (model.gameWinCheck()) {
+				return true;
+			}
+		}else if(model.numPlayer ==3) {
+			model.aiPlayer1.playTurn();
+			model.messageObservers();
+			if (model.gameWinCheck()) {
+				return true;
+			}
+			model.aiPlayer2.playTurn();
+			model.messageObservers();
+			if (model.gameWinCheck()) {
+				return true;
+			}
+		}else {
+			model.aiPlayer1.playTurn();
+			model.messageObservers();
+			if (model.gameWinCheck()) {
+				return true;
+			}
+			model.aiPlayer2.playTurn();
+			model.messageObservers();
+			if (model.gameWinCheck()) {
+				return true;
+			}
+			model.aiPlayer3.playTurn();
+			model.messageObservers();
+			if (model.gameWinCheck()) {
+				return true;
+			}
 		}
 		
 		return false;
