@@ -44,7 +44,9 @@ public class Tile implements Comparable<Tile> {
 	public void setJustPlayedFlag() { justPlayedFlag = true; }
 
 	public void resetJustPlayedFlag() { justPlayedFlag = false; }
-	
+
+	public boolean justPlayed() { return justPlayedFlag; };
+
 	public String toString() {
 		return this.colour + Integer.toString(this.rank);
 	}

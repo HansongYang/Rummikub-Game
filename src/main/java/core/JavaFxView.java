@@ -216,7 +216,7 @@ public class JavaFxView {
 	    	 tileLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
 	    	     public void handle(MouseEvent e) {   	
 	    	        if(!selectedTiles.contains(tile)) {
-	    	        	tileLabel.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
+	    	        	tileLabel.setStyle("-fx-border-color: BLACK; -fx-border-width: 3px; -fx-background-color: WHITE; -fx-font-size: 20px");
 	    	        	selectedTiles.add(tile);
 	    	        }else {
 	    	        	tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
@@ -281,7 +281,12 @@ public class JavaFxView {
 				} else {
 					tileLabel.setTextFill(Color.BLACK);
 				}
-				tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 14px");
+
+				if (tile.justPlayed()) {
+					tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 14px; -fx-border-color: #f1c40f; -fx-border-width: 3px");
+				} else {
+					tileLabel.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-font-size: 14px");
+				}
 
 				boardGrid.add(tileLabel, j, i);
 			}
@@ -306,6 +311,8 @@ public class JavaFxView {
     	        
     	        }
     	    });
+
+			meld.resetAllJustPlayedFlag();
 		}
 	}
 
