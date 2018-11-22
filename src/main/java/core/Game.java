@@ -79,10 +79,10 @@ public class Game extends Application {
 		Button start = new Button("Start Game"); 
 		start.setStyle("-fx-background-color: red; -fx-textfill: black;"); 
 		Text label = new Text("Welcome to Rummikub Game, what is your name?");
-		TextField nameText = new TextField(); 
+		final TextField nameText = new TextField(); 
 	    
 	    Text label2 = new Text("Which player do you want to choose?"); 
-	    ToggleGroup playerGroup = new ToggleGroup(); 
+	    final ToggleGroup playerGroup = new ToggleGroup(); 
 	    RadioButton player1 = new RadioButton("Player 1"); 
 	    player1.setToggleGroup(playerGroup);
 	    player1.setSelected(true);
@@ -98,7 +98,7 @@ public class Game extends Application {
 	    
 	    Text label3 = new Text("Do you want to use 2 minutes timer for your turn?");
 	    label3.setStyle("-fx-font: normal 20px 'serif'"); 
-	    ToggleGroup timer = new ToggleGroup(); 
+	    final ToggleGroup timer = new ToggleGroup(); 
 	    RadioButton yes = new RadioButton("yes"); 
 	    yes.setToggleGroup(timer); 
 	    RadioButton no = new RadioButton("no"); 
@@ -151,7 +151,7 @@ public class Game extends Application {
 				Map.Entry pair = (Map.Entry) it.next();
 				Player player = (Player) pair.getKey();
 				view.indicateTurn(player);
-				view.displayPlayerHands();
+				//view.displayPlayerHands();
 				if (player instanceof UserPlayer) userPlayerTurnLoop(model.userPlayer);
 				else player.playTurn();
 				view.displayBoard(model.getBoard());
