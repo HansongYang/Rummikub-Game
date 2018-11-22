@@ -54,6 +54,7 @@ public class JavaFxView {
 	
 	public void refreshWindow() {
 		panel.getChildren().clear();
+		//centerGamePane.getChildren().clear();
 
 		panel.setCenter(centerGamePane);
 		centerGamePane.setBottom(userActions);
@@ -416,9 +417,14 @@ public class JavaFxView {
 
                 try {
                 	
-                	controller.playMeldsToTable();
+                	if(controller.playMeldsToTable()) {
+                		model.userPlayer.playedTilesOnTurn = true;
+                	}
+                	else  {
+                		indicateMeldsLessThan30();
+                	}
                 	
-                	model.userPlayer.playedTilesOnTurn = true;
+                	
                 	
                 	refreshWindow();
 				} catch (Exception e) {
@@ -470,7 +476,10 @@ public class JavaFxView {
 	}
 
 	public void indicateMeldsLessThan30() {
-		// TODO Auto-generated method stub
+		Label label = new Label("Total value of Melds less than 30");
+		label.setStyle("-fx-font: normal bold 30px 'serif'");
+		centerGamePane.setTop(label);
+		label.setAlignment(Pos.CENTER);
 		
 	}
 

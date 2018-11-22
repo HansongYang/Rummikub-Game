@@ -10,6 +10,6 @@ public interface Controller {
 	public boolean playAITurns();
 	public boolean playTilestoMeldFront(ArrayList<Tile> tiles,int meldId);
 	public boolean playTilestoMeldBack(ArrayList<Tile> tiles,int meldId);
-	public void playMeldsToTable();
+	public boolean playMeldsToTable();
 	public void returnMeldsToHand();
 }

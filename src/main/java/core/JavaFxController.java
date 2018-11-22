@@ -101,15 +101,22 @@ public class JavaFxController implements Controller {
 		return false;
 	}
 
-	public void playMeldsToTable() {
+	public boolean playMeldsToTable() {
 		Player player = model.userPlayer;
 		
-		for(int i = 0; i < model.userPlayer.meldsInHand.size(); i++) {
-			model.getBoard().currentMelds.add(model.userPlayer.meldsInHand.get(i));
+		if(!player.initial30Played && player.totalAllMelds(player.meldsInHand) < 30) {
+			return false;
+		}else {
+		
+			for(int i = 0; i < player.meldsInHand.size(); i++) {
+				model.getBoard().currentMelds.add(player.meldsInHand.get(i));
+			}
+			player.initial30Played = true;
 		}
 		
-		model.userPlayer.meldsInHand.clear();
+		player.meldsInHand.clear();
 		
+		return true;
 	}
 
 	public void returnMeldsToHand() {
