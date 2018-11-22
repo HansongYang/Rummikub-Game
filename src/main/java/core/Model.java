@@ -15,8 +15,9 @@ public class Model implements Observable {
     private ArrayList<Player> players = new ArrayList<Player>();
 	private Deck deck = new Deck();
 	private Board board = new Board();
-	private int interval;
+	private int interval = 120;
 	private Timer timer;
+	private int times = 1;
 	public int numPlayer;
 	public String [] strategy = new String[3]; 
 	
@@ -49,13 +50,14 @@ public class Model implements Observable {
     }
 
     public void startClock() {
-    	interval = 120;
     	timer = new Timer();
     	timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
             	Platform.runLater(() ->setValue(Integer.toString(setInterval())));
+            	
             }
-        }, 1000, 1000);
+        }, 1000L, 4000L * times);
+    	times++;
     }
     
     public void stopClock() {
