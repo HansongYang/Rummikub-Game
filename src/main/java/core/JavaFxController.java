@@ -39,8 +39,9 @@ public class JavaFxController implements Controller {
 		Meld meld = player.createMeld(tiles, player.hand);
 		
 		if(meld != null) {
+			player.meldsInHand.add(meld);
 			
-			model.getBoard().addMeld(meld);
+			//model.getBoard().addMeld(meld);
 			
 			return true;
 		}else {
@@ -89,7 +90,7 @@ public class JavaFxController implements Controller {
 		return false;
 	}
 
-	public void playTilestoMeldFront(ArrayList<Tile> tiles, int meldId) {
+	public boolean playTilestoMeldFront(ArrayList<Tile> tiles, int meldId) {
 		Meld meldToAdd = new Meld();
 		for(Tile t : tiles) {
 			meldToAdd.add(t);		
@@ -99,11 +100,12 @@ public class JavaFxController implements Controller {
 			for(Tile t : tiles) {
 				model.userPlayer.hand.remove(t);
 			}
+			return true;
 		}
-		
+		return false;
 	}
 
-	public void playTilestoMeldBack(ArrayList<Tile> tiles, int meldId) {
+	public boolean playTilestoMeldBack(ArrayList<Tile> tiles, int meldId) {
 		Meld meldToAdd = new Meld();
 		for(Tile t : tiles) {
 			meldToAdd.add(t);		
@@ -113,7 +115,41 @@ public class JavaFxController implements Controller {
 			for(Tile t : tiles) {
 				model.userPlayer.hand.remove(t);
 			}
+			return true;
 		}
+		return false;
+	}
+
+	public boolean playMeldsToTable() {
+		Player player = model.userPlayer;
+		
+		if(!player.initial30Played && player.totalAllMelds(player.meldsInHand) < 30) {
+			return false;
+		}else {
+		
+			for(int i = 0; i < player.meldsInHand.size(); i++) {
+				model.getBoard().currentMelds.add(player.meldsInHand.get(i));
+			}
+			player.initial30Played = true;
+		}
+		
+		player.meldsInHand.clear();
+		
+		return true;
+	}
+
+	public void returnMeldsToHand() {
+		Player player = model.userPlayer;
+		
+		
+		for(int i = 0; i < model.userPlayer.meldsInHand.size(); i++) {
+			Meld meld = model.userPlayer.meldsInHand.get(i);
+			for(int j = 0; j < meld.size(); j++) {
+				player.hand.add(meld.getTile(j));
+			}
+		}
+		model.userPlayer.meldsInHand.clear();
+		
 	}
 
 	

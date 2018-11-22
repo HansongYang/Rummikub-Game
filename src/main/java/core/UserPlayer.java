@@ -7,6 +7,8 @@ import java.util.Scanner;
 public class UserPlayer extends Player{
 	
 	PlayerStrategy<? super UserPlayer> strategy;
+	
+	public boolean playedTilesOnTurn = false;
 
 	public UserPlayer() {
 		super();
