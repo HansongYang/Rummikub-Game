@@ -379,13 +379,14 @@ public class JavaFxView {
 
 		final Button playCreatedMelds = new Button("Play created melds");
 		playCreatedMelds.setStyle("-fx-background-color: #f5f6fa");
-    final Label timer = new Label("120");
+        final Label timer = new Label("120");
 		timer.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
 
 		HBox hbox = new HBox(5);
 		hbox.setPadding(new Insets(10));
-		
-		if(!model.userPlayer.playedTilesOnTurn) {
+
+
+        if(!model.userPlayer.playedTilesOnTurn) {
 			hbox.getChildren().add(drawTile);
 		}
 		else {
@@ -394,19 +395,15 @@ public class JavaFxView {
 		hbox.getChildren().add(createMeld);
 		hbox.getChildren().add(playToTable);
 		hbox.getChildren().add(playCreatedMelds);
-		
-		userActions.setTop(hbox);
 
-		
+        if(time) {
+            model.startClock();
+            hbox.getChildren().add(timer);
+        }
+         
+        userActions.setTop(hbox);
+        hbox.setAlignment(Pos.BOTTOM_CENTER);
 
-		if(time) {
-			model.startClock();
-			hbox.getChildren().add(timer);
-
-		centerGamePane.setBottom(hbox);
-
-		hbox.setAlignment(Pos.BOTTOM_CENTER);
-		
 		model.valueProperty().addListener(new ChangeListener<String>() {
           	public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
           			timer.textProperty().bind(Bindings.convert(model.valueProperty()));
@@ -419,8 +416,8 @@ public class JavaFxView {
           			}
           		}
           	});
-		
-		
+
+
 		drawTile.setOnAction(new EventHandler<ActionEvent>() {
 	            public void handle(ActionEvent event) {
 	                try {
