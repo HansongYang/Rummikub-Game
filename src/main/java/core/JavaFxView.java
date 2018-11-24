@@ -25,7 +25,7 @@ import javafx.beans.binding.Bindings;
 
 public class JavaFxView {
 
-    public Controller controller;
+    public JavaFxController controller;
     public Model model;
     public BorderPane panel;
     public BorderPane centerGamePane;
@@ -44,7 +44,7 @@ public class JavaFxView {
     public String[] strategy;
 
 
-    public JavaFxView(Model model, Controller controller, BorderPane panel) {
+    public JavaFxView(JavaFxController controller, BorderPane panel) {
         this.model = model;
         this.controller = controller;
         this.panel = panel;
@@ -68,56 +68,56 @@ public class JavaFxView {
         panel.setCenter(centerGamePane);
         centerGamePane.setBottom(userActions);
         displayTurnOptions();
-        displayPlayerHand(model.userPlayer, 1);
+        displayPlayerHand(controller.model.userPlayer, 1);
         if (numPlayer == 2) {
             if (strategy[0].equals("AI Strategy 1")) {
-                displayPlayerHand(model.aiPlayer1, 2);
+                displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 2")) {
-                displayPlayerHand(model.aiPlayer1, 2);
+                displayPlayerHand(controller.model.aiPlayer1, 2);
             } else {
-                displayPlayerHand(model.aiPlayer1, 2);
+                displayPlayerHand(controller.model.aiPlayer1, 2);
             }
         } else if (numPlayer == 3) {
             if (strategy[0].equals("AI Strategy 1")) {
-                displayPlayerHand(model.aiPlayer1, 2);
+                displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 2")) {
-                displayPlayerHand(model.aiPlayer1, 2);
+                displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 3")) {
-                displayPlayerHand(model.aiPlayer1, 2);
+                displayPlayerHand(controller.model.aiPlayer1, 2);
             }
             if (strategy[1].equals("AI Strategy 1")) {
-                displayPlayerHand(model.aiPlayer2, 3);
+                displayPlayerHand(controller.model.aiPlayer2, 3);
             } else if (strategy[1].equals("AI Strategy 2")) {
-                displayPlayerHand(model.aiPlayer2, 3);
+                displayPlayerHand(controller.model.aiPlayer2, 3);
             } else {
-                displayPlayerHand(model.aiPlayer2, 3);
+                displayPlayerHand(controller.model.aiPlayer2, 3);
             }
         } else {
             if (strategy[0].equals("AI Strategy 1")) {
-                displayPlayerHand(model.aiPlayer1, 2);
+                displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 2")) {
-                displayPlayerHand(model.aiPlayer1, 2);
+                displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 3")) {
-                displayPlayerHand(model.aiPlayer1, 2);
+                displayPlayerHand(controller.model.aiPlayer1, 2);
             }
             if (strategy[1].equals("AI Strategy 1")) {
-                displayPlayerHand(model.aiPlayer2, 3);
+                displayPlayerHand(controller.model.aiPlayer2, 3);
             } else if (strategy[1].equals("AI Strategy 2")) {
-                displayPlayerHand(model.aiPlayer2, 3);
+                displayPlayerHand(controller.model.aiPlayer2, 3);
             } else if (strategy[1].equals("AI Strategy 3")) {
-                displayPlayerHand(model.aiPlayer2, 3);
+                displayPlayerHand(controller.model.aiPlayer2, 3);
             }
             if (strategy[2].equals("AI Strategy 1")) {
-                displayPlayerHand(model.aiPlayer3, 4);
+                displayPlayerHand(controller.model.aiPlayer3, 4);
             } else if (strategy[2].equals("AI Strategy 2")) {
-                displayPlayerHand(model.aiPlayer3, 4);
+                displayPlayerHand(controller.model.aiPlayer3, 4);
             } else {
-                displayPlayerHand(model.aiPlayer3, 4);
+                displayPlayerHand(controller.model.aiPlayer3, 4);
             }
             System.out.println(strategy[2]);
         }
-        displayBoard(this.model.getBoard());
-        displayMeldsInHand(model.userPlayer);
+        displayBoard(controller.model.getBoard());
+        displayMeldsInHand(controller.model.userPlayer);
     }
 
     public void setNumPlayer(int numPlayer) {
@@ -400,7 +400,7 @@ public class JavaFxView {
         hbox.setPadding(new Insets(10));
 
 
-        if (!model.userPlayer.playedTilesOnTurn) {
+        if (!controller.model.userPlayer.playedTilesOnTurn) {
             hbox.getChildren().add(drawTile);
         } else {
             hbox.getChildren().add(endTurn);
@@ -410,22 +410,22 @@ public class JavaFxView {
         hbox.getChildren().add(playCreatedMelds);
 
         if (time) {
-            model.startClock();
+            controller.model.startClock();
             hbox.getChildren().add(timer);
         }
          
         userActions.setTop(hbox);
         hbox.setAlignment(Pos.BOTTOM_CENTER);
 
-        model.valueProperty().addListener(new ChangeListener<String>() {
+        controller.model.valueProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                timer.textProperty().bind(Bindings.convert(model.valueProperty()));
-                if (Integer.parseInt(model.getValue()) < 1) {
+                timer.textProperty().bind(Bindings.convert(controller.model.valueProperty()));
+                if (Integer.parseInt(controller.model.getValue()) < 1) {
                     if (controller.playAITurns()) {// AI wins on this turn
                         //Game over
-                        displayWinner(model.gameWinner);
+                        displayWinner(controller.model.gameWinner);
                     }
-                    model.stopClock();
+                    controller.model.stopClock();
                 }
             }
         });
@@ -438,7 +438,7 @@ public class JavaFxView {
 
                     if (controller.playAITurns()) {// AI wins on this turn
                         //Game over
-                        displayWinner(model.gameWinner);
+                        displayWinner(controller.model.gameWinner);
                     }
 
                     //Return created melds back to hand if not played
@@ -458,12 +458,12 @@ public class JavaFxView {
                         indicateInvalidMeld();
                     } else {
                         selectedTiles.clear();
-                        if (model.gameWinCheck()) {
-                            displayWinner(model.gameWinner);
+                        if (controller.model.gameWinCheck()) {
+                            displayWinner(controller.model.gameWinner);
                         }
 
                         refreshWindow();
-                    }
+					}
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -476,11 +476,11 @@ public class JavaFxView {
                     if (selectedMeldID != -1) {
                         if (locationOnMeld == LocationOnMeld.FRONT) {//Add to front
                             if (controller.playTilestoMeldFront(selectedTiles, selectedMeldID)) {
-                                model.userPlayer.playedTilesOnTurn = true;
+                                controller.model.userPlayer.playedTilesOnTurn = true;
                             }
                         } else {//Add to back
                             if (controller.playTilestoMeldBack(selectedTiles, selectedMeldID)) {
-                                model.userPlayer.playedTilesOnTurn = true;
+                                controller.model.userPlayer.playedTilesOnTurn = true;
                             }
                         }
                         selectedTiles.clear();
@@ -501,7 +501,7 @@ public class JavaFxView {
                 try {
 
                     if (controller.playMeldsToTable()) {
-                        model.userPlayer.playedTilesOnTurn = true;
+                        controller.model.userPlayer.playedTilesOnTurn = true;
                     } else {
                         indicateMeldsLessThan30();
                     }
@@ -519,14 +519,14 @@ public class JavaFxView {
                 try {
                     if (controller.playAITurns()) {// AI wins on this turn
                         //Game over
-                        displayWinner(model.gameWinner);
+                        displayWinner(controller.model.gameWinner);
                     }
 
 
-                    model.userPlayer.playedTilesOnTurn = false;
+                    controller.model.userPlayer.playedTilesOnTurn = false;
 
-                    model.stopClock();
-                    model.startClock();
+                    controller.model.stopClock();
+                    controller.model.startClock();
 
                     refreshWindow();
                 } catch (Exception e) {
@@ -534,6 +534,43 @@ public class JavaFxView {
                 }
             }
         });
+    }
+
+    // public void playInvalidTiles(ArrayList<Tile> tiles) {
+    //     Meld meld = new Meld(tiles);
+    //     this.controller.model.getBoard().addMeld(meld);
+    //     indicateInvalidMeld();
+    //     this.model = controller.restoreGame();
+    //     if (controller.playAITurns()) displayWinner(controller.model.gameWinner);
+    //     for (int i = 0; i < 3; i++) controller.drawTile();
+    // }
+
+    public void indicateMeldsLessThan30() {
+        Label label = new Label("Total value of Melds less than 30");
+        label.setStyle("-fx-font: normal bold 30px 'serif'");
+        centerGamePane.setTop(label);
+        label.setAlignment(Pos.CENTER);
+
+    }
+
+    public void indicateInvalidMeld() {
+        Label label = new Label("Invalid Meld");
+        label.setStyle("-fx-font: normal bold 30px 'serif'");
+        label.setTextFill(Color.RED);
+        centerGamePane.setTop(label);
+        label.setAlignment(Pos.CENTER);
+    }
+
+    public void printTurns(Map<Player, Integer> order) {
+        Iterator it = order.entrySet().iterator();
+        System.out.print("Turn Order: ");
+
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Player player = (Player) pair.getKey();
+            System.out.print(player.name + " ");
+        }
+
     }
 
     public void indicateWrongInput() {
@@ -553,14 +590,6 @@ public class JavaFxView {
 
     public void indicateAvailableTiles() {
         // TODO Auto-generated method stub
-
-    }
-
-    public void indicateMeldsLessThan30() {
-        Label label = new Label("Total value of Melds less than 30");
-        label.setStyle("-fx-font: normal bold 30px 'serif'");
-        centerGamePane.setTop(label);
-        label.setAlignment(Pos.CENTER);
 
     }
 
@@ -584,13 +613,6 @@ public class JavaFxView {
 
     }
 
-    public void indicateInvalidMeld() {
-        Label label = new Label("Invalid Meld");
-        label.setStyle("-fx-font: normal bold 30px 'serif'");
-        label.setTextFill(Color.RED);
-        centerGamePane.setTop(label);
-        label.setAlignment(Pos.CENTER);
-    }
 
     public void displayTileInSelectedMeldSelection() {
         // TODO Auto-generated method stub
@@ -607,20 +629,6 @@ public class JavaFxView {
 
     }
 
-    public void printTurns(Map<Player, Integer> order) {
-        Iterator it = order.entrySet().iterator();
-        System.out.print("Turn Order: ");
-
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            Player player = (Player) pair.getKey();
-            System.out.print(player.name + " ");
-        }
-
-    }
-
     public void displayInitialScreen() {
-
-
     }
 }
