@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 import core.Hand.SortByNumber;
+import core.Memento.Memento;
+import core.Memento.Originator;
 import core.Model.GameStates;
 
 public class JavaFxController implements Controller {
@@ -13,8 +15,12 @@ public class JavaFxController implements Controller {
 	protected MeldValidatorService meldValidatorService = new MeldValidatorService();
 	public Model model; 
 	
+	public Memento savedGame;
+	public Originator originator;
+
 	public JavaFxController( Model model) {
 		this.model = model;
+		this.originator = new Originator();
 	}
 	
 	public int turnOptionInput() {
@@ -221,4 +227,17 @@ public class JavaFxController implements Controller {
 
 	
 	
+	public void saveGame() {
+		Board temp = new Board(this.model.getBoard());
+		this.originator.setGame(temp);
+		this.savedGame = this.originator.saveStateToMemento();
+
+		System.out.println("SAVING GAME");
+	}
+
+	public void restoreGame() {
+		System.out.println("RESTORING GAME");
+		this.model.setBoard(this.originator.restoreFromMemento(this.savedGame));
+	}
+
 }

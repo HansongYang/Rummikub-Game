@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public interface Controller {
-	
+
 	public int turnOptionInput();
 	public Tile drawTile();
 	public boolean createMeld(ArrayList<Tile> tiles);
@@ -14,4 +14,6 @@ public interface Controller {
 	public boolean playMeldsToTable();
 	public boolean reuseBoardTiles(Map<Meld, ArrayList<Tile>> tilesFromBoard, ArrayList<Tile> playerTiles);
 	public void returnMeldsToHand();
+	public void saveGame();
+	public void restoreGame();
 }

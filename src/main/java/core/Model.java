@@ -15,7 +15,7 @@ public class Model implements Observable {
     private ArrayList<Player> players = new ArrayList<Player>();
 	private Deck deck = new Deck();
 	private Board board = new Board();
-	private int interval = 120;
+	public int interval = 120;
 	private Timer timer;
 	private int times = 1;
 	public int numPlayer;
@@ -173,7 +173,9 @@ public class Model implements Observable {
     public Board getBoard() {
     	return board;
     }
-    
+
+    public void setBoard(Board board) { this.board = board; }
+
     public boolean gameWinCheck() {
     	if(numPlayer == 2) {
 	        if (userPlayer.hand.size() == 0) {

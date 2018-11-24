@@ -26,305 +26,318 @@ import javafx.beans.binding.Bindings;
 
 public class JavaFxView {
 
-	public Controller controller; 
-	public Model model;
-	public BorderPane panel;
-	public BorderPane centerGamePane;
-	public BorderPane userActions;
-	public ArrayList<Tile> selectedTiles;
-	public int selectedMeldID = -1;	
-	public enum LocationOnMeld { FRONT, BACK }
-	public LocationOnMeld locationOnMeld;
+    public JavaFxController controller;
+    public BorderPane panel;
+    public BorderPane centerGamePane;
+    public BorderPane userActions;
+    public ArrayList<Tile> selectedTiles;
+    public int selectedMeldID = -1;
+    public final Button restart = new Button("Restart Game");
 	public Map<Meld, ArrayList<Tile>> selectedTilesFromBoard;
 
-	public boolean time;
-	public String playername;
-	public String name;
-	public int numPlayer;
-	public String [] strategy;
-	
-	
-	public JavaFxView(Model model, Controller controller, BorderPane panel) {
-		this.model = model;
-		this.controller = controller;
-		this.panel = panel;
-		this.selectedTiles = new ArrayList<Tile>();
+    public enum LocationOnMeld {FRONT, BACK}
+
+    public LocationOnMeld locationOnMeld;
+
+    public boolean time;
+    public String playername;
+    public String name;
+    public int numPlayer;
+    public String[] strategy;
+
+
+    public JavaFxView(JavaFxController controller, BorderPane panel) {
+        this.controller = controller;
+        this.panel = panel;
+        this.selectedTiles = new ArrayList<Tile>();
 		this.selectedTilesFromBoard = new HashMap<Meld, ArrayList<Tile>>();
-		this.panel.setCenter(centerGamePane = new BorderPane());
-		this.centerGamePane.setBottom(userActions = new BorderPane());
-		this.time = false;
-		this.name = "";
-		this.playername = "";
-		strategy = new String[3];
-	}
-	
-	public JavaFxView() {
+        this.panel.setCenter(centerGamePane = new BorderPane());
+        this.centerGamePane.setBottom(userActions = new BorderPane());
+        this.time = false;
+        this.name = "";
+        this.playername = "";
+        strategy = new String[3];
+    }
 
-	}
-	
-	public void refreshWindow() {
-		panel.getChildren().clear();
-		//centerGamePane.getChildren().clear();
+    public JavaFxView() {
 
-		panel.setCenter(centerGamePane);
-		centerGamePane.setBottom(userActions);
-		displayTurnOptions();
-    	displayPlayerHand(model.userPlayer, 1);
-    	if(numPlayer == 2) {
-    		if(strategy[0].equals("AI Strategy 1")) {
-    			displayPlayerHand(model.aiPlayer1, 2);
-    		}else if(strategy[0].equals("AI Strategy 2")) {
-    			displayPlayerHand(model.aiPlayer1, 2);
-    		}else {
-    			displayPlayerHand(model.aiPlayer1, 2);
-    		}
-    	}else if(numPlayer == 3) {
-    		if(strategy[0].equals("AI Strategy 1")) {
-    			displayPlayerHand(model.aiPlayer1, 2);
-    		}else if(strategy[0].equals("AI Strategy 2")) {
-    			displayPlayerHand(model.aiPlayer1, 2);
-    		}else if(strategy[0].equals("AI Strategy 3")){
-    			displayPlayerHand(model.aiPlayer1, 2);
-    		}
-    		if(strategy[1].equals("AI Strategy 1")) {
-    			displayPlayerHand(model.aiPlayer2, 3);
-    		}else if(strategy[1].equals("AI Strategy 2")) {
-    			displayPlayerHand(model.aiPlayer2, 3);
-    		}else {
-    			displayPlayerHand(model.aiPlayer2, 3);
-    		}
-    	}else {
-    		if(strategy[0].equals("AI Strategy 1")) {
-    			displayPlayerHand(model.aiPlayer1, 2);
-    		}else if(strategy[0].equals("AI Strategy 2")) {
-    			displayPlayerHand(model.aiPlayer1, 2);
-    		}else if(strategy[0].equals("AI Strategy 3")){
-    			displayPlayerHand(model.aiPlayer1, 2);
-    		}
-    		if(strategy[1].equals("AI Strategy 1")) {
-    			displayPlayerHand(model.aiPlayer2, 3);
-    		}else if(strategy[1].equals("AI Strategy 2")) {
-    			displayPlayerHand(model.aiPlayer2, 3);
-    		}else if(strategy[1].equals("AI Strategy 3")){
-    			displayPlayerHand(model.aiPlayer2, 3);
-    		}
-    		if(strategy[2].equals("AI Strategy 1")) {
-    			displayPlayerHand(model.aiPlayer3, 4);
-    		}else if(strategy[2].equals("AI Strategy 2")) {
-    			displayPlayerHand(model.aiPlayer3, 4);
-    		}else {
-    			displayPlayerHand(model.aiPlayer3, 4);
-    		}
-    		System.out.println(strategy[2]);
-    	}
-    	selectedTiles.clear();
+    }
+
+    public void refreshWindow() {
+        panel.getChildren().clear();
+        //centerGamePane.getChildren().clear();
+
+        panel.setCenter(centerGamePane);
+        centerGamePane.setBottom(userActions);
+        displayTurnOptions();
+        displayPlayerHand(controller.model.userPlayer, 1);
+        if (numPlayer == 2) {
+            if (strategy[0].equals("AI Strategy 1")) {
+                displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else if (strategy[0].equals("AI Strategy 2")) {
+                displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else {
+                displayPlayerHand(controller.model.aiPlayer1, 2);
+            }
+        } else if (numPlayer == 3) {
+            if (strategy[0].equals("AI Strategy 1")) {
+                displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else if (strategy[0].equals("AI Strategy 2")) {
+                displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else if (strategy[0].equals("AI Strategy 3")) {
+                displayPlayerHand(controller.model.aiPlayer1, 2);
+            }
+            if (strategy[1].equals("AI Strategy 1")) {
+                displayPlayerHand(controller.model.aiPlayer2, 3);
+            } else if (strategy[1].equals("AI Strategy 2")) {
+                displayPlayerHand(controller.model.aiPlayer2, 3);
+            } else {
+                displayPlayerHand(controller.model.aiPlayer2, 3);
+            }
+        } else {
+            if (strategy[0].equals("AI Strategy 1")) {
+                displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else if (strategy[0].equals("AI Strategy 2")) {
+                displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else if (strategy[0].equals("AI Strategy 3")) {
+                displayPlayerHand(controller.model.aiPlayer1, 2);
+            }
+            if (strategy[1].equals("AI Strategy 1")) {
+                displayPlayerHand(controller.model.aiPlayer2, 3);
+            } else if (strategy[1].equals("AI Strategy 2")) {
+                displayPlayerHand(controller.model.aiPlayer2, 3);
+            } else if (strategy[1].equals("AI Strategy 3")) {
+                displayPlayerHand(controller.model.aiPlayer2, 3);
+            }
+            if (strategy[2].equals("AI Strategy 1")) {
+                displayPlayerHand(controller.model.aiPlayer3, 4);
+            } else if (strategy[2].equals("AI Strategy 2")) {
+                displayPlayerHand(controller.model.aiPlayer3, 4);
+            } else {
+                displayPlayerHand(controller.model.aiPlayer3, 4);
+            }
+            System.out.println(strategy[2]);
+        }
+		selectedTiles.clear();
     	selectedTilesFromBoard.clear();
-    	
-    	displayBoard(this.model.getBoard());
-    	displayMeldsInHand(model.userPlayer);
-	}
-	
-	public void setNumPlayer(int numPlayer) {
-		this.numPlayer = numPlayer;
-	}
-	
-	public void setStrategy(String[] strategy) {
-		this.strategy = strategy;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public void setPlayerName(String playername) {
-		this.playername = playername;
-	}
-	
-	public void setTime(Boolean time) {
-		this.time = time;
-	}
-	
-	public void indicateTurn(Player player) {
-		System.out.println("INDICATE TURN " + player.name);
-		Label label = new Label(player.name + "'s turn");
-		label.setStyle("-fx-font: normal bold 30px 'serif'");
-		centerGamePane.setTop(label);
-		label.setAlignment(Pos.CENTER);
-	}
 
-	public void displayMeldsInHand(Player player) {
-		HBox hbox = new HBox(5);
-		hbox.setPadding(new Insets(10));
-		hbox.setAlignment(Pos.BOTTOM_CENTER);
+        displayBoard(controller.model.getBoard());
+        displayMeldsInHand(controller.model.userPlayer);
+    }
 
-		for(int i = 0; i < player.meldsInHand.size(); i++) {
-			Meld meld = player.meldsInHand.get(i);
-			
-			for(int j = 0; j < meld.size(); j++) {
-				final Tile tile = meld.getTile(j);
-		    	final Label tileLabel = new Label(Integer.toString(tile.getRank()));
-		    	tileLabel.setAlignment(Pos.CENTER);
-		    	  	
-		    	tileLabel.setMinSize(20,30);
-		    	if(tile.getColour() == 'G') {
-		    		tileLabel.setTextFill(Color.GREEN);
-		    	}else if(tile.getColour() == 'R') {
-		    		tileLabel.setTextFill(Color.RED);
-		    	} else if (tile.getColour() == 'B'){
-		    		tileLabel.setTextFill(Color.BLUE);
-		    	} else if(tile.getColour() == 'O') {
-		    		tileLabel.setTextFill(Color.ORANGE);
-		    	} else {
-		    		tileLabel.setTextFill(Color.BLACK);
-		    	}
-		    	
-		    	tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 10px");
+    public void setNumPlayer(int numPlayer) {
+        this.numPlayer = numPlayer;
+    }
 
-		    	hbox.getChildren().add(tileLabel);
-			}
-			
-		}
+    public void setStrategy(String[] strategy) {
+        this.strategy = strategy;
+    }
 
-		userActions.setBottom(hbox);
-	}
-	
-	public void displayPlayerHand(Player player, int num) {
-		player.getHand().sortTilesByColour();
-		FlowPane flowPane = new FlowPane(5, 5);
-		flowPane.setAlignment(Pos.CENTER);
+    public void setName(String name) {
+        this.name = name;
+    }
 
-		switch(num) {
-			case 1: panel.setBottom(flowPane); 
-					flowPane.setOrientation(Orientation.HORIZONTAL); 
-					flowPane.getChildren().add(new Label(playername + ":  " + name));
-					break;
-			case 2: panel.setLeft(flowPane); flowPane.setOrientation(Orientation.VERTICAL); 
-					if(!playername.equals("Player 1")) {
-			    		flowPane.getChildren().add(new Label("Player 1   "));
-			    	}else {
-			    		flowPane.getChildren().add(new Label("Player 2   "));
-			    	}
-					break;
-			case 3: panel.setTop(flowPane);
-					flowPane.setOrientation(Orientation.HORIZONTAL);
-					if(playername.equals("Player 4")) {
-			    		flowPane.getChildren().add(new Label("Player 2   "));
-			    	} else if(!playername.equals("Player 3")) {
-			    		flowPane.getChildren().add(new Label("Player 3    "));
-			    	} else {
-			    		flowPane.getChildren().add(new Label("Player 2   "));
-			    	}
-					break;
-			case 4: panel.setRight(flowPane);
-					flowPane.setOrientation(Orientation.VERTICAL);
-					if(!playername.equals("Player 4")) {
-						flowPane.getChildren().add(new Label("Player 4   "));
-			    	}else {
-			    		flowPane.getChildren().add(new Label("Player 3   "));
-			    	}
-					break;
-		}
+    public void setPlayerName(String playername) {
+        this.playername = playername;
+    }
 
-		for(int i = 0; i < player.getHand().size(); i++) {
-			
-			final Tile tile = player.getHand().getTile(i);
-	    	final Label tileLabel = new Label(Integer.toString(tile.getRank()));
-	    	tileLabel.setAlignment(Pos.CENTER);
-	    	  	
-	    	tileLabel.setMinSize(40,50);
-	    	if(player.getHand().getTile(i).getColour() == 'G') {
-	    		tileLabel.setTextFill(Color.GREEN);
-	    	}else if(player.getHand().getTile(i).getColour() == 'R') {
-	    		tileLabel.setTextFill(Color.RED);
-	    	} else if (player.getHand().getTile(i).getColour() == 'B'){
-	    		tileLabel.setTextFill(Color.BLUE);
-	    	} else if(player.getHand().getTile(i).getColour() == 'O') {
-	    		tileLabel.setTextFill(Color.ORANGE);
-	    	} else {
-	    		tileLabel.setTextFill(Color.BLACK);
-	    	}
-	    	
-	    	if(num == 4) {
-	    		tileLabel.setRotate(-90);
-	    	}
-	    	if(num == 2) {
-	    		tileLabel.setRotate(90);
-	    	}
-	    	
-	    	tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
+    public void setTime(Boolean time) {
+        this.time = time;
+    }
 
-	    	flowPane.getChildren().add(tileLabel);
+    public void indicateTurn(Player player) {
+        System.out.println("INDICATE TURN " + player.name);
+        Label label = new Label(player.name + "'s turn");
+        label.setStyle("-fx-font: normal bold 30px 'serif'");
+        centerGamePane.setTop(label);
+        label.setAlignment(Pos.CENTER);
+    }
 
-	    	 tileLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	    	     public void handle(MouseEvent e) {   	
-	    	        if(!selectedTiles.contains(tile)) {
-	    	        	tileLabel.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
-	    	        	selectedTiles.add(tile);
-	    	        }else {
-	    	        	tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
-	    	        	selectedTiles.remove(tile);
-	    	        }
-	    	     }
-	    	 });
-    	}
-	}
+    public void displayMeldsInHand(Player player) {
+        HBox hbox = new HBox(5);
+        hbox.setPadding(new Insets(10));
+        hbox.setAlignment(Pos.BOTTOM_CENTER);
 
-	public void displayHand(Hand hand) {
-		// TODO Auto-generated method stub
-		
-	}
+        for (int i = 0; i < player.meldsInHand.size(); i++) {
+            Meld meld = player.meldsInHand.get(i);
 
-	public void displayBoard(Board board) {
-		GridPane boardGrid = new GridPane();
-		centerGamePane.setCenter(boardGrid);
-		boardGrid.setAlignment(Pos.CENTER);
-		boardGrid.setHgap(5);
-		boardGrid.setVgap(5);
+            for (int j = 0; j < meld.size(); j++) {
+                final Tile tile = meld.getTile(j);
+                final Label tileLabel = new Label(Integer.toString(tile.getRank()));
+                tileLabel.setAlignment(Pos.CENTER);
 
-		for (int i = 0; i < board.getCurrentMelds().size(); i++) {
-			final Meld meld = board.getCurrentMelds().get(i);
-			final int meldID = i;
-			
-			final Label plusLabelLeft = new Label("+");
-			plusLabelLeft.setAlignment(Pos.CENTER);
-			plusLabelLeft.setMinSize(30,40);
-			boardGrid.add(plusLabelLeft, 0, i);
-			plusLabelLeft.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
-			
-			plusLabelLeft.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	    	        public void handle(MouseEvent e) {
-	    	        	if(selectedMeldID == -1) {
-	    	        		plusLabelLeft.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
-	    	        		selectedMeldID = meldID;
-	    	        		locationOnMeld = LocationOnMeld.FRONT;
-	    	        		
-	    	        	}else if(selectedMeldID == meldID && locationOnMeld == LocationOnMeld.FRONT) {
-	    	        		plusLabelLeft.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
-	    	        		selectedMeldID = -1;
-	    	        	}
-	    	        }
-	    	    });
-			
-			for (int j = 1; j < meld.size() + 1; j++) {
+                tileLabel.setMinSize(20, 30);
+                if (tile.getColour() == 'G') {
+                    tileLabel.setTextFill(Color.GREEN);
+                } else if (tile.getColour() == 'R') {
+                    tileLabel.setTextFill(Color.RED);
+                } else if (tile.getColour() == 'B') {
+                    tileLabel.setTextFill(Color.BLUE);
+                } else if (tile.getColour() == 'O') {
+                    tileLabel.setTextFill(Color.ORANGE);
+                } else {
+                    tileLabel.setTextFill(Color.BLACK);
+                }
 
-				final Tile tile = meld.getTile(j - 1);
-				final Label tileLabel = new Label(Integer.toString(tile.getRank()));
-				tileLabel.setAlignment(Pos.CENTER);
+                tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 10px");
 
-				tileLabel.setMinSize(30,40);
-				if(tile.getColour() == 'G') {
-					tileLabel.setTextFill(Color.GREEN);
-				}else if(tile.getColour() == 'R') {
-					tileLabel.setTextFill(Color.RED);
-				} else if (tile.getColour() == 'B'){
-					tileLabel.setTextFill(Color.BLUE);
-				} else if(tile.getColour() == 'O') {
-					tileLabel.setTextFill(Color.ORANGE);
+                hbox.getChildren().add(tileLabel);
+            }
+
+        }
+
+        userActions.setBottom(hbox);
+    }
+
+    public void displayPlayerHand(Player player, int num) {
+        player.getHand().sortTilesByColour();
+        FlowPane flowPane = new FlowPane(5, 5);
+        flowPane.setAlignment(Pos.CENTER);
+
+        switch (num) {
+            case 1:
+                panel.setBottom(flowPane);
+                flowPane.setOrientation(Orientation.HORIZONTAL);
+                flowPane.getChildren().add(new Label(playername + ":  " + name));
+                break;
+            case 2:
+                panel.setLeft(flowPane);
+                flowPane.setOrientation(Orientation.VERTICAL);
+                if (!playername.equals("Player 1")) {
+                    flowPane.getChildren().add(new Label("Player 1   "));
+                } else {
+                    flowPane.getChildren().add(new Label("Player 2   "));
+                }
+                break;
+            case 3:
+                panel.setTop(flowPane);
+                flowPane.setOrientation(Orientation.HORIZONTAL);
+                if (playername.equals("Player 4")) {
+                    flowPane.getChildren().add(new Label("Player 2   "));
+                } else if (!playername.equals("Player 3")) {
+                    flowPane.getChildren().add(new Label("Player 3    "));
+                } else {
+                    flowPane.getChildren().add(new Label("Player 2   "));
+                }
+                break;
+            case 4:
+                panel.setRight(flowPane);
+                flowPane.setOrientation(Orientation.VERTICAL);
+                if (!playername.equals("Player 4")) {
+                    flowPane.getChildren().add(new Label("Player 4   "));
+                } else {
+                    flowPane.getChildren().add(new Label("Player 3   "));
+                }
+                break;
+        }
+
+        for (int i = 0; i < player.getHand().size(); i++) {
+
+            final Tile tile = player.getHand().getTile(i);
+            final Label tileLabel = new Label(Integer.toString(tile.getRank()));
+            tileLabel.setAlignment(Pos.CENTER);
+
+            tileLabel.setMinSize(40, 50);
+            if (player.getHand().getTile(i).getColour() == 'G') {
+                tileLabel.setTextFill(Color.GREEN);
+            } else if (player.getHand().getTile(i).getColour() == 'R') {
+                tileLabel.setTextFill(Color.RED);
+            } else if (player.getHand().getTile(i).getColour() == 'B') {
+                tileLabel.setTextFill(Color.BLUE);
+            } else if (player.getHand().getTile(i).getColour() == 'O') {
+                tileLabel.setTextFill(Color.ORANGE);
+            } else {
+                tileLabel.setTextFill(Color.BLACK);
+            }
+
+            if (num == 4) {
+                tileLabel.setRotate(-90);
+            }
+            if (num == 2) {
+                tileLabel.setRotate(90);
+            }
+
+            tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
+
+            flowPane.getChildren().add(tileLabel);
+
+            tileLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent e) {
+                    if (!selectedTiles.contains(tile)) {
+                        tileLabel.setStyle("-fx-border-color: BLACK; -fx-border-width: 3px; -fx-background-color: WHITE; -fx-font-size: 20px");
+                        selectedTiles.add(tile);
+                    } else {
+                        tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+                        selectedTiles.remove(tile);
+                    }
+                }
+            });
+        }
+    }
+
+    public void displayHand(Hand hand) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayBoard(Board board) {
+        GridPane boardGrid = new GridPane();
+        centerGamePane.setCenter(boardGrid);
+        boardGrid.setAlignment(Pos.CENTER);
+        boardGrid.setHgap(5);
+        boardGrid.setVgap(5);
+
+        for (int i = 0; i < board.getCurrentMelds().size(); i++) {
+            final Meld meld = board.getCurrentMelds().get(i);
+            final int meldID = i;
+
+            final Label plusLabelLeft = new Label("+");
+            plusLabelLeft.setAlignment(Pos.CENTER);
+            plusLabelLeft.setMinSize(30, 40);
+            boardGrid.add(plusLabelLeft, 0, i);
+            plusLabelLeft.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
+
+            plusLabelLeft.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent e) {
+                    if (selectedMeldID == -1) {
+                        plusLabelLeft.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
+                        selectedMeldID = meldID;
+                        locationOnMeld = LocationOnMeld.FRONT;
+
+                    } else if (selectedMeldID == meldID && locationOnMeld == LocationOnMeld.FRONT) {
+                        plusLabelLeft.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+                        selectedMeldID = -1;
+                    }
+                }
+            });
+
+            for (int j = 1; j < meld.size() + 1; j++) {
+
+                final Tile tile = meld.getTile(j - 1);
+                final Label tileLabel = new Label(Integer.toString(tile.getRank()));
+                tileLabel.setAlignment(Pos.CENTER);
+
+                tileLabel.setMinSize(30, 40);
+                if (tile.getColour() == 'G') {
+                    tileLabel.setTextFill(Color.GREEN);
+                } else if (tile.getColour() == 'R') {
+                    tileLabel.setTextFill(Color.RED);
+                } else if (tile.getColour() == 'B') {
+                    tileLabel.setTextFill(Color.BLUE);
+                } else if (tile.getColour() == 'O') {
+                    tileLabel.setTextFill(Color.ORANGE);
+                } else {
+                    tileLabel.setTextFill(Color.BLACK);
+                }
+
+				if (tile.justPlayed()) {
+					tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 14px; -fx-border-color: #f1c40f; -fx-border-width: 3px");
 				} else {
-					tileLabel.setTextFill(Color.BLACK);
+					tileLabel.setStyle("-fx-background-color: WHITE; -fx-border-color: WHITE; -fx-font-size: 14px");
 				}
-				tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 14px");
-				
+
+                boardGrid.add(tileLabel, j, i);
+
 				tileLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
 	    	        	
@@ -351,193 +364,198 @@ public class JavaFxView {
 	    	        	}
 	    	        }
 	    	    });
+            }
 
-				boardGrid.add(tileLabel, j, i);
-			}
-			
-			final Label plusLabelRight = new Label("+");
-			plusLabelRight.setAlignment(Pos.CENTER);
-			plusLabelRight.setMinSize(30,40);
-			boardGrid.add(plusLabelRight, board.getCurrentMelds().get(i).size() + 1, i);
-			plusLabelRight.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
-			
-			plusLabelRight.setOnMouseClicked(new EventHandler<MouseEvent>() {
-    	        public void handle(MouseEvent e) {
-    	        	if(selectedMeldID == -1) {
-    	        		plusLabelRight.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
-    	        		selectedMeldID = meldID;
-    	        		locationOnMeld = LocationOnMeld.BACK;
-    	        		
-    	        	}else if(selectedMeldID == meldID && locationOnMeld == LocationOnMeld.BACK) {
-    	        		plusLabelRight.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
-    	        		selectedMeldID = -1;
-    	        	}
-    	        
-    	        }
-    	    });
-		}
-	}
+            final Label plusLabelRight = new Label("+");
+            plusLabelRight.setAlignment(Pos.CENTER);
+            plusLabelRight.setMinSize(30, 40);
+            boardGrid.add(plusLabelRight, board.getCurrentMelds().get(i).size() + 1, i);
+            plusLabelRight.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
 
-	public void displayMeld(Meld meld) {
-		// TODO Auto-generated method stub
-		
-	}
+            plusLabelRight.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent e) {
+                    if (selectedMeldID == -1) {
+                        plusLabelRight.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
+                        selectedMeldID = meldID;
+                        locationOnMeld = LocationOnMeld.BACK;
 
-	public void displayWinner(Player player) {
-		Label label = new Label(player.name + " wins the game!");
-		label.setStyle("-fx-font: normal bold 30px 'serif'");
-		centerGamePane.setTop(label);
-		label.setAlignment(Pos.CENTER);
-	}
+                    } else if (selectedMeldID == meldID && locationOnMeld == LocationOnMeld.BACK) {
+                        plusLabelRight.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+                        selectedMeldID = -1;
+                    }
 
-	public void displayFinalTileCounts() {
-		// TODO Auto-generated method stub
-		
-	}
+                }
+            });
 
-	public void displayTurnOptions_Pass() {
-		
-		
-	}
+			meld.resetAllJustPlayedFlag();
+        }
+    }
 
-	public void displayTurnOptions() {
-		final Button drawTile = new Button("Draw Tile");
-		drawTile.setStyle("-fx-background-color: #f5f6fa");
-		final Button createMeld = new Button("Create Meld");
-		createMeld.setStyle("-fx-background-color: #f5f6fa");
-		final Button playToTable = new Button("Play tiles on the table");
-		playToTable.setStyle("-fx-background-color: #f5f6fa");
-		final Button endTurn = new Button("End turn");
-		endTurn.setStyle("-fx-background-color: #f5f6fa");
-		final Button playCreatedMelds = new Button("Play created melds");
-		playCreatedMelds.setStyle("-fx-background-color: #f5f6fa");
+    public void displayMeld(Meld meld) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayWinner(Player player) {
+        Label label = new Label(player.name + " wins the game!");
+        label.setStyle("-fx-font: normal bold 30px 'serif'");
+        centerGamePane.setTop(label);
+        label.setAlignment(Pos.CENTER);
+    }
+
+    public void displayFinalTileCounts() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayTurnOptions_Pass() {
+
+
+    }
+
+    public void displayTurnOptions() {
+        final Button drawTile = new Button("Draw Tile");
+        drawTile.setStyle("-fx-background-color: #f5f6fa");
+        final Button createMeld = new Button("Create Meld");
+        createMeld.setStyle("-fx-background-color: #f5f6fa");
+        final Button playToTable = new Button("Play tiles on the table");
+        playToTable.setStyle("-fx-background-color: #f5f6fa");
+        final Button endTurn = new Button("End turn");
+        endTurn.setStyle("-fx-background-color: #f5f6fa");
+        
+        final Button playCreatedMelds = new Button("Play created melds");
+        playCreatedMelds.setStyle("-fx-background-color: #f5f6fa");
 		final Button complexTileReuse = new Button("Reuse board tiles");
 		complexTileReuse.setStyle("-fx-background-color: #f5f6fa");
-		
-        final Label timer = new Label("120");
-		timer.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
 
-		HBox hbox = new HBox(5);
-		hbox.setPadding(new Insets(10));
+        final Label timer = new Label();
+        timer.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
+        restart.setStyle("-fx-background-color: #f5f6fa");
+        
+        HBox hbox = new HBox(5);
+        hbox.setPadding(new Insets(10));
 
 
-        if(!model.userPlayer.playedTilesOnTurn) {
-			hbox.getChildren().add(drawTile);
-		}
-		else {
-			hbox.getChildren().add(endTurn);
-		}
-		hbox.getChildren().add(createMeld);
-		hbox.getChildren().add(playCreatedMelds);
-		hbox.getChildren().add(playToTable);
+        if (!controller.model.userPlayer.playedTilesOnTurn) {
+            hbox.getChildren().add(drawTile);
+        } else {
+            hbox.getChildren().add(endTurn);
+        }
+        hbox.getChildren().add(createMeld);
+        hbox.getChildren().add(playToTable);
+        hbox.getChildren().add(playCreatedMelds);
+        hbox.getChildren().add(restart);
 		hbox.getChildren().add(complexTileReuse);
 
-        if(time) {
-            model.startClock();
+        if (time & controller.model.interval == 120) {
+        	System.out.println("starthu");
+            controller.model.startClock();
+            timer.setText(Integer.toString(controller.model.interval));
             hbox.getChildren().add(timer);
+        }else if(time) {
+        	timer.setText(Integer.toString(controller.model.interval));
+        	hbox.getChildren().add(timer);
         }
          
         userActions.setTop(hbox);
         hbox.setAlignment(Pos.BOTTOM_CENTER);
 
-		model.valueProperty().addListener(new ChangeListener<String>() {
-          	public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-          			timer.textProperty().bind(Bindings.convert(model.valueProperty()));
-          			if(Integer.parseInt(model.getValue()) < 1){
-          				if(controller.playAITurns()) {// AI wins on this turn
-    						//Game over
-    						displayWinner(model.gameWinner);
-    					}
-          				model.stopClock();
-          			}
-          		}
-          	});
-
-
-		drawTile.setOnAction(new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent event) {
-	                try {
-						Tile drawnTile = controller.drawTile();
-
-						if(controller.playAITurns()) {// AI wins on this turn
-							//Game over
-							displayWinner(model.gameWinner);
-						}
-						
-						//Return created melds back to hand if not played
-						controller.returnMeldsToHand();
-
-						refreshWindow();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-	            }
-	        });
-
-		createMeld.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                try {
-					if(!controller.createMeld(selectedTiles)) {
-						indicateInvalidMeld();
-					}
-					else {
-						selectedTiles.clear();
-						if(model.gameWinCheck()) {
-							displayWinner(model.gameWinner);
-						}
-
-						refreshWindow();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+        controller.model.valueProperty().addListener(new ChangeListener<String>() {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                timer.textProperty().bind(Bindings.convert(controller.model.valueProperty()));
+                if (Integer.parseInt(controller.model.getValue()) < 1) {
+                    if (controller.playAITurns()) {// AI wins on this turn
+                        //Game over
+                        displayWinner(controller.model.gameWinner);
+                    }
+                    controller.model.stopClock();
+                }
             }
         });
 
-		playToTable.setOnAction(new EventHandler<ActionEvent>() {
+        drawTile.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-					if(selectedMeldID != -1) {
-						if(locationOnMeld == LocationOnMeld.FRONT) {//Add to front
-							if(controller.playTilestoMeldFront(selectedTiles, selectedMeldID)) {
-								model.userPlayer.playedTilesOnTurn = true;
-							}
-						}
-						else {//Add to back
-							if(controller.playTilestoMeldBack(selectedTiles, selectedMeldID)) {
-								model.userPlayer.playedTilesOnTurn = true;
-							}
-						}
-						selectedTiles.clear();
-						selectedMeldID = -1;
-						locationOnMeld = null;
-					}
-
-					refreshWindow();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+                    Tile drawnTile = controller.drawTile();
+                    if (controller.playAITurns()) {// AI wins on this turn
+                        //Game over
+                        displayWinner(controller.model.gameWinner);
+                    }
+                    //Return created melds back to hand if not played
+                    controller.returnMeldsToHand();
+                    if(time) {
+                    	System.out.println("draw");
+	                    controller.model.stopClock();
+	                    controller.model.startClock();
+                    }
+                    refreshWindow();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-		
-		playCreatedMelds.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
 
+        createMeld.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
                 try {
-                	
-                	if(controller.playMeldsToTable()) {
-                		model.userPlayer.playedTilesOnTurn = true;
-                	}
-                	else  {
-                		indicateMeldsLessThan30();
-                	}
-                	
-                	
-                	
-                	refreshWindow();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+                    if (!controller.createMeld(selectedTiles)) {
+                        controller.saveGame();
+                        Meld meld = new Meld(selectedTiles);
+                        controller.model.getBoard().addMeld(meld);
+                        controller.restoreGame();
+                        for (int i = 0; i < 3; i++) controller.drawTile();
+                        controller.playAITurns();
+                        refreshWindow();
+                    } else {
+                        selectedTiles.clear();
+                        if (controller.model.gameWinCheck()) {
+                            displayWinner(controller.model.gameWinner);
+                        }
+                        refreshWindow();
+					}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        playToTable.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                try {
+                    if (selectedMeldID != -1) {
+                        if (locationOnMeld == LocationOnMeld.FRONT) {//Add to front
+                            if (controller.playTilestoMeldFront(selectedTiles, selectedMeldID)) {
+                                controller.model.userPlayer.playedTilesOnTurn = true;
+                            } else {
+                                controller.saveGame();
+                                Meld meld = new Meld(selectedTiles);
+                                controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
+                                controller.restoreGame();
+                                for (int i = 0; i < 3; i++) controller.drawTile();
+                                controller.playAITurns();
+                                refreshWindow();
+                            }
+                        } else {//Add to back
+                            if (controller.playTilestoMeldBack(selectedTiles, selectedMeldID)) {
+                                controller.model.userPlayer.playedTilesOnTurn = true;
+                            } else {
+                                controller.saveGame();
+                                Meld meld = new Meld(selectedTiles);
+                                controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
+                                controller.restoreGame();
+                                for (int i = 0; i < 3; i++) controller.drawTile();
+                                controller.playAITurns();
+                                refreshWindow();
+                            }
+                        }
+                        selectedTiles.clear();
+                        selectedMeldID = -1;
+                        locationOnMeld = null;
+                    }
+                    refreshWindow();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 		
@@ -546,9 +564,9 @@ public class JavaFxView {
 
                 try {
                 	
-                	if(model.userPlayer.initial30Played) {
+                	if(controller.model.userPlayer.initial30Played) {
 	                	if(controller.reuseBoardTiles(selectedTilesFromBoard, selectedTiles)) {
-	                		model.userPlayer.playedTilesOnTurn = true;
+	                		controller.model.userPlayer.playedTilesOnTurn = true;
 	                	}
 	                	else {
 	                		indicateInvalidMeld();
@@ -567,115 +585,135 @@ public class JavaFxView {
             }
         });
 
-		endTurn.setOnAction(new EventHandler<ActionEvent>() {
+        playCreatedMelds.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-					if(controller.playAITurns()) {// AI wins on this turn
-						//Game over
-						displayWinner(model.gameWinner);
-					}
-		
-
-					model.userPlayer.playedTilesOnTurn = false;
-
-					if(time) {
-					model.stopClock();
-					model.startClock();
-					}
-
-					refreshWindow();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+                    if (controller.playMeldsToTable()) {
+                        controller.model.userPlayer.playedTilesOnTurn = true;
+                    } else {
+                        indicateMeldsLessThan30();
+                    }
+                    refreshWindow();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-	}
 
-	public void indicateWrongInput() {
-		// TODO Auto-generated method stub
-		
-	}
+        endTurn.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                try {
+                    if (controller.playAITurns()) {// AI wins on this turn
+                        //Game over
+                        displayWinner(controller.model.gameWinner);
+                    }
+                    controller.model.userPlayer.playedTilesOnTurn = false;
+                    if(time) {
+                    	System.out.println("end");
+	                    controller.model.stopClock();
+	                    controller.model.startClock();
+                    }
+                    refreshWindow();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	public void indicateUserEndsGame(Player player) {
-		// TODO Auto-generated method stub
-		
-	}
+    // public void playInvalidTiles(ArrayList<Tile> tiles) {
+    //     Meld meld = new Meld(tiles);
+    //     this.controller.model.getBoard().addMeld(meld);
+    //     indicateInvalidMeld();
+    //     this.model = controller.restoreGame();
+    //     if (controller.playAITurns()) displayWinner(controller.model.gameWinner);
+    //     for (int i = 0; i < 3; i++) controller.drawTile();
+    // }
 
-	public void displayCreateAnotherMeldOption() {
-		// TODO Auto-generated method stub
-		
-	}
+    public void indicateMeldsLessThan30() {
+        Label label = new Label("Total value of Melds less than 30");
+        label.setStyle("-fx-font: normal bold 30px 'serif'");
+        centerGamePane.setTop(label);
+        label.setAlignment(Pos.CENTER);
 
-	public void indicateAvailableTiles() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	public void indicateMeldsLessThan30() {
-		Label label = new Label("Total value of Melds less than 30");
-		label.setStyle("-fx-font: normal bold 30px 'serif'");
-		centerGamePane.setTop(label);
-		label.setAlignment(Pos.CENTER);
-		
-	}
+    public void indicateInvalidMeld() {
+        Label label = new Label("Invalid Meld");
+        label.setStyle("-fx-font: normal bold 30px 'serif'");
+        label.setTextFill(Color.RED);
+        centerGamePane.setTop(label);
+        label.setAlignment(Pos.CENTER);
+    }
 
-	public void indicateNoTileOnBoard() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void displayTileToExistingMeldOptions() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void displayTileToMeldSelection() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void displayMeldSelection() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void indicateInvalidMeld() {
-		Label label = new Label("Invalid Meld");
-		label.setStyle("-fx-font: normal bold 30px 'serif'");
-		label.setTextFill(Color.RED);
-		centerGamePane.setTop(label);
-		label.setAlignment(Pos.CENTER);
-	}
-
-	public void displayTileInSelectedMeldSelection() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void displayTileToMeldPositionSelection() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void displayTileSelection() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void printTurns(Map<Player, Integer> order) {
+    public void printTurns(Map<Player, Integer> order) {
         Iterator it = order.entrySet().iterator();
         System.out.print("Turn Order: ");
 
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            Player player = (Player)pair.getKey();
+            Map.Entry pair = (Map.Entry) it.next();
+            Player player = (Player) pair.getKey();
             System.out.print(player.name + " ");
         }
-		
-	}
-	
-	public void displayInitialScreen() {
-		
-		
-	}
+
+    }
+
+    public void indicateWrongInput() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void indicateUserEndsGame(Player player) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayCreateAnotherMeldOption() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void indicateAvailableTiles() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void indicateNoTileOnBoard() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayTileToExistingMeldOptions() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayTileToMeldSelection() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayMeldSelection() {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    public void displayTileInSelectedMeldSelection() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayTileToMeldPositionSelection() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayTileSelection() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void displayInitialScreen() {
+    }
 }

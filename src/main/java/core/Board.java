@@ -8,6 +8,13 @@ public class Board {
     private MeldValidatorService meldValidatorService = new MeldValidatorService();
 
     public Board() { }
+
+    public Board(Board newBoard) {
+        for (int i = 0; i < newBoard.currentMelds.size(); i++) {
+            Meld newMeld = new Meld(newBoard.getCurrentMelds().get(i).getTiles());
+            this.currentMelds.add(newMeld);
+        }
+    }
     
     public void addMeld(Meld meld) {
     	meld.allTilesJustPlayedFlag();
