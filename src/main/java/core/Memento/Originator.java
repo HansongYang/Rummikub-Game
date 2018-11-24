@@ -1,19 +1,18 @@
 package core.Memento;
 
+import core.Board;
 import core.Model;
 
 public class Originator {
-    private Model game;
+    private Board board;
 
-    public void setGame(Model model) {
-        this.game = model;
-    }
+    public void setGame(Board board) { this.board = board; }
 
     public Memento saveStateToMemento() {
-        return new Memento(this.game);
+        return new Memento(this.board);
     }
 
-    public Model restoreFromMemento(Memento memento) {
-        return memento.getGame();
+    public Board restoreFromMemento(Memento memento) {
+        return memento.getBoard();
     }
 }
