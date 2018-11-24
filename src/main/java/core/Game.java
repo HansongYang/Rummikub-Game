@@ -309,6 +309,16 @@ public class Game extends Application {
     		}
     	}
     	view.displayBoard(model.getBoard());
+    	view.restart.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                try {
+                	panel.getChildren().clear();
+                	start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     
     public void userPlayerTurnLoop(UserPlayer player) {

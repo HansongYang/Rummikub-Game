@@ -32,6 +32,7 @@ public class JavaFxView {
     public BorderPane userActions;
     public ArrayList<Tile> selectedTiles;
     public int selectedMeldID = -1;
+    public final Button restart = new Button("Restart Game");
 
     public enum LocationOnMeld {FRONT, BACK}
 
@@ -390,12 +391,13 @@ public class JavaFxView {
         playToTable.setStyle("-fx-background-color: #f5f6fa");
         final Button endTurn = new Button("End turn");
         endTurn.setStyle("-fx-background-color: #f5f6fa");
-
+        
         final Button playCreatedMelds = new Button("Play created melds");
         playCreatedMelds.setStyle("-fx-background-color: #f5f6fa");
-        final Label timer = new Label("120");
+        final Label timer = new Label();
         timer.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
-
+        restart.setStyle("-fx-background-color: #f5f6fa");
+        
         HBox hbox = new HBox(5);
         hbox.setPadding(new Insets(10));
 
@@ -408,10 +410,16 @@ public class JavaFxView {
         hbox.getChildren().add(createMeld);
         hbox.getChildren().add(playToTable);
         hbox.getChildren().add(playCreatedMelds);
+        hbox.getChildren().add(restart);
 
-        if (time) {
+        if (time & controller.model.interval == 120) {
+        	System.out.println("starthu");
             controller.model.startClock();
+            timer.setText(Integer.toString(controller.model.interval));
             hbox.getChildren().add(timer);
+        }else if(time) {
+        	timer.setText(Integer.toString(controller.model.interval));
+        	hbox.getChildren().add(timer);
         }
          
         userActions.setTop(hbox);
@@ -430,20 +438,21 @@ public class JavaFxView {
             }
         });
 
-
         drawTile.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
                     Tile drawnTile = controller.drawTile();
-
                     if (controller.playAITurns()) {// AI wins on this turn
                         //Game over
                         displayWinner(controller.model.gameWinner);
                     }
-
                     //Return created melds back to hand if not played
                     controller.returnMeldsToHand();
-
+                    if(time) {
+                    	System.out.println("draw");
+	                    controller.model.stopClock();
+	                    controller.model.startClock();
+                    }
                     refreshWindow();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -461,7 +470,6 @@ public class JavaFxView {
                         if (controller.model.gameWinCheck()) {
                             displayWinner(controller.model.gameWinner);
                         }
-
                         refreshWindow();
 					}
                 } catch (Exception e) {
@@ -487,7 +495,6 @@ public class JavaFxView {
                         selectedMeldID = -1;
                         locationOnMeld = null;
                     }
-
                     refreshWindow();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -497,16 +504,12 @@ public class JavaFxView {
 
         playCreatedMelds.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-
                 try {
-
                     if (controller.playMeldsToTable()) {
                         controller.model.userPlayer.playedTilesOnTurn = true;
                     } else {
                         indicateMeldsLessThan30();
                     }
-
-
                     refreshWindow();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -521,13 +524,12 @@ public class JavaFxView {
                         //Game over
                         displayWinner(controller.model.gameWinner);
                     }
-
-
                     controller.model.userPlayer.playedTilesOnTurn = false;
-
-                    controller.model.stopClock();
-                    controller.model.startClock();
-
+                    if(time) {
+                    	System.out.println("end");
+	                    controller.model.stopClock();
+	                    controller.model.startClock();
+                    }
                     refreshWindow();
                 } catch (Exception e) {
                     e.printStackTrace();
