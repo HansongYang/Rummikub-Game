@@ -3,15 +3,20 @@ package core;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import core.Memento.Memento;
+import core.Memento.Originator;
 import core.Model.GameStates;
 
 public class JavaFxController implements Controller {
 
 	Scanner reader = new Scanner(System.in);
-	public Model model; 
-	
+	public Model model;
+	public Memento savedGame;
+	public Originator originator;
+
 	public JavaFxController( Model model) {
 		this.model = model;
+		this.originator = new Originator();
 	}
 	
 	public int turnOptionInput() {
@@ -152,6 +157,21 @@ public class JavaFxController implements Controller {
 		
 	}
 
-	
-	
+	public void saveGame() {
+		this.originator.setGame(this.model);
+		this.savedGame = this.originator.saveStateToMemento();
+
+		System.out.println("SAVING GAME: ");
+		this.savedGame.getGame().getBoard().printBoard();
+	}
+
+	public Model restoreGame() {
+//		this.model = this.originator.restoreFromMemento(this.savedGame);
+//		this.model = this.savedGame.getGame();
+
+		System.out.println("RESTORING GAME:");
+		this.originator.restoreFromMemento(this.savedGame).getBoard().printBoard();
+		return this.originator.restoreFromMemento(this.savedGame);
+	}
+
 }

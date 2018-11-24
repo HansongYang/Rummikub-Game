@@ -3,7 +3,7 @@ package core;
 import java.util.ArrayList;
 
 public interface Controller {
-	
+
 	public int turnOptionInput();
 	public Tile drawTile();
 	public boolean createMeld(ArrayList<Tile> tiles);
@@ -12,4 +12,6 @@ public interface Controller {
 	public boolean playTilestoMeldBack(ArrayList<Tile> tiles,int meldId);
 	public boolean playMeldsToTable();
 	public void returnMeldsToHand();
+	public void saveGame();
+	public Model restoreGame();
 }

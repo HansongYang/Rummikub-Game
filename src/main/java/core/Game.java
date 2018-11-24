@@ -29,7 +29,7 @@ public class Game extends Application {
     
     public Model model;
     public JavaFxView view;
-    public Controller controller;
+    public JavaFxController controller;
     
 	public BorderPane panel;
 	public Scene scene;
@@ -68,7 +68,7 @@ public class Game extends Application {
 	    
 	    model = new Model();   	
 	    controller = new JavaFxController(model);
-    	view = new JavaFxView(model, controller, panel);	  	
+    	view = new JavaFxView(controller, panel);
 
     	this.startMenu();
 	}
