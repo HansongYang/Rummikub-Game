@@ -15,7 +15,7 @@ public class Model implements Observable {
     private ArrayList<Player> players = new ArrayList<Player>();
 	private Deck deck = new Deck();
 	private Board board = new Board();
-	private int interval = 120;
+	public int interval = 120;
 	private Timer timer;
 	private int times = 1;
 	public int numPlayer;
