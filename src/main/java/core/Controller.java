@@ -13,5 +13,5 @@ public interface Controller {
 	public boolean playMeldsToTable();
 	public void returnMeldsToHand();
 	public void saveGame();
-	public Model restoreGame();
+	public void restoreGame();
 }

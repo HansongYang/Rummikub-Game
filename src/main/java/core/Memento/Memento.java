@@ -1,16 +1,16 @@
 package core.Memento;
 
-import core.Model;
+import core.Board;
 
 public class Memento {
-    private Model game;
+    private Board board;
 
-    Memento(Model model) {
-        this.game = model;
+    Memento(Board board) {
+        this.board = board;
     }
 
-    public Model getGame() {
-        return game;
+    public Board getBoard() {
+        return board;
     }
 
 

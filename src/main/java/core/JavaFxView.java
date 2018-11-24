@@ -26,7 +26,6 @@ import javafx.beans.binding.Bindings;
 public class JavaFxView {
 
     public JavaFxController controller;
-    public Model model;
     public BorderPane panel;
     public BorderPane centerGamePane;
     public BorderPane userActions;
@@ -46,7 +45,6 @@ public class JavaFxView {
 
 
     public JavaFxView(JavaFxController controller, BorderPane panel) {
-        this.model = model;
         this.controller = controller;
         this.panel = panel;
         this.selectedTiles = new ArrayList<Tile>();
@@ -464,7 +462,13 @@ public class JavaFxView {
             public void handle(ActionEvent event) {
                 try {
                     if (!controller.createMeld(selectedTiles)) {
-                        indicateInvalidMeld();
+                        controller.saveGame();
+                        Meld meld = new Meld(selectedTiles);
+                        controller.model.getBoard().addMeld(meld);
+                        controller.restoreGame();
+                        for (int i = 0; i < 3; i++) controller.drawTile();
+                        controller.playAITurns();
+                        refreshWindow();
                     } else {
                         selectedTiles.clear();
                         if (controller.model.gameWinCheck()) {
@@ -485,10 +489,26 @@ public class JavaFxView {
                         if (locationOnMeld == LocationOnMeld.FRONT) {//Add to front
                             if (controller.playTilestoMeldFront(selectedTiles, selectedMeldID)) {
                                 controller.model.userPlayer.playedTilesOnTurn = true;
+                            } else {
+                                controller.saveGame();
+                                Meld meld = new Meld(selectedTiles);
+                                controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
+                                controller.restoreGame();
+                                for (int i = 0; i < 3; i++) controller.drawTile();
+                                controller.playAITurns();
+                                refreshWindow();
                             }
                         } else {//Add to back
                             if (controller.playTilestoMeldBack(selectedTiles, selectedMeldID)) {
                                 controller.model.userPlayer.playedTilesOnTurn = true;
+                            } else {
+                                controller.saveGame();
+                                Meld meld = new Meld(selectedTiles);
+                                controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
+                                controller.restoreGame();
+                                for (int i = 0; i < 3; i++) controller.drawTile();
+                                controller.playAITurns();
+                                refreshWindow();
                             }
                         }
                         selectedTiles.clear();

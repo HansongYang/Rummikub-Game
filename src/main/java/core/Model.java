@@ -173,7 +173,9 @@ public class Model implements Observable {
     public Board getBoard() {
     	return board;
     }
-    
+
+    public void setBoard(Board board) { this.board = board; }
+
     public boolean gameWinCheck() {
     	if(numPlayer == 2) {
 	        if (userPlayer.hand.size() == 0) {
