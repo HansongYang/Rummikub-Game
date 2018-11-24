@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import java.util.Map;
@@ -34,6 +35,7 @@ public class JavaFxView {
 	public int selectedMeldID = -1;	
 	public enum LocationOnMeld { FRONT, BACK }
 	public LocationOnMeld locationOnMeld;
+	public Map<Meld, ArrayList<Tile>> selectedTilesFromBoard;
 
 	public boolean time;
 	public String playername;
@@ -47,6 +49,7 @@ public class JavaFxView {
 		this.controller = controller;
 		this.panel = panel;
 		this.selectedTiles = new ArrayList<Tile>();
+		this.selectedTilesFromBoard = new HashMap<Meld, ArrayList<Tile>>();
 		this.panel.setCenter(centerGamePane = new BorderPane());
 		this.centerGamePane.setBottom(userActions = new BorderPane());
 		this.time = false;
@@ -114,6 +117,9 @@ public class JavaFxView {
     		}
     		System.out.println(strategy[2]);
     	}
+    	selectedTiles.clear();
+    	selectedTilesFromBoard.clear();
+    	
     	displayBoard(this.model.getBoard());
     	displayMeldsInHand(model.userPlayer);
 	}
@@ -318,6 +324,33 @@ public class JavaFxView {
 					tileLabel.setTextFill(Color.BLACK);
 				}
 				tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 14px");
+				
+				tileLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+	    	        public void handle(MouseEvent e) {
+	    	        	
+	    	        	if(!selectedTilesFromBoard.containsKey(meld)) {
+	    	        		selectedTilesFromBoard.put(meld, new ArrayList<Tile>());
+	    	        		selectedTilesFromBoard.get(meld).add(tile);
+	    	        		tileLabel.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 14px");
+	    	        		
+	    	        	}else {
+	    	        		
+	    	        		if(!selectedTilesFromBoard.get(meld).contains(tile)) {
+	    	        			tileLabel.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 14px");
+	    	        			selectedTilesFromBoard.get(meld).add(tile);
+	    	        		}
+	    	        		else {
+	    	        			tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 14px");
+	    	        			selectedTilesFromBoard.get(meld).remove(tile);
+	    	        			
+	    	        			if(selectedTilesFromBoard.get(meld).size() == 0) {
+	    	        				selectedTilesFromBoard.remove(meld);
+	    	        			}
+	    	        		}
+	    	        		
+	    	        	}
+	    	        }
+	    	    });
 
 				boardGrid.add(tileLabel, j, i);
 			}
@@ -376,9 +409,11 @@ public class JavaFxView {
 		playToTable.setStyle("-fx-background-color: #f5f6fa");
 		final Button endTurn = new Button("End turn");
 		endTurn.setStyle("-fx-background-color: #f5f6fa");
-
 		final Button playCreatedMelds = new Button("Play created melds");
 		playCreatedMelds.setStyle("-fx-background-color: #f5f6fa");
+		final Button complexTileReuse = new Button("Reuse board tiles");
+		complexTileReuse.setStyle("-fx-background-color: #f5f6fa");
+		
         final Label timer = new Label("120");
 		timer.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
 
@@ -393,8 +428,9 @@ public class JavaFxView {
 			hbox.getChildren().add(endTurn);
 		}
 		hbox.getChildren().add(createMeld);
-		hbox.getChildren().add(playToTable);
 		hbox.getChildren().add(playCreatedMelds);
+		hbox.getChildren().add(playToTable);
+		hbox.getChildren().add(complexTileReuse);
 
         if(time) {
             model.startClock();
@@ -504,6 +540,32 @@ public class JavaFxView {
 				}
             }
         });
+		
+		complexTileReuse.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+
+                try {
+                	
+                	if(model.userPlayer.initial30Played) {
+	                	if(controller.reuseBoardTiles(selectedTilesFromBoard, selectedTiles)) {
+	                		model.userPlayer.playedTilesOnTurn = true;
+	                	}
+	                	else {
+	                		indicateInvalidMeld();
+	                	}
+	                	
+                	}
+                	selectedTiles.clear();
+                	selectedTilesFromBoard.clear();
+                	
+                	
+                	refreshWindow();
+                	
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
+        });
 
 		endTurn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -516,8 +578,10 @@ public class JavaFxView {
 
 					model.userPlayer.playedTilesOnTurn = false;
 
+					if(time) {
 					model.stopClock();
 					model.startClock();
+					}
 
 					refreshWindow();
 				} catch (Exception e) {

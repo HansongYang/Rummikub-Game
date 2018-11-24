@@ -1,13 +1,16 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Scanner;
 
+import core.Hand.SortByNumber;
 import core.Model.GameStates;
 
 public class JavaFxController implements Controller {
 
-	Scanner reader = new Scanner(System.in);
+	protected MeldValidatorService meldValidatorService = new MeldValidatorService();
 	public Model model; 
 	
 	public JavaFxController( Model model) {
@@ -150,6 +153,70 @@ public class JavaFxController implements Controller {
 		}
 		model.userPlayer.meldsInHand.clear();
 		
+	}
+
+	@Override
+	public boolean reuseBoardTiles(Map<Meld, ArrayList<Tile>> tilesFromBoard, ArrayList<Tile> playerTiles) {
+		Player player = model.userPlayer;
+		
+		ArrayList<ArrayList<Tile>> meldsToValidate = new ArrayList<ArrayList<Tile>>();
+		Meld newMeld = null;
+		Hand potentialNewMeld = new Hand();//Hand used so we can call sort
+		
+		for(Meld boardMeld : tilesFromBoard.keySet()) {
+			ArrayList<Tile> tiles = tilesFromBoard.get(boardMeld);
+				
+			
+			potentialNewMeld.getTiles().addAll(tiles);
+			
+			Meld updatedBoardMeld = new Meld(boardMeld.getTiles());
+			
+			for(int i = 0; i < tiles.size(); i++) {
+				updatedBoardMeld.remove(tiles.get(i));
+			}		
+			
+			if(updatedBoardMeld.getTiles().size() > 0) {
+				meldsToValidate.add(updatedBoardMeld.getTiles());
+			}
+			
+		}
+		potentialNewMeld.getTiles().addAll(playerTiles);
+		potentialNewMeld.sortTilesByNumber();
+		
+		meldsToValidate.add(potentialNewMeld.getTiles());
+		
+		
+		//Validate melds 
+		for(int i  = 0; i < meldsToValidate.size(); i++) {
+					
+			if(!meldValidatorService.isValidMeld(meldsToValidate.get(i))){
+				return false;
+			}
+		}
+		
+		
+		//All are valid, remove old version of melds on board
+		for(Meld meld : tilesFromBoard.keySet()) {
+			model.getBoard().currentMelds.remove(meld);
+		}
+		
+		//Update board with new melds
+		for(int i  = 0; i < meldsToValidate.size(); i++) {
+			
+			Meld meld = new Meld();
+			for(int j = 0; j < meldsToValidate.get(i).size();j++) {
+				meld.add(meldsToValidate.get(i).get(j));
+			}
+			
+			model.getBoard().addMeld(meld);
+		}
+		
+		//Removed used tiles from player hand
+		for(Tile t : playerTiles) {
+			player.hand.remove(t);
+		}
+
+		return true;
 	}
 
 	

@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface Controller {
 	
@@ -11,5 +12,6 @@ public interface Controller {
 	public boolean playTilestoMeldFront(ArrayList<Tile> tiles,int meldId);
 	public boolean playTilestoMeldBack(ArrayList<Tile> tiles,int meldId);
 	public boolean playMeldsToTable();
+	public boolean reuseBoardTiles(Map<Meld, ArrayList<Tile>> tilesFromBoard, ArrayList<Tile> playerTiles);
 	public void returnMeldsToHand();
 }
