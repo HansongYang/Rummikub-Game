@@ -118,7 +118,7 @@ import junit.framework.TestCase;
 	
 	public void testActualStrategy() {
 		
-		Game game = new Game();
+		Model game = new Model();
 		game.observers = new ArrayList<Observer>();
 		game.playerHandCount = new HashMap<String, Integer>();
 		game.aiPlayer1 = aiPlayer1;
@@ -174,7 +174,7 @@ import junit.framework.TestCase;
 	}
 	
 	public void testFindMissingTiles() {
-		Game game = new Game();
+		Model game = new Model();
 		game.observers = new ArrayList<Observer>();
 		game.playerHandCount = new HashMap<String, Integer>();
 		game.aiPlayer1 = aiPlayer1;
@@ -220,18 +220,18 @@ import junit.framework.TestCase;
 		thirdMeld.add(R3);
 		thirdMeld.add(O3);
 		
-		aiPlayer4.game.getBoard().addMeld(testMeld);
-		aiPlayer4.game.getBoard().addMeld(notherMeld);
-		aiPlayer4.game.getBoard().addMeld(thirdMeld);
+		aiPlayer4.model.getBoard().addMeld(testMeld);
+		aiPlayer4.model.getBoard().addMeld(notherMeld);
+		aiPlayer4.model.getBoard().addMeld(thirdMeld);
 		
 		aiPlayer4.strategy.executeStrategy(aiPlayer4);
 		
-		assertEquals(assertMeld.getTiles(), aiPlayer4.game.getBoard().currentMelds.get(2).getTiles());	
+		assertEquals(assertMeld.getTiles(), aiPlayer4.model.getBoard().currentMelds.get(2).getTiles());	
 		
 	}
 	
 	public void testFindMissingTilesSets() {
-		Game game = new Game();
+		Model game = new Model();
 		game.observers = new ArrayList<Observer>();
 		game.playerHandCount = new HashMap<String, Integer>();
 		game.aiPlayer1 = aiPlayer1;
@@ -258,11 +258,11 @@ import junit.framework.TestCase;
 	    Meld testMeld = new Meld();
 	    testMeld.add(O2);
 	    
-	    aiPlayer4.game.getBoard().addMeld(testMeld);
+	    aiPlayer4.model.getBoard().addMeld(testMeld);
 	    
 	    aiStrategyFour.executeStrategy(aiPlayer4);
 	    
-	    assertEquals(testMeld, aiPlayer4.game.getBoard().currentMelds.get(0));
+	    assertEquals(testMeld, aiPlayer4.model.getBoard().currentMelds.get(0));
 	}
 	
 	Model game = new Model();
