@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import junit.framework.TestCase;
 
-/*public class AiStrategyFourTest extends TestCase {
+public class AiStrategyFourTest extends TestCase {
 	
 	public void testInitial() {
 		Model model = new Model();
@@ -296,4 +296,4 @@ import junit.framework.TestCase;
 	Tile O3 = new Tile('O',3);
 	Tile R3 = new Tile('R',3);
 
-}*/
+}

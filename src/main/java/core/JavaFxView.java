@@ -75,8 +75,10 @@ public class JavaFxView {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 2")) {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else {
+            } else if (strategy[0].equals("AI Strategy 3")){
                 displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else {
+            	displayPlayerHand(controller.model.aiPlayer1, 2);
             }
         } else if (numPlayer == 3) {
             if (strategy[0].equals("AI Strategy 1")) {
@@ -85,13 +87,17 @@ public class JavaFxView {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 3")) {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else if(strategy[0].equals("AI Strategy 4")){
+            	displayPlayerHand(controller.model.aiPlayer1, 2);
             }
             if (strategy[1].equals("AI Strategy 1")) {
                 displayPlayerHand(controller.model.aiPlayer2, 3);
             } else if (strategy[1].equals("AI Strategy 2")) {
                 displayPlayerHand(controller.model.aiPlayer2, 3);
-            } else {
+            } else if (strategy[1].equals("AI Strategy 3")){
                 displayPlayerHand(controller.model.aiPlayer2, 3);
+            } else {
+            	displayPlayerHand(controller.model.aiPlayer2, 3);
             }
         } else {
             if (strategy[0].equals("AI Strategy 1")) {
@@ -100,6 +106,8 @@ public class JavaFxView {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 3")) {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else if(strategy[0].equals("AI Strategy 4")){
+            	displayPlayerHand(controller.model.aiPlayer1, 2);
             }
             if (strategy[1].equals("AI Strategy 1")) {
                 displayPlayerHand(controller.model.aiPlayer2, 3);
@@ -107,15 +115,18 @@ public class JavaFxView {
                 displayPlayerHand(controller.model.aiPlayer2, 3);
             } else if (strategy[1].equals("AI Strategy 3")) {
                 displayPlayerHand(controller.model.aiPlayer2, 3);
+            } else if (strategy[1].equals("AI Strategy 4")) {
+            	displayPlayerHand(controller.model.aiPlayer2, 3);
             }
             if (strategy[2].equals("AI Strategy 1")) {
                 displayPlayerHand(controller.model.aiPlayer3, 4);
             } else if (strategy[2].equals("AI Strategy 2")) {
                 displayPlayerHand(controller.model.aiPlayer3, 4);
-            } else {
+            } else if(strategy[2].equals("AI Strategy 3")){
                 displayPlayerHand(controller.model.aiPlayer3, 4);
+            } else {
+            	displayPlayerHand(controller.model.aiPlayer3, 4);
             }
-            System.out.println(strategy[2]);
         }
 		selectedTiles.clear();
     	selectedTilesFromBoard.clear();
@@ -502,6 +513,10 @@ public class JavaFxView {
                         controller.restoreGame();
                         for (int i = 0; i < 3; i++) controller.drawTile();
                         controller.playAITurns();
+                        if(time) {
+    	                    controller.model.stopClock();
+    	                    controller.model.startClock();
+                        }
                         refreshWindow();
                     } else {
                         selectedTiles.clear();

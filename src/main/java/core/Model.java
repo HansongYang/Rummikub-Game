@@ -54,7 +54,6 @@ public class Model implements Observable {
     	timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
             	Platform.runLater(() ->setValue(Integer.toString(setInterval())));
-            	
             }
         }, 1000L, 3500L * times);
     	times++;
@@ -96,6 +95,7 @@ public class Model implements Observable {
     	PlayerStrategy<? super AIPlayer> aiStrategyOne = new AIStrategyOne();
     	PlayerStrategy<? super AIPlayer> aiStrategyTwo = new AIStrategyTwo();
     	PlayerStrategy<? super AIPlayer> aiStrategyThree = new AIStrategyThree();
+    	PlayerStrategy<? super AIPlayer> aiStrategyFour = new AIStrategyFour();
     	
         userPlayer = new UserPlayer("USER", this, userStrategy);
         if(numPlayer == 2) {
@@ -103,8 +103,10 @@ public class Model implements Observable {
         		aiPlayer1 = new AIPlayer("AI1", this, aiStrategyOne);
         	}else if(strategy[0].equals("AI Strategy 2")) {
         		aiPlayer1 = new AIPlayer("AI1", this, aiStrategyTwo);
-        	}else {
+        	}else if(strategy[0].equals("AI Strategy 3")){
         		aiPlayer1 = new AIPlayer("AI1", this, aiStrategyThree);
+        	}else {
+        		aiPlayer1 = new AIPlayer("AI1", this, aiStrategyFour);
         	}
         	 this.players.add(aiPlayer1);
         }else if(numPlayer == 3) {
@@ -114,13 +116,17 @@ public class Model implements Observable {
         		aiPlayer1 = new AIPlayer("AI1", this, aiStrategyTwo);
         	}else if(strategy[0].equals("AI Strategy 3")){
         		aiPlayer1 = new AIPlayer("AI1", this, aiStrategyThree);
+        	}else if(strategy[0].equals("AI Strategy 4")) {
+        		aiPlayer1 = new AIPlayer("AI1", this, aiStrategyFour);
         	}
         	if(strategy[1].equals("AI Strategy 1")) {
         		aiPlayer2 = new AIPlayer("AI2", this, aiStrategyOne);
         	}else if(strategy[1].equals("AI Strategy 2")) {
         		aiPlayer2 = new AIPlayer("AI2", this, aiStrategyTwo);
+        	}else if(strategy[1].equals("AI Strategy 3")){
+        		aiPlayer2 = new AIPlayer("AI2", this, aiStrategyThree);
         	}else {
-        		aiPlayer3 = new AIPlayer("AI2", this, aiStrategyThree);
+        		aiPlayer2 = new AIPlayer("AI2", this, aiStrategyFour);
         	}
         	this.players.add(aiPlayer1);
         	this.players.add(aiPlayer2);
@@ -133,6 +139,8 @@ public class Model implements Observable {
         		aiPlayer1 = new AIPlayer("AI1", this, aiStrategyTwo);
         	}else if(strategy[0].equals("AI Strategy 3")){
         		aiPlayer1 = new AIPlayer("AI1", this, aiStrategyThree);
+        	}else if(strategy[0].equals("AI Strategy 4")) {
+        		aiPlayer1 = new AIPlayer("AI1", this, aiStrategyFour);
         	}
         	if(strategy[1].equals("AI Strategy 1")) {
         		aiPlayer2 = new AIPlayer("AI2", this, aiStrategyOne);
@@ -140,13 +148,17 @@ public class Model implements Observable {
         		aiPlayer2 = new AIPlayer("AI2", this, aiStrategyTwo);
         	}else if(strategy[1].equals("AI Strategy 3")) {
         		aiPlayer2 = new AIPlayer("AI2", this, aiStrategyThree);
+        	}else if(strategy[1].equals("AI Strategy 4")) {
+        		aiPlayer2 = new AIPlayer("AI2", this, aiStrategyFour);
         	}
         	if(strategy[2].equals("AI Strategy 1")) {
         		aiPlayer3 = new AIPlayer("AI3", this, aiStrategyOne);
         	}else if(strategy[2].equals("AI Strategy 2")) {
         		aiPlayer3 = new AIPlayer("AI3", this, aiStrategyTwo);
-        	}else {
+        	}else if(strategy[2].equals("AI Strategy 3")){
         		aiPlayer3 = new AIPlayer("AI3", this, aiStrategyThree);
+        	}else {
+        		aiPlayer3 = new AIPlayer("AI3", this, aiStrategyFour);
         	}
         	this.players.add(aiPlayer1);
         	this.players.add(aiPlayer2);
