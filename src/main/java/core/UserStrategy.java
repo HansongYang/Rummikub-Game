@@ -23,7 +23,7 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 				
 				runs = player.findRuns();
 				sets = player.findSets();
-				
+//				THE ONLY PART I CHANGED IS LINE 24 - 32
 //				you can comment this next part out but runs is an arraylist of possible runs (arraylist of arraylists)
 //				and sets is an arraylist of possible sets (only shows longest streaks (e.g. [[12345], [8,9,10,11,12]]))
 //				instead of returning [1,2,3,][1,2,4][1,2,5][2,3,4] etc.....
