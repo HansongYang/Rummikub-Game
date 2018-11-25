@@ -128,13 +128,13 @@ public class Game extends Application {
         label5.setStyle("-fx-font: normal 20px 'serif'");
 
         aiComboBox1.getItems().addAll(
-                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3"
+                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4"
         );
         aiComboBox2.getItems().addAll(
-                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3"
+                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4"
         );
         aiComboBox3.getItems().addAll(
-                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3"
+                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4"
         );
         strategy[0] = (String) aiComboBox1.getValue();
 
@@ -267,8 +267,10 @@ public class Game extends Application {
                 view.displayPlayerHand(model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 2")) {
                 view.displayPlayerHand(model.aiPlayer1, 2);
-            } else {
+            } else if (strategy[0].equals("AI Strategy 3")){
                 view.displayPlayerHand(model.aiPlayer1, 2);
+            } else {
+            	view.displayPlayerHand(model.aiPlayer1, 2);
             }
         } else if (numPlayer == 3) {
             if (strategy[0].equals("AI Strategy 1")) {
@@ -277,13 +279,17 @@ public class Game extends Application {
                 view.displayPlayerHand(model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 3")) {
                 view.displayPlayerHand(model.aiPlayer1, 2);
+            } else if(strategy[0].equals("AI Strategy 4")){
+            	view.displayPlayerHand(model.aiPlayer1, 2);
             }
             if (strategy[1].equals("AI Strategy 1")) {
                 view.displayPlayerHand(model.aiPlayer2, 3);
             } else if (strategy[1].equals("AI Strategy 2")) {
                 view.displayPlayerHand(model.aiPlayer2, 3);
-            } else {
+            } else if (strategy[1].equals("AI Strategy 3")){
                 view.displayPlayerHand(model.aiPlayer2, 3);
+            } else {
+            	view.displayPlayerHand(model.aiPlayer2, 3);
             }
         } else {
             if (strategy[0].equals("AI Strategy 1")) {
@@ -292,6 +298,8 @@ public class Game extends Application {
                 view.displayPlayerHand(model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 3")) {
                 view.displayPlayerHand(model.aiPlayer1, 2);
+            } else if(strategy[0].equals("AI Strategy 4")){
+            	view.displayPlayerHand(model.aiPlayer1, 2);
             }
             if (strategy[1].equals("AI Strategy 1")) {
                 view.displayPlayerHand(model.aiPlayer2, 3);
@@ -299,13 +307,17 @@ public class Game extends Application {
                 view.displayPlayerHand(model.aiPlayer2, 3);
             } else if (strategy[1].equals("AI Strategy 3")) {
                 view.displayPlayerHand(model.aiPlayer2, 3);
+            } else if (strategy[1].equals("AI Strategy 4")) {
+            	view.displayPlayerHand(model.aiPlayer2, 3);
             }
             if (strategy[2].equals("AI Strategy 1")) {
                 view.displayPlayerHand(model.aiPlayer3, 4);
             } else if (strategy[2].equals("AI Strategy 2")) {
                 view.displayPlayerHand(model.aiPlayer3, 4);
-            } else {
+            } else if(strategy[2].equals("AI Strategy 3")){
                 view.displayPlayerHand(model.aiPlayer3, 4);
+            } else {
+            	view.displayPlayerHand(model.aiPlayer3, 4);
             }
         }
         view.displayBoard(model.getBoard());
