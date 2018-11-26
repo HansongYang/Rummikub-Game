@@ -14,6 +14,10 @@ public class Deck {
         this.shuffleDeck();
     }
 
+    public Deck(boolean shuffled) {
+        if (!shuffled) this.generateDeck();
+    }
+
     public void generateDeck() {
         // Outer loop for creating every tile twice
         for (int x = 0; x < 2; x++) {
@@ -61,4 +65,6 @@ public class Deck {
     public int getDeckSize() {
         return deck.size();
     }
+
+    public ArrayList<Tile> getDeck() { return this.deck; }
 }

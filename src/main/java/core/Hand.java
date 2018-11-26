@@ -13,6 +13,13 @@ public class Hand {
 		hands = new ArrayList<Tile>();
 	}
 
+	public Hand(ArrayList<Tile> tiles) {
+		hands = new ArrayList<Tile>();
+		for(int i = 0; i < tiles.size(); i++) {
+			this.add(tiles.get(i));
+		}
+	}
+
 	public Tile getTile(int i) {
 		return this.hands.get(i);
 	}
