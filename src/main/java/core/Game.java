@@ -6,8 +6,12 @@ import java.util.*;
 import core.Model.GameStates;
 
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Iterator;
@@ -19,11 +23,10 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.animation.*;
 import javafx.beans.value.*;
+import javafx.util.converter.NumberStringConverter;
 
 public class Game extends Application {
 
@@ -39,6 +42,8 @@ public class Game extends Application {
     public String playername;
     public int numPlayer;
     public String[] strategy;
+    private int tickerNum = 0;
+
 
     public static void main(String[] arg) {
         launch(arg);
@@ -75,7 +80,10 @@ public class Game extends Application {
 
     public void startMenu() {
         final Button start = new Button("Start Game");
-        start.setStyle("-fx-background-color: red; -fx-textfill: black;");
+        start.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+
+        final Button rig = new Button("Rig Game");
+        rig.setStyle("-fx-background-color: #f5f6fa;");
 
         final Text label = new Text("Welcome to Rummikub Game, what is your name?");
         final TextField nameText = new TextField();
@@ -114,6 +122,8 @@ public class Game extends Application {
         no.setSelected(true);
 
         GridPane boardGrid = new GridPane();
+        boardGrid.setVgap(2);
+        boardGrid.setHgap(2);
         panel.setCenter(boardGrid);
         boardGrid.setAlignment(Pos.CENTER);
         panel.setStyle("-fx-background-color: PALEGREEN;");
@@ -158,6 +168,7 @@ public class Game extends Application {
         boardGrid.add(yes, 0, 17);
         boardGrid.add(no, 0, 18);
         boardGrid.add(start, 2, 20);
+        boardGrid.add(rig, 2, 22);
 
         start.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -188,6 +199,13 @@ public class Game extends Application {
             }
         });
 
+        rig.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                gameRigging();
+            }
+        });
+
         playerComboBox.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 // TODO Auto-generated method stub
@@ -214,6 +232,163 @@ public class Game extends Application {
                 }
             }
         });
+    }
+
+    public void gameRigging() {
+        panel.getChildren().clear();
+        BorderPane rigPane = new BorderPane();
+
+        ArrayList<Tile> selectedTiles = new ArrayList<Tile>();
+        ArrayList<Tile> player1Tiles = new ArrayList<Tile>();
+        ArrayList<Tile> player2Tiles = new ArrayList<Tile>();
+        ArrayList<Tile> player3Tiles = new ArrayList<Tile>();
+        ArrayList<Tile> player4Tiles = new ArrayList<Tile>();
+
+        Deck tempRigDeck = new Deck(false);
+
+        Label tickerLabel = new Label();
+        tickerLabel.textProperty().bindBidirectional(new SimpleIntegerProperty(tickerNum), new NumberStringConverter());
+        tickerLabel.setStyle("-fx-font-size: 15px");
+        HBox ticker = new HBox(5);
+        ticker.setAlignment(Pos.CENTER);
+
+        FlowPane flowPane = refreshDeck(tempRigDeck, selectedTiles, tickerLabel);
+
+        Label amountSelected = new Label("Amount Selected (must be >= 14): ");
+        amountSelected.setStyle("-fx-font-size: 15px");
+        ticker.getChildren().add(amountSelected);
+        ticker.getChildren().add(tickerLabel);
+        ticker.setPadding(new Insets(0, 0, 100, 0));
+
+        HBox playerBtns = new HBox(10);
+        playerBtns.setAlignment(Pos.CENTER);
+        Button oneBtn = new Button("+ Player 1 Hand");
+        oneBtn.setStyle("-fx-background-color: #f5f6fa;");
+        Button twoBtn = new Button("+ Player 2 Hand");
+        twoBtn.setStyle("-fx-background-color: #f5f6fa;");
+        Button threeBtn = new Button("+ Player 3 Hand");
+        threeBtn.setStyle("-fx-background-color: #f5f6fa;");
+        Button fourBtn = new Button("+ Player 4 Hand");
+        fourBtn.setStyle("-fx-background-color: #f5f6fa;");
+        Button start = new Button("Start Game");
+        start.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+        playerBtns.getChildren().addAll(oneBtn, twoBtn, threeBtn, fourBtn, start);
+
+        oneBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (tickerNum >= 14 || player1Tiles.size() >= 14) player1Tiles.addAll(selectedTiles);
+                new Hand(player1Tiles).printHand();
+                tempRigDeck.getDeck().removeAll(selectedTiles);
+                selectedTiles.clear();
+                FlowPane newDeckPane = refreshDeck(tempRigDeck, selectedTiles, tickerLabel);
+                rigPane.setCenter(newDeckPane);
+                tickerNum = 0;
+                tickerLabel.setText("0");
+            }
+        });
+
+        twoBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (tickerNum >= 14 || player2Tiles.size() >= 14) player2Tiles.addAll(selectedTiles);
+                new Hand(player2Tiles).printHand();
+                tempRigDeck.getDeck().removeAll(selectedTiles);
+                selectedTiles.clear();
+                FlowPane newDeckPane = refreshDeck(tempRigDeck, selectedTiles, tickerLabel);
+                rigPane.setCenter(newDeckPane);
+                tickerNum = 0;
+                tickerLabel.setText("0");
+            }
+        });
+
+        threeBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (tickerNum >= 14 || player3Tiles.size() >= 14) player3Tiles.addAll(selectedTiles);
+                new Hand(player3Tiles).printHand();
+                tempRigDeck.getDeck().removeAll(selectedTiles);
+                selectedTiles.clear();
+                FlowPane newDeckPane = refreshDeck(tempRigDeck, selectedTiles, tickerLabel);
+                rigPane.setCenter(newDeckPane);
+                tickerNum = 0;
+                tickerLabel.setText("0");
+            }
+        });
+
+        fourBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (tickerNum >= 14 || player4Tiles.size() >= 14) player4Tiles.addAll(selectedTiles);
+                new Hand(player4Tiles).printHand();
+                tempRigDeck.getDeck().removeAll(selectedTiles);
+                selectedTiles.clear();
+                FlowPane newDeckPane = refreshDeck(tempRigDeck, selectedTiles, tickerLabel);
+                rigPane.setCenter(newDeckPane);
+                tickerNum = 0;
+                tickerLabel.setText("0");
+            }
+        });
+
+        start.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                // TODO: initialize game with all rigged player hands
+            }
+        });
+
+        rigPane.setCenter(flowPane);
+        rigPane.setBottom(ticker);
+        panel.setCenter(rigPane);
+        panel.setBottom(playerBtns);
+    }
+
+    public FlowPane refreshDeck(Deck tempRigDeck, ArrayList<Tile> selectedTiles, Label tickerLabel) {
+        FlowPane flowPane = new FlowPane(5, 5);
+        flowPane.setPadding(new Insets(100, 0, 0, 0));
+
+        for (int i = 0; i < tempRigDeck.getDeckSize(); i++) {
+
+
+            final Tile tile = tempRigDeck.getDeck().get(i);
+            final Label tileLabel = new Label(Integer.toString(tile.getRank()));
+            tileLabel.setAlignment(Pos.CENTER);
+
+            tileLabel.setMinSize(30, 40);
+            if (tile.getColour() == 'G') {
+                tileLabel.setTextFill(Color.GREEN);
+            } else if (tile.getColour() == 'R') {
+                tileLabel.setTextFill(Color.RED);
+            } else if (tile.getColour() == 'B') {
+                tileLabel.setTextFill(Color.BLUE);
+            } else if (tile.getColour() == 'O') {
+                tileLabel.setTextFill(Color.ORANGE);
+            } else {
+                tileLabel.setTextFill(Color.BLACK);
+            }
+
+            tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
+
+            flowPane.getChildren().add(tileLabel);
+
+            tileLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent e) {
+                    if (!selectedTiles.contains(tile)) {
+                        tileLabel.setStyle("-fx-border-color: BLACK; -fx-border-width: 3px; -fx-background-color: WHITE; -fx-font-size: 20px");
+                        selectedTiles.add(tile);
+                        tickerNum++;
+                        tickerLabel.setText(Integer.toString(tickerNum));
+                    } else {
+                        tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+                        selectedTiles.remove(tile);
+                        tickerNum--;
+                        tickerLabel.setText(Integer.toString(tickerNum));
+                    }
+                }
+            });
+        }
+
+        return flowPane;
     }
 
     public void gameLoop() {
