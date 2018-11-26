@@ -30,11 +30,10 @@ public class JavaFxController implements Controller {
 		return choice;
 	}
 
-	public Tile drawTile() {
+	public Tile drawTile(UserPlayer player) {
 		if(model.getDeck().getDeckSize() == 0) {
 			return null;
 		}
-		Player player = model.userPlayer;
 		
 		Tile newTile = model.getDeck().drawTile();
 		player.hand.add(newTile);
@@ -42,8 +41,7 @@ public class JavaFxController implements Controller {
 		return newTile;
 	}
 	
-	public boolean createMeld(ArrayList<Tile> tiles) {
-		UserPlayer player = model.userPlayer;
+	public boolean createMeld(UserPlayer player, ArrayList<Tile> tiles) {
 		
 		Meld meld = player.createMeld(tiles, player.hand);
 		
@@ -99,7 +97,7 @@ public class JavaFxController implements Controller {
 		return false;
 	}
 
-	public boolean playTilestoMeldFront(ArrayList<Tile> tiles, int meldId) {
+	public boolean playTilestoMeldFront(UserPlayer player, ArrayList<Tile> tiles, int meldId) {
 		Meld meldToAdd = new Meld();
 		for(Tile t : tiles) {
 			meldToAdd.add(t);		
@@ -107,14 +105,14 @@ public class JavaFxController implements Controller {
 		
 		if(model.getBoard().addTileToMeldBeginning(meldId, meldToAdd)) {
 			for(Tile t : tiles) {
-				model.userPlayer.hand.remove(t);
+				player.hand.remove(t);
 			}
 			return true;
 		}
 		return false;
 	}
 
-	public boolean playTilestoMeldBack(ArrayList<Tile> tiles, int meldId) {
+	public boolean playTilestoMeldBack(UserPlayer player, ArrayList<Tile> tiles, int meldId) {
 		Meld meldToAdd = new Meld();
 		for(Tile t : tiles) {
 			meldToAdd.add(t);		
@@ -122,15 +120,14 @@ public class JavaFxController implements Controller {
 		
 		if(model.getBoard().addTileToMeldEnd(meldId, meldToAdd)) {
 			for(Tile t : tiles) {
-				model.userPlayer.hand.remove(t);
+				player.hand.remove(t);
 			}
 			return true;
 		}
 		return false;
 	}
 
-	public boolean playMeldsToTable() {
-		Player player = model.userPlayer;
+	public boolean playMeldsToTable(UserPlayer player) {
 		
 		if(!player.initial30Played && player.totalAllMelds(player.meldsInHand) < 30) {
 			return false;
@@ -147,9 +144,7 @@ public class JavaFxController implements Controller {
 		return true;
 	}
 
-	public void returnMeldsToHand() {
-		Player player = model.userPlayer;
-		
+	public void returnMeldsToHand(UserPlayer player) {		
 		
 		for(int i = 0; i < model.userPlayer.meldsInHand.size(); i++) {
 			Meld meld = model.userPlayer.meldsInHand.get(i);
@@ -162,8 +157,7 @@ public class JavaFxController implements Controller {
 	}
 
 	@Override
-	public boolean reuseBoardTiles(Map<Meld, ArrayList<Tile>> tilesFromBoard, ArrayList<Tile> playerTiles) {
-		Player player = model.userPlayer;
+	public boolean reuseBoardTiles(UserPlayer player, Map<Meld, ArrayList<Tile>> tilesFromBoard, ArrayList<Tile> playerTiles) {
 		
 		ArrayList<ArrayList<Tile>> meldsToValidate = new ArrayList<ArrayList<Tile>>();
 		Meld newMeld = null;

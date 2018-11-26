@@ -18,7 +18,7 @@ public class JavaFxControllerTest extends TestCase {
         assertTrue(controller.model.getBoard().currentMelds.isEmpty());
 
         Meld meld = new Meld();
-        meld.add(controller.drawTile());
+        meld.add(controller.drawTile(controller.model.userPlayer));
         controller.model.getBoard().addMeld(meld);
 
         assertFalse(controller.model.getBoard().currentMelds.isEmpty());

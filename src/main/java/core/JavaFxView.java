@@ -65,7 +65,7 @@ public class JavaFxView {
 
     public void refreshWindow() {
         panel.getChildren().clear();
-        //centerGamePane.getChildren().clear();
+        centerGamePane.getChildren().clear();
 
         panel.setCenter(centerGamePane);
         centerGamePane.setBottom(userActions);
@@ -476,13 +476,13 @@ public class JavaFxView {
         drawTile.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    Tile drawnTile = controller.drawTile();
+                    Tile drawnTile = controller.drawTile(controller.model.userPlayer);
                     if (controller.playAITurns()) {// AI wins on this turn
                         //Game over
                         displayWinner(controller.model.gameWinner);
                     }
                     //Return created melds back to hand if not played
-                    controller.returnMeldsToHand();
+                    controller.returnMeldsToHand(controller.model.userPlayer);
                     if(time) {
                     	System.out.println("draw");
 	                    controller.model.stopClock();
@@ -498,12 +498,12 @@ public class JavaFxView {
         createMeld.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    if (!controller.createMeld(selectedTiles)) {
+                    if (!controller.createMeld(controller.model.userPlayer,selectedTiles)) {
                         controller.saveGame();
                         Meld meld = new Meld(selectedTiles);
                         controller.model.getBoard().addMeld(meld);
                         controller.restoreGame();
-                        for (int i = 0; i < 3; i++) controller.drawTile();
+                        for (int i = 0; i < 3; i++) controller.drawTile(controller.model.userPlayer);
                         controller.playAITurns();
                         refreshWindow();
                     } else {
@@ -524,26 +524,26 @@ public class JavaFxView {
                 try {
                     if (selectedMeldID != -1) {
                         if (locationOnMeld == LocationOnMeld.FRONT) {//Add to front
-                            if (controller.playTilestoMeldFront(selectedTiles, selectedMeldID)) {
+                            if (controller.playTilestoMeldFront(controller.model.userPlayer,selectedTiles, selectedMeldID)) {
                                 controller.model.userPlayer.playedTilesOnTurn = true;
                             } else {
                                 controller.saveGame();
                                 Meld meld = new Meld(selectedTiles);
                                 controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
                                 controller.restoreGame();
-                                for (int i = 0; i < 3; i++) controller.drawTile();
+                                for (int i = 0; i < 3; i++) controller.drawTile(controller.model.userPlayer);
                                 controller.playAITurns();
                                 refreshWindow();
                             }
                         } else {//Add to back
-                            if (controller.playTilestoMeldBack(selectedTiles, selectedMeldID)) {
+                            if (controller.playTilestoMeldBack(controller.model.userPlayer, selectedTiles, selectedMeldID)) {
                                 controller.model.userPlayer.playedTilesOnTurn = true;
                             } else {
                                 controller.saveGame();
                                 Meld meld = new Meld(selectedTiles);
                                 controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
                                 controller.restoreGame();
-                                for (int i = 0; i < 3; i++) controller.drawTile();
+                                for (int i = 0; i < 3; i++) controller.drawTile(controller.model.userPlayer);
                                 controller.playAITurns();
                                 refreshWindow();
                             }
@@ -565,7 +565,7 @@ public class JavaFxView {
                 try {
                 	
                 	if(controller.model.userPlayer.initial30Played) {
-	                	if(controller.reuseBoardTiles(selectedTilesFromBoard, selectedTiles)) {
+	                	if(controller.reuseBoardTiles(controller.model.userPlayer, selectedTilesFromBoard, selectedTiles)) {
 	                		controller.model.userPlayer.playedTilesOnTurn = true;
 	                	}
 	                	else {
@@ -588,12 +588,13 @@ public class JavaFxView {
         playCreatedMelds.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    if (controller.playMeldsToTable()) {
+                    if (controller.playMeldsToTable(controller.model.userPlayer)) {
                         controller.model.userPlayer.playedTilesOnTurn = true;
+                        refreshWindow();
                     } else {
                         indicateMeldsLessThan30();
                     }
-                    refreshWindow();
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
