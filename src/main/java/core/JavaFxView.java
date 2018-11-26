@@ -65,7 +65,9 @@ public class JavaFxView {
 
     public void refreshWindow() {
         panel.getChildren().clear();
+
         centerGamePane.getChildren().clear();
+
 
         panel.setCenter(centerGamePane);
         centerGamePane.setBottom(userActions);
@@ -76,8 +78,10 @@ public class JavaFxView {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 2")) {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else {
+            } else if (strategy[0].equals("AI Strategy 3")){
                 displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else {
+            	displayPlayerHand(controller.model.aiPlayer1, 2);
             }
         } else if (numPlayer == 3) {
             if (strategy[0].equals("AI Strategy 1")) {
@@ -86,13 +90,17 @@ public class JavaFxView {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 3")) {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else if(strategy[0].equals("AI Strategy 4")){
+            	displayPlayerHand(controller.model.aiPlayer1, 2);
             }
             if (strategy[1].equals("AI Strategy 1")) {
                 displayPlayerHand(controller.model.aiPlayer2, 3);
             } else if (strategy[1].equals("AI Strategy 2")) {
                 displayPlayerHand(controller.model.aiPlayer2, 3);
-            } else {
+            } else if (strategy[1].equals("AI Strategy 3")){
                 displayPlayerHand(controller.model.aiPlayer2, 3);
+            } else {
+            	displayPlayerHand(controller.model.aiPlayer2, 3);
             }
         } else {
             if (strategy[0].equals("AI Strategy 1")) {
@@ -101,6 +109,8 @@ public class JavaFxView {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
             } else if (strategy[0].equals("AI Strategy 3")) {
                 displayPlayerHand(controller.model.aiPlayer1, 2);
+            } else if(strategy[0].equals("AI Strategy 4")){
+            	displayPlayerHand(controller.model.aiPlayer1, 2);
             }
             if (strategy[1].equals("AI Strategy 1")) {
                 displayPlayerHand(controller.model.aiPlayer2, 3);
@@ -108,15 +118,18 @@ public class JavaFxView {
                 displayPlayerHand(controller.model.aiPlayer2, 3);
             } else if (strategy[1].equals("AI Strategy 3")) {
                 displayPlayerHand(controller.model.aiPlayer2, 3);
+            } else if (strategy[1].equals("AI Strategy 4")) {
+            	displayPlayerHand(controller.model.aiPlayer2, 3);
             }
             if (strategy[2].equals("AI Strategy 1")) {
                 displayPlayerHand(controller.model.aiPlayer3, 4);
             } else if (strategy[2].equals("AI Strategy 2")) {
                 displayPlayerHand(controller.model.aiPlayer3, 4);
-            } else {
+            } else if(strategy[2].equals("AI Strategy 3")){
                 displayPlayerHand(controller.model.aiPlayer3, 4);
+            } else {
+            	displayPlayerHand(controller.model.aiPlayer3, 4);
             }
-            System.out.println(strategy[2]);
         }
 		selectedTiles.clear();
     	selectedTilesFromBoard.clear();
@@ -430,7 +443,7 @@ public class JavaFxView {
 
         final Label timer = new Label();
         timer.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 20px");
-        restart.setStyle("-fx-background-color: #f5f6fa");
+        restart.setStyle("-fx-background-color: red; -fx-textfill: black;");
         
         HBox hbox = new HBox(5);
         hbox.setPadding(new Insets(10));
@@ -444,11 +457,10 @@ public class JavaFxView {
         hbox.getChildren().add(createMeld);
         hbox.getChildren().add(playToTable);
         hbox.getChildren().add(playCreatedMelds);
-        hbox.getChildren().add(restart);
 		hbox.getChildren().add(complexTileReuse);
+        hbox.getChildren().add(restart);
 
         if (time & controller.model.interval == 120) {
-        	System.out.println("starthu");
             controller.model.startClock();
             timer.setText(Integer.toString(controller.model.interval));
             hbox.getChildren().add(timer);
@@ -484,7 +496,6 @@ public class JavaFxView {
                     //Return created melds back to hand if not played
                     controller.returnMeldsToHand(controller.model.userPlayer);
                     if(time) {
-                    	System.out.println("draw");
 	                    controller.model.stopClock();
 	                    controller.model.startClock();
                     }
@@ -505,6 +516,10 @@ public class JavaFxView {
                         controller.restoreGame();
                         for (int i = 0; i < 3; i++) controller.drawTile(controller.model.userPlayer);
                         controller.playAITurns();
+                        if(time) {
+    	                    controller.model.stopClock();
+    	                    controller.model.startClock();
+                        }
                         refreshWindow();
                     } else {
                         selectedTiles.clear();
@@ -561,9 +576,7 @@ public class JavaFxView {
 		
 		complexTileReuse.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-
                 try {
-                	
                 	if(controller.model.userPlayer.initial30Played) {
 	                	if(controller.reuseBoardTiles(controller.model.userPlayer, selectedTilesFromBoard, selectedTiles)) {
 	                		controller.model.userPlayer.playedTilesOnTurn = true;
@@ -571,14 +584,10 @@ public class JavaFxView {
 	                	else {
 	                		indicateInvalidMeld();
 	                	}
-	                	
                 	}
                 	selectedTiles.clear();
                 	selectedTilesFromBoard.clear();
-                	
-                	
                 	refreshWindow();
-                	
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -610,10 +619,10 @@ public class JavaFxView {
                     }
                     controller.model.userPlayer.playedTilesOnTurn = false;
                     if(time) {
-                    	System.out.println("end");
 	                    controller.model.stopClock();
 	                    controller.model.startClock();
                     }
+                    
                     refreshWindow();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -636,7 +645,6 @@ public class JavaFxView {
         label.setStyle("-fx-font: normal bold 30px 'serif'");
         centerGamePane.setTop(label);
         label.setAlignment(Pos.CENTER);
-
     }
 
     public void indicateInvalidMeld() {

@@ -1,5 +1,6 @@
 package core;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserStrategy implements PlayerStrategy<UserPlayer>{
@@ -10,11 +11,26 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 		int choice = 0;
 		int numOfTiles = player.getHand().size();
 		boolean pass = false;
+		
+		ArrayList<ArrayList<Tile>> runs;
+		ArrayList<ArrayList<Tile>> sets;
+		
 		while(true) {
 			if(numOfTiles > player.getHand().size()) {
 				System.out.println("(1) Pass, (2) Create Meld, (3) Play tiles on the table. Enter -1 to quit.");
 				pass = true;
 			}else {
+				
+				runs = player.findRuns();
+				sets = player.findSets();
+//				THE ONLY PART I CHANGED IS LINE 24 - 32
+//				you can comment this next part out but runs is an arraylist of possible runs (arraylist of arraylists)
+//				and sets is an arraylist of possible sets (only shows longest streaks (e.g. [[12345], [8,9,10,11,12]]))
+//				instead of returning [1,2,3,][1,2,4][1,2,5][2,3,4] etc.....
+				
+				if (!runs.isEmpty()) System.out.println("RUNS: " + runs);
+				if (!sets.isEmpty()) System.out.println("SETS: " + sets);
+				
 				System.out.println("(1) Draw Tile, (2) Create Meld, (3) Play tiles on the table.  Enter -1 to quit.");
 			}
 			
