@@ -14,6 +14,9 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 		
 		ArrayList<ArrayList<Tile>> runs;
 		ArrayList<ArrayList<Tile>> sets;
+		ArrayList<Tile> otherSuggestions;
+		ArrayList<Tile> usedTiles;
+		ArrayList<Tile> remainingTiles;
 		
 		while(true) {
 			if(numOfTiles > player.getHand().size()) {
@@ -23,6 +26,9 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 				
 				runs = player.findRuns();
 				sets = player.findSets();
+				usedTiles = new ArrayList<Tile>();
+				remainingTiles = new ArrayList<Tile>();
+				
 //				THE ONLY PART I CHANGED IS LINE 24 - 32
 //				you can comment this next part out but runs is an arraylist of possible runs (arraylist of arraylists)
 //				and sets is an arraylist of possible sets (only shows longest streaks (e.g. [[12345], [8,9,10,11,12]]))
@@ -30,6 +36,26 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 				
 				if (!runs.isEmpty()) System.out.println("RUNS: " + runs);
 				if (!sets.isEmpty()) System.out.println("SETS: " + sets);
+				
+				for (ArrayList<Tile> run: runs) {
+					for (Tile t: run) {
+						usedTiles.add(t);
+					}
+				}
+				
+				for (ArrayList<Tile> set: sets) {
+					for (Tile t: set) {
+						usedTiles.add(t);
+					}
+				}
+				
+				for (Tile t: player.getHand().getTiles()) {
+					if (!usedTiles.contains(t)) {
+						remainingTiles.add(t);
+					}
+				}
+				
+				otherSuggestions = player.findOther(remainingTiles);
 				
 				System.out.println("(1) Draw Tile, (2) Create Meld, (3) Play tiles on the table.  Enter -1 to quit.");
 			}

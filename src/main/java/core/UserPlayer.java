@@ -95,6 +95,67 @@ public class UserPlayer extends Player{
 		return sets;
 	}
 	
+	public ArrayList<Tile> findOther(ArrayList<Tile> remainingTiles){
+		
+		System.out.println(remainingTiles);
+		
+		ArrayList<Tile> returnArray = new ArrayList<Tile>();
+		
+		ArrayList<ArrayList<Tile>> setsOfTwo = this.hand.getSetsOfTwo(remainingTiles);
+		ArrayList<ArrayList<Tile>> runsOfTwo = this.hand.getRunsOfTwo(remainingTiles);
+		
+		for (ArrayList<Tile> set: setsOfTwo) {
+			int targetRank = remainingTiles.get(0).getRank();
+			ArrayList<Character> setColours = new ArrayList<Character>();
+			
+			for (Tile t: set) {
+				switch (t.getColour()) {
+				case 'R':
+					setColours.add('R');
+					break;
+				case 'B':
+					setColours.add('B');
+					break;
+				case 'G':
+					setColours.add('G');
+					break;
+				default:
+					setColours.add('O');
+				}
+			}
+			int counter = 0;
+			for (Meld meld: model.getBoard().currentMelds) {
+				for (Tile tile: meld.getTiles()) {
+					if (tile.getRank() == targetRank && !setColours.contains(tile.getColour())) {
+						counter++;
+					}
+				}
+			}
+			
+			if (counter >= 3) {
+				for (int i= 0; i < model.getBoard().currentMelds.size(); i++) {
+					ArrayList<Tile> tempMeld = new ArrayList<Tile>(model.getBoard().currentMelds.get(i).getTiles());
+					tempMeld.add(set.get(0));
+					if (meldValidatorService.isValidMeld(tempMeld)) {
+						returnArray.add(set.get(0));
+					}
+					tempMeld.remove(set.get(0));
+					tempMeld.add(set.get(1));
+					if (meldValidatorService.isValidMeld(tempMeld)) {
+						returnArray.add(set.get(1));
+					}
+					
+					
+				}
+			}
+			System.out.println("RETURN ARRAY: " + returnArray);
+			
+		}
+		
+		return returnArray;
+		
+	}
+	
 	public Meld createMeld(ArrayList<Tile> selectedTiles, Hand availableTiles) {
 		
 		if(meldValidatorService.isValidMeld(selectedTiles)) {

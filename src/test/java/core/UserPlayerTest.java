@@ -84,6 +84,7 @@ public class UserPlayerTest extends TestCase {
 		player.hand.add(new Tile('G',5));
 		player.hand.add(new Tile('R',5));
 		player.hand.add(new Tile('B',5));
+		player.hand.add(new Tile('O',13));
 		
 		System.out.println("Play turn input loop:");
 		player.hand.printHand();
@@ -91,5 +92,28 @@ public class UserPlayerTest extends TestCase {
 		//Test playing the 2 melds on player turn
 		player.playTurn();	
 		assertEquals(2,game.getBoard().currentMelds.size());
+	}
+	
+	public void testPlayTurnRyan() {
+		Model game = new Model();
+		UserPlayer player = new UserPlayer("player", game, new UserStrategy());
+		player.hand.add(new Tile('R',10));
+		player.hand.add(new Tile('R',11));
+		player.hand.add(new Tile('R',12));
+		player.hand.add(new Tile('G',5));
+		player.hand.add(new Tile('R',5));
+		player.hand.add(new Tile('B',5));
+		player.hand.add(new Tile('O',13));
+		
+		Meld testMeld = new Meld();
+		testMeld.add(new Tile('B',13));
+		testMeld.add(new Tile('R',13));
+		testMeld.add(new Tile('G',13));
+		
+		game.getBoard().addMeld(testMeld);
+		
+		System.out.println("Play turn input loop:");
+		player.hand.printHand();
+		player.playTurn();	
 	}
 }

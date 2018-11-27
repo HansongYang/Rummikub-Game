@@ -109,8 +109,6 @@ public class AIPlayer extends Player{
 					hand.remove(tile);
 					tilesPlayed++;
 				}
-
-				if (tile.getRank() == 0) break;
 			}
 		}
 
