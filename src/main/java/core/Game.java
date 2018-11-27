@@ -435,66 +435,6 @@ public class Game extends Application {
 
     public void loop() {
         view.printTurns(model.playerOrder);
-        view.displayTurnOptions();
-        view.displayPlayerHand(model.userPlayer, 1);
-        if (numPlayer == 2) {
-            if (strategy[0].equals("AI Strategy 1")) {
-                view.displayPlayerHand(model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 2")) {
-                view.displayPlayerHand(model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 3")){
-                view.displayPlayerHand(model.aiPlayer1, 2);
-            } else {
-            	view.displayPlayerHand(model.aiPlayer1, 2);
-            }
-        } else if (numPlayer == 3) {
-            if (strategy[0].equals("AI Strategy 1")) {
-                view.displayPlayerHand(model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 2")) {
-                view.displayPlayerHand(model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 3")) {
-                view.displayPlayerHand(model.aiPlayer1, 2);
-            } else if(strategy[0].equals("AI Strategy 4")){
-            	view.displayPlayerHand(model.aiPlayer1, 2);
-            }
-            if (strategy[1].equals("AI Strategy 1")) {
-                view.displayPlayerHand(model.aiPlayer2, 3);
-            } else if (strategy[1].equals("AI Strategy 2")) {
-                view.displayPlayerHand(model.aiPlayer2, 3);
-            } else if (strategy[1].equals("AI Strategy 3")){
-                view.displayPlayerHand(model.aiPlayer2, 3);
-            } else {
-            	view.displayPlayerHand(model.aiPlayer2, 3);
-            }
-        } else {
-            if (strategy[0].equals("AI Strategy 1")) {
-                view.displayPlayerHand(model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 2")) {
-                view.displayPlayerHand(model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 3")) {
-                view.displayPlayerHand(model.aiPlayer1, 2);
-            } else if(strategy[0].equals("AI Strategy 4")){
-            	view.displayPlayerHand(model.aiPlayer1, 2);
-            }
-            if (strategy[1].equals("AI Strategy 1")) {
-                view.displayPlayerHand(model.aiPlayer2, 3);
-            } else if (strategy[1].equals("AI Strategy 2")) {
-                view.displayPlayerHand(model.aiPlayer2, 3);
-            } else if (strategy[1].equals("AI Strategy 3")) {
-                view.displayPlayerHand(model.aiPlayer2, 3);
-            } else if (strategy[1].equals("AI Strategy 4")) {
-            	view.displayPlayerHand(model.aiPlayer2, 3);
-            }
-            if (strategy[2].equals("AI Strategy 1")) {
-                view.displayPlayerHand(model.aiPlayer3, 4);
-            } else if (strategy[2].equals("AI Strategy 2")) {
-                view.displayPlayerHand(model.aiPlayer3, 4);
-            } else if(strategy[2].equals("AI Strategy 3")){
-                view.displayPlayerHand(model.aiPlayer3, 4);
-            } else {
-            	view.displayPlayerHand(model.aiPlayer3, 4);
-            }
-        }
         view.displayBoard(model.getBoard());
         view.restart.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {

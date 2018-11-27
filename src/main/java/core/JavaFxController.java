@@ -2,6 +2,7 @@ package core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -65,33 +66,50 @@ public class JavaFxController implements Controller {
 			if (model.gameWinCheck()) {
 				return true;
 			}
-		}else if(model.numPlayer ==3) {
-			model.aiPlayer1.playTurn();
-			model.messageObservers();
-			if (model.gameWinCheck()) {
-				return true;
-			}
-			model.aiPlayer2.playTurn();
-			model.messageObservers();
-			if (model.gameWinCheck()) {
-				return true;
-			}
+		}else if(model.numPlayer == 3) {
+			Iterator it = model.playerOrder.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                Player player = (Player) pair.getKey();
+				if(player.name.equals("AI1")) {
+					model.aiPlayer1.playTurn();
+					model.messageObservers();
+					if (model.gameWinCheck()) {
+						return true;
+					}
+				}else if(player.name.equals("AI2")) {
+					model.aiPlayer2.playTurn();
+					model.messageObservers();
+					if (model.gameWinCheck()) {
+						return true;
+					}
+				}
+            }
 		}else {
-			model.aiPlayer1.playTurn();
-			model.messageObservers();
-			if (model.gameWinCheck()) {
-				return true;
-			}
-			model.aiPlayer2.playTurn();
-			model.messageObservers();
-			if (model.gameWinCheck()) {
-				return true;
-			}
-			model.aiPlayer3.playTurn();
-			model.messageObservers();
-			if (model.gameWinCheck()) {
-				return true;
-			}
+			Iterator it = model.playerOrder.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                Player player = (Player) pair.getKey();
+				if(player.name.equals("AI1")) {
+					model.aiPlayer1.playTurn();
+					model.messageObservers();
+					if (model.gameWinCheck()) {
+						return true;
+					}
+				}else if(player.name.equals("AI2")) {
+					model.aiPlayer2.playTurn();
+					model.messageObservers();
+					if (model.gameWinCheck()) {
+						return true;
+					}
+				}else if(player.name.equals("AI3")){
+					model.aiPlayer3.playTurn();
+					model.messageObservers();
+					if (model.gameWinCheck()) {
+						return true;
+					}
+				}
+            }
 		}
 		
 		return false;

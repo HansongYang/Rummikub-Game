@@ -65,12 +65,16 @@ public class JavaFxView {
 
     public void refreshWindow() {
         panel.getChildren().clear();
-
         centerGamePane.getChildren().clear();
-
-
         panel.setCenter(centerGamePane);
         centerGamePane.setBottom(userActions);
+        
+        if(controller.model.playerOrder.entrySet().iterator().next().getKey().name.equals("USER")) {
+        	displayTurnOptions();
+        }else {
+        	controller.playAITurns();
+        }
+
         displayTurnOptions();
         displayPlayerHand(controller.model.userPlayer, 1);
         if (numPlayer == 2) {
