@@ -154,7 +154,7 @@ public class AIPlayer extends Player{
 			}
 			
 			// this 3 is an arbitrary amount - this is for Strategy4's condition thing
-			if (counter >= 3) { 
+			if (counter >= 2) { 
 				for (int i= 0; i < model.getBoard().currentMelds.size(); i++) {
 					
 					// Using remainingTiles.get(0):

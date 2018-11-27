@@ -104,6 +104,8 @@ public class UserPlayerTest extends TestCase {
 		player.hand.add(new Tile('R',5));
 		player.hand.add(new Tile('B',5));
 		player.hand.add(new Tile('O',13));
+		player.hand.add(new Tile('G',13));
+		
 		
 		Meld testMeld = new Meld();
 		testMeld.add(new Tile('B',13));
