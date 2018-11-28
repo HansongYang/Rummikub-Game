@@ -456,7 +456,6 @@ public class Game extends Application {
         boolean pass = false;
         while (true) {
             if (numOfTiles > player.getHand().size()) {
-                view.displayTurnOptions_Pass();
                 pass = true;
             } else {
                 view.displayTurnOptions();

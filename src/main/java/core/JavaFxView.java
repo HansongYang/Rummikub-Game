@@ -34,7 +34,7 @@ public class JavaFxView {
     public int selectedMeldID = -1;
     public final Button restart = new Button("Restart Game");
 	public Map<Meld, ArrayList<Tile>> selectedTilesFromBoard;
-
+	private Label label;
     public enum LocationOnMeld {FRONT, BACK}
 
     public LocationOnMeld locationOnMeld;
@@ -65,16 +65,9 @@ public class JavaFxView {
 
     public void refreshWindow() {
         panel.getChildren().clear();
-        centerGamePane.getChildren().clear();
         panel.setCenter(centerGamePane);
         centerGamePane.setBottom(userActions);
-        
-       /* if(controller.model.playerOrder.entrySet().iterator().next().getKey().name.equals("USER")) {
-        	displayTurnOptions();
-        }else {
-        	controller.playAITurns();
-        }*/
-
+       
         displayTurnOptions();
         displayPlayerHand(controller.model.userPlayer, 1);    
         if(controller.model.player2 != null) {
@@ -357,7 +350,6 @@ public class JavaFxView {
 
                 }
             });
-
 			meld.resetAllJustPlayedFlag();
         }
     }
@@ -374,17 +366,12 @@ public class JavaFxView {
         label.setAlignment(Pos.CENTER);
     }
 
-    public void displayFinalTileCounts() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void displayTurnOptions_Pass() {
-
-
-    }
-
     public void displayTurnOptions() {
+        if(controller.model.currentUserPlayer.getHand().size() == 0) {
+        	displayWinner(controller.model.currentUserPlayer);
+        	return;
+        }
+        
         final Button drawTile = new Button("Draw Tile");
         drawTile.setStyle("-fx-background-color: #f5f6fa");
         final Button createMeld = new Button("Create Meld");
@@ -406,8 +393,8 @@ public class JavaFxView {
         HBox hbox = new HBox(5);
         hbox.setPadding(new Insets(10));
 
-
         if (!controller.model.currentUserPlayer.playedTilesOnTurn) {
+     
             hbox.getChildren().add(drawTile);
         } else {
             hbox.getChildren().add(endTurn);
@@ -429,15 +416,11 @@ public class JavaFxView {
          
         userActions.setTop(hbox);
         hbox.setAlignment(Pos.BOTTOM_CENTER);
-
+        
         controller.model.valueProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 timer.textProperty().bind(Bindings.convert(controller.model.valueProperty()));
                 if (Integer.parseInt(controller.model.getValue()) < 1) {
-                    if (controller.playAITurns()) {// AI wins on this turn
-                        //Game over
-                        displayWinner(controller.model.gameWinner);
-                    }
                     controller.model.stopClock();
                 }
             }
@@ -447,10 +430,9 @@ public class JavaFxView {
             public void handle(ActionEvent event) {
                 try {
                     Tile drawnTile = controller.drawTile(controller.model.currentUserPlayer);
-
+                    centerGamePane.getChildren().remove(label);
                     //Return created melds back to hand if not played
-                    controller.returnMeldsToHand(controller.model.currentUserPlayer);
-                    
+                    controller.returnMeldsToHand(controller.model.currentUserPlayer);                    
                     endTurnProcess();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -466,12 +448,12 @@ public class JavaFxView {
                         Meld meld = new Meld(selectedTiles);
                         controller.model.getBoard().addMeld(meld);
                         controller.restoreGame();
+                        indicateInvalidMove();
                         for (int i = 0; i < 3; i++) controller.drawTile(controller.model.currentUserPlayer);
-                        
                         endTurnProcess();
                     } else {
+                        centerGamePane.getChildren().remove(label);
                         selectedTiles.clear();
-                        
                         refreshWindow();
 					}
                 } catch (Exception e) {
@@ -487,11 +469,13 @@ public class JavaFxView {
                         if (locationOnMeld == LocationOnMeld.FRONT) {//Add to front
                             if (controller.playTilestoMeldFront(controller.model.currentUserPlayer,selectedTiles, selectedMeldID)) {
                                 controller.model.currentUserPlayer.playedTilesOnTurn = true;
+                                centerGamePane.getChildren().remove(label);
                             } else {
                                 controller.saveGame();
                                 Meld meld = new Meld(selectedTiles);
                                 controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
                                 controller.restoreGame();
+                                indicateInvalidMove();
                                 for (int i = 0; i < 3; i++) controller.drawTile(controller.model.currentUserPlayer);
                                 controller.playAITurns();
                                 refreshWindow();
@@ -499,11 +483,13 @@ public class JavaFxView {
                         } else {//Add to back
                             if (controller.playTilestoMeldBack(controller.model.currentUserPlayer, selectedTiles, selectedMeldID)) {
                                 controller.model.currentUserPlayer.playedTilesOnTurn = true;
+                                centerGamePane.getChildren().remove(label);
                             } else {
                                 controller.saveGame();
                                 Meld meld = new Meld(selectedTiles);
                                 controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
                                 controller.restoreGame();
+                                indicateInvalidMove();
                                 for (int i = 0; i < 3; i++) controller.drawTile(controller.model.currentUserPlayer);
                                 controller.playAITurns();
                                 refreshWindow();
@@ -526,6 +512,7 @@ public class JavaFxView {
                 	if(controller.model.currentUserPlayer.initial30Played) {
 	                	if(controller.reuseBoardTiles(controller.model.currentUserPlayer, selectedTilesFromBoard, selectedTiles)) {
 	                		controller.model.currentUserPlayer.playedTilesOnTurn = true;
+	                        centerGamePane.getChildren().remove(label);
 	                	}
 	                	else {
 	                		indicateInvalidMeld();
@@ -563,6 +550,7 @@ public class JavaFxView {
         endTurn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
+                    centerGamePane.getChildren().remove(label);
                     endTurnProcess();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -571,18 +559,7 @@ public class JavaFxView {
         });
     }
 
-    // public void playInvalidTiles(ArrayList<Tile> tiles) {
-    //     Meld meld = new Meld(tiles);
-    //     this.controller.model.getBoard().addMeld(meld);
-    //     indicateInvalidMeld();
-    //     this.model = controller.restoreGame();
-    //     if (controller.playAITurns()) displayWinner(controller.model.gameWinner);
-    //     for (int i = 0; i < 3; i++) controller.drawTile();
-    // }
-
     public void endTurnProcess() {
-    	
-	
     	boolean next = false;
     	
     	//Find next player
@@ -601,8 +578,7 @@ public class JavaFxView {
             	else {
             		controller.model.currentUserPlayer = (UserPlayer) player;
             		break;
-            	}
-            	        	
+            	}        	
             }
             
             if(player.equals(controller.model.currentUserPlayer)) {
@@ -613,8 +589,6 @@ public class JavaFxView {
         		it = controller.model.playerOrder.entrySet().iterator();
         	}
         }
-    	
-    	
     	
         controller.model.currentUserPlayer.playedTilesOnTurn = false;
         
@@ -627,14 +601,22 @@ public class JavaFxView {
     }
     
     public void indicateMeldsLessThan30() {
-        Label label = new Label("Total value of Melds less than 30");
+        label = new Label("Total value of Melds less than 30");
         label.setStyle("-fx-font: normal bold 30px 'serif'");
         centerGamePane.setTop(label);
         label.setAlignment(Pos.CENTER);
     }
 
     public void indicateInvalidMeld() {
-        Label label = new Label("Invalid Meld");
+        label = new Label("Invalid Meld");
+        label.setStyle("-fx-font: normal bold 30px 'serif'");
+        label.setTextFill(Color.RED);
+        centerGamePane.setTop(label);
+        label.setAlignment(Pos.CENTER);
+    }
+    
+    public void indicateInvalidMove() {
+    	label = new Label("Invalid Move!!! Penality: Add 3 more tiles!!!");
         label.setStyle("-fx-font: normal bold 30px 'serif'");
         label.setTextFill(Color.RED);
         centerGamePane.setTop(label);
