@@ -27,7 +27,7 @@ public class FullGameTest extends TestCase{
 		
 		
 		game.model.gameState = GameStates.PLAY;
-		game.gameLoop();
+		//game.gameLoop();
 	}
 	
 	public void createUserPlayerHand(Model game){		
@@ -52,64 +52,64 @@ public class FullGameTest extends TestCase{
 	}
 	
 	public void createAI1Hand(Model game){
-		game.aiPlayer1.hand.add(new Tile('B',1));
-		game.aiPlayer1.hand.add(new Tile('B',2));
-		game.aiPlayer1.hand.add(new Tile('B',3));
-		game.aiPlayer1.hand.add(new Tile('B',4));
-		game.aiPlayer1.hand.add(new Tile('B',5));
-		game.aiPlayer1.hand.add(new Tile('B',6));
-		game.aiPlayer1.hand.add(new Tile('B',7));
-		game.aiPlayer1.hand.add(new Tile('B',8));
-		game.aiPlayer1.hand.add(new Tile('B',9));
-		game.aiPlayer1.hand.add(new Tile('B',10));
-		game.aiPlayer1.hand.add(new Tile('B',11));
-		game.aiPlayer1.hand.add(new Tile('B',12));
-		game.aiPlayer1.hand.add(new Tile('B',13));
-		game.aiPlayer1.hand.add(new Tile('B',1));
+		game.player2.hand.add(new Tile('B',1));
+		game.player2.hand.add(new Tile('B',2));
+		game.player2.hand.add(new Tile('B',3));
+		game.player2.hand.add(new Tile('B',4));
+		game.player2.hand.add(new Tile('B',5));
+		game.player2.hand.add(new Tile('B',6));
+		game.player2.hand.add(new Tile('B',7));
+		game.player2.hand.add(new Tile('B',8));
+		game.player2.hand.add(new Tile('B',9));
+		game.player2.hand.add(new Tile('B',10));
+		game.player2.hand.add(new Tile('B',11));
+		game.player2.hand.add(new Tile('B',12));
+		game.player2.hand.add(new Tile('B',13));
+		game.player2.hand.add(new Tile('B',1));
 		
-		for(Tile tile : game.aiPlayer1.hand.getTiles()) {
+		for(Tile tile : game.player2.hand.getTiles()) {
 			game.getDeck().removeTile(tile);
 		}
 	}
 	
 	public void createAI2Hand(Model game){
-		game.aiPlayer2.hand.add(new Tile('G',1));
-		game.aiPlayer2.hand.add(new Tile('G',2));
-		game.aiPlayer2.hand.add(new Tile('G',3));
-		game.aiPlayer2.hand.add(new Tile('G',4));
-		game.aiPlayer2.hand.add(new Tile('G',5));
-		game.aiPlayer2.hand.add(new Tile('G',6));
-		game.aiPlayer2.hand.add(new Tile('G',7));
-		game.aiPlayer2.hand.add(new Tile('G',8));
-		game.aiPlayer2.hand.add(new Tile('G',9));
-		game.aiPlayer2.hand.add(new Tile('G',10));
-		game.aiPlayer2.hand.add(new Tile('G',11));
-		game.aiPlayer2.hand.add(new Tile('G',12));
-		game.aiPlayer2.hand.add(new Tile('G',13));
-		game.aiPlayer2.hand.add(new Tile('G',1));
+		game.player3.hand.add(new Tile('G',1));
+		game.player3.hand.add(new Tile('G',2));
+		game.player3.hand.add(new Tile('G',3));
+		game.player3.hand.add(new Tile('G',4));
+		game.player3.hand.add(new Tile('G',5));
+		game.player3.hand.add(new Tile('G',6));
+		game.player3.hand.add(new Tile('G',7));
+		game.player3.hand.add(new Tile('G',8));
+		game.player3.hand.add(new Tile('G',9));
+		game.player3.hand.add(new Tile('G',10));
+		game.player3.hand.add(new Tile('G',11));
+		game.player3.hand.add(new Tile('G',12));
+		game.player3.hand.add(new Tile('G',13));
+		game.player3.hand.add(new Tile('G',1));
 		
-		for(Tile tile : game.aiPlayer2.hand.getTiles()) {
+		for(Tile tile : game.player3.hand.getTiles()) {
 			game.getDeck().removeTile(tile);
 		}
 	}
 	
 	public void createAI3Hand(Model game){
-		game.aiPlayer3.hand.add(new Tile('O',1));
-		game.aiPlayer3.hand.add(new Tile('O',2));
-		game.aiPlayer3.hand.add(new Tile('O',3));
-		game.aiPlayer3.hand.add(new Tile('O',4));
-		game.aiPlayer3.hand.add(new Tile('O',5));
-		game.aiPlayer3.hand.add(new Tile('O',6));
-		game.aiPlayer3.hand.add(new Tile('O',7));
-		game.aiPlayer3.hand.add(new Tile('O',8));
-		game.aiPlayer3.hand.add(new Tile('O',9));
-		game.aiPlayer3.hand.add(new Tile('O',10));
-		game.aiPlayer3.hand.add(new Tile('O',11));
-		game.aiPlayer3.hand.add(new Tile('O',12));
-		game.aiPlayer3.hand.add(new Tile('O',13));
-		game.aiPlayer3.hand.add(new Tile('O',1));
+		game.player4.hand.add(new Tile('O',1));
+		game.player4.hand.add(new Tile('O',2));
+		game.player4.hand.add(new Tile('O',3));
+		game.player4.hand.add(new Tile('O',4));
+		game.player4.hand.add(new Tile('O',5));
+		game.player4.hand.add(new Tile('O',6));
+		game.player4.hand.add(new Tile('O',7));
+		game.player4.hand.add(new Tile('O',8));
+		game.player4.hand.add(new Tile('O',9));
+		game.player4.hand.add(new Tile('O',10));
+		game.player4.hand.add(new Tile('O',11));
+		game.player4.hand.add(new Tile('O',12));
+		game.player4.hand.add(new Tile('O',13));
+		game.player4.hand.add(new Tile('O',1));
 		
-		for(Tile tile : game.aiPlayer3.hand.getTiles()) {
+		for(Tile tile : game.player4.hand.getTiles()) {
 			game.getDeck().removeTile(tile);
 		}
 	}

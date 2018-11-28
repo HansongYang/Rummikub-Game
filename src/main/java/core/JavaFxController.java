@@ -57,61 +57,37 @@ public class JavaFxController implements Controller {
 		}
 		
 	}
+	
+	public boolean playAITurn(AIPlayer player) {
+		
+		player.playTurn();
+        model.messageObservers();
+        if (model.gameWinCheck()) {
+			return true;
+		}
+		
+		return false;
+	}
 
 	//Returns true if an AI player wins on this turn
 	public boolean playAITurns() {
-		if(model.numPlayer == 2) {
-			model.aiPlayer1.playTurn();
-			model.messageObservers();
-			if (model.gameWinCheck()) {
-				return true;
-			}
-		}else if(model.numPlayer == 3) {
+	
 			Iterator it = model.playerOrder.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry pair = (Map.Entry) it.next();
                 Player player = (Player) pair.getKey();
-				if(player.name.equals("AI1")) {
-					model.aiPlayer1.playTurn();
-					model.messageObservers();
-					if (model.gameWinCheck()) {
+                
+                if(player instanceof AIPlayer) {
+                
+	                player.playTurn();
+	                model.messageObservers();
+	                if (model.gameWinCheck()) {
 						return true;
 					}
-				}else if(player.name.equals("AI2")) {
-					model.aiPlayer2.playTurn();
-					model.messageObservers();
-					if (model.gameWinCheck()) {
-						return true;
-					}
-				}
+                }
+     
             }
-		}else {
-			Iterator it = model.playerOrder.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry) it.next();
-                Player player = (Player) pair.getKey();
-				if(player.name.equals("AI1")) {
-					model.aiPlayer1.playTurn();
-					model.messageObservers();
-					if (model.gameWinCheck()) {
-						return true;
-					}
-				}else if(player.name.equals("AI2")) {
-					model.aiPlayer2.playTurn();
-					model.messageObservers();
-					if (model.gameWinCheck()) {
-						return true;
-					}
-				}else if(player.name.equals("AI3")){
-					model.aiPlayer3.playTurn();
-					model.messageObservers();
-					if (model.gameWinCheck()) {
-						return true;
-					}
-				}
-            }
-		}
-		
+	
 		return false;
 	}
 
@@ -164,13 +140,13 @@ public class JavaFxController implements Controller {
 
 	public void returnMeldsToHand(UserPlayer player) {		
 		
-		for(int i = 0; i < model.userPlayer.meldsInHand.size(); i++) {
-			Meld meld = model.userPlayer.meldsInHand.get(i);
+		for(int i = 0; i < player.meldsInHand.size(); i++) {
+			Meld meld = player.meldsInHand.get(i);
 			for(int j = 0; j < meld.size(); j++) {
 				player.hand.add(meld.getTile(j));
 			}
 		}
-		model.userPlayer.meldsInHand.clear();
+		player.meldsInHand.clear();
 		
 	}
 
@@ -251,5 +227,7 @@ public class JavaFxController implements Controller {
 		System.out.println("RESTORING GAME");
 		this.model.setBoard(this.originator.restoreFromMemento(this.savedGame));
 	}
+
+
 
 }

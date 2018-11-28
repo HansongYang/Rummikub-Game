@@ -9,6 +9,7 @@ public interface Controller {
 	public Tile drawTile(UserPlayer player);
 	public boolean createMeld(UserPlayer player, ArrayList<Tile> tiles);
 	public boolean playAITurns();
+	public boolean playAITurn(AIPlayer player);
 	public boolean playTilestoMeldFront(UserPlayer player, ArrayList<Tile> tiles,int meldId);
 	public boolean playTilestoMeldBack(UserPlayer player, ArrayList<Tile> tiles,int meldId);
 	public boolean playMeldsToTable(UserPlayer player);

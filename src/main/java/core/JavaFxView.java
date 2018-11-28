@@ -69,77 +69,29 @@ public class JavaFxView {
         panel.setCenter(centerGamePane);
         centerGamePane.setBottom(userActions);
         
-        if(controller.model.playerOrder.entrySet().iterator().next().getKey().name.equals("USER")) {
+       /* if(controller.model.playerOrder.entrySet().iterator().next().getKey().name.equals("USER")) {
         	displayTurnOptions();
         }else {
         	controller.playAITurns();
-        }
+        }*/
 
         displayTurnOptions();
-        displayPlayerHand(controller.model.userPlayer, 1);
-        if (numPlayer == 2) {
-            if (strategy[0].equals("AI Strategy 1")) {
-                displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 2")) {
-                displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 3")){
-                displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else {
-            	displayPlayerHand(controller.model.aiPlayer1, 2);
-            }
-        } else if (numPlayer == 3) {
-            if (strategy[0].equals("AI Strategy 1")) {
-                displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 2")) {
-                displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 3")) {
-                displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else if(strategy[0].equals("AI Strategy 4")){
-            	displayPlayerHand(controller.model.aiPlayer1, 2);
-            }
-            if (strategy[1].equals("AI Strategy 1")) {
-                displayPlayerHand(controller.model.aiPlayer2, 3);
-            } else if (strategy[1].equals("AI Strategy 2")) {
-                displayPlayerHand(controller.model.aiPlayer2, 3);
-            } else if (strategy[1].equals("AI Strategy 3")){
-                displayPlayerHand(controller.model.aiPlayer2, 3);
-            } else {
-            	displayPlayerHand(controller.model.aiPlayer2, 3);
-            }
-        } else {
-            if (strategy[0].equals("AI Strategy 1")) {
-                displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 2")) {
-                displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else if (strategy[0].equals("AI Strategy 3")) {
-                displayPlayerHand(controller.model.aiPlayer1, 2);
-            } else if(strategy[0].equals("AI Strategy 4")){
-            	displayPlayerHand(controller.model.aiPlayer1, 2);
-            }
-            if (strategy[1].equals("AI Strategy 1")) {
-                displayPlayerHand(controller.model.aiPlayer2, 3);
-            } else if (strategy[1].equals("AI Strategy 2")) {
-                displayPlayerHand(controller.model.aiPlayer2, 3);
-            } else if (strategy[1].equals("AI Strategy 3")) {
-                displayPlayerHand(controller.model.aiPlayer2, 3);
-            } else if (strategy[1].equals("AI Strategy 4")) {
-            	displayPlayerHand(controller.model.aiPlayer2, 3);
-            }
-            if (strategy[2].equals("AI Strategy 1")) {
-                displayPlayerHand(controller.model.aiPlayer3, 4);
-            } else if (strategy[2].equals("AI Strategy 2")) {
-                displayPlayerHand(controller.model.aiPlayer3, 4);
-            } else if(strategy[2].equals("AI Strategy 3")){
-                displayPlayerHand(controller.model.aiPlayer3, 4);
-            } else {
-            	displayPlayerHand(controller.model.aiPlayer3, 4);
-            }
+        displayPlayerHand(controller.model.userPlayer, 1);    
+        if(controller.model.player2 != null) {
+        	displayPlayerHand(controller.model.player2, 2);
         }
+        if(controller.model.player3 != null) {
+        	displayPlayerHand(controller.model.player3, 3);
+        }
+        if(controller.model.player4 != null) {
+        	displayPlayerHand(controller.model.player4, 4);
+        }
+
 		selectedTiles.clear();
     	selectedTilesFromBoard.clear();
 
         displayBoard(controller.model.getBoard());
-        displayMeldsInHand(controller.model.userPlayer);
+        displayMeldsInHand(controller.model.currentUserPlayer);
     }
 
     public void setNumPlayer(int numPlayer) {
@@ -280,13 +232,15 @@ public class JavaFxView {
 
             tileLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent e) {
-                    if (!selectedTiles.contains(tile)) {
-                        tileLabel.setStyle("-fx-border-color: BLACK; -fx-border-width: 3px; -fx-background-color: WHITE; -fx-font-size: 20px");
-                        selectedTiles.add(tile);
-                    } else {
-                        tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
-                        selectedTiles.remove(tile);
-                    }
+                	if(player == controller.model.currentUserPlayer) {
+	                    if (!selectedTiles.contains(tile)) {
+	                        tileLabel.setStyle("-fx-border-color: BLACK; -fx-border-width: 3px; -fx-background-color: WHITE; -fx-font-size: 20px");
+	                        selectedTiles.add(tile);
+	                    } else {
+	                        tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+	                        selectedTiles.remove(tile);
+	                    }
+                	}
                 }
             });
         }
@@ -453,7 +407,7 @@ public class JavaFxView {
         hbox.setPadding(new Insets(10));
 
 
-        if (!controller.model.userPlayer.playedTilesOnTurn) {
+        if (!controller.model.currentUserPlayer.playedTilesOnTurn) {
             hbox.getChildren().add(drawTile);
         } else {
             hbox.getChildren().add(endTurn);
@@ -492,18 +446,12 @@ public class JavaFxView {
         drawTile.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    Tile drawnTile = controller.drawTile(controller.model.userPlayer);
-                    if (controller.playAITurns()) {// AI wins on this turn
-                        //Game over
-                        displayWinner(controller.model.gameWinner);
-                    }
+                    Tile drawnTile = controller.drawTile(controller.model.currentUserPlayer);
+
                     //Return created melds back to hand if not played
-                    controller.returnMeldsToHand(controller.model.userPlayer);
-                    if(time) {
-	                    controller.model.stopClock();
-	                    controller.model.startClock();
-                    }
-                    refreshWindow();
+                    controller.returnMeldsToHand(controller.model.currentUserPlayer);
+                    
+                    endTurnProcess();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -513,23 +461,17 @@ public class JavaFxView {
         createMeld.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    if (!controller.createMeld(controller.model.userPlayer,selectedTiles)) {
+                    if (!controller.createMeld(controller.model.currentUserPlayer,selectedTiles)) {
                         controller.saveGame();
                         Meld meld = new Meld(selectedTiles);
                         controller.model.getBoard().addMeld(meld);
                         controller.restoreGame();
-                        for (int i = 0; i < 3; i++) controller.drawTile(controller.model.userPlayer);
-                        controller.playAITurns();
-                        if(time) {
-    	                    controller.model.stopClock();
-    	                    controller.model.startClock();
-                        }
-                        refreshWindow();
+                        for (int i = 0; i < 3; i++) controller.drawTile(controller.model.currentUserPlayer);
+                        
+                        endTurnProcess();
                     } else {
                         selectedTiles.clear();
-                        if (controller.model.gameWinCheck()) {
-                            displayWinner(controller.model.gameWinner);
-                        }
+                        
                         refreshWindow();
 					}
                 } catch (Exception e) {
@@ -543,26 +485,26 @@ public class JavaFxView {
                 try {
                     if (selectedMeldID != -1) {
                         if (locationOnMeld == LocationOnMeld.FRONT) {//Add to front
-                            if (controller.playTilestoMeldFront(controller.model.userPlayer,selectedTiles, selectedMeldID)) {
-                                controller.model.userPlayer.playedTilesOnTurn = true;
+                            if (controller.playTilestoMeldFront(controller.model.currentUserPlayer,selectedTiles, selectedMeldID)) {
+                                controller.model.currentUserPlayer.playedTilesOnTurn = true;
                             } else {
                                 controller.saveGame();
                                 Meld meld = new Meld(selectedTiles);
                                 controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
                                 controller.restoreGame();
-                                for (int i = 0; i < 3; i++) controller.drawTile(controller.model.userPlayer);
+                                for (int i = 0; i < 3; i++) controller.drawTile(controller.model.currentUserPlayer);
                                 controller.playAITurns();
                                 refreshWindow();
                             }
                         } else {//Add to back
-                            if (controller.playTilestoMeldBack(controller.model.userPlayer, selectedTiles, selectedMeldID)) {
-                                controller.model.userPlayer.playedTilesOnTurn = true;
+                            if (controller.playTilestoMeldBack(controller.model.currentUserPlayer, selectedTiles, selectedMeldID)) {
+                                controller.model.currentUserPlayer.playedTilesOnTurn = true;
                             } else {
                                 controller.saveGame();
                                 Meld meld = new Meld(selectedTiles);
                                 controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
                                 controller.restoreGame();
-                                for (int i = 0; i < 3; i++) controller.drawTile(controller.model.userPlayer);
+                                for (int i = 0; i < 3; i++) controller.drawTile(controller.model.currentUserPlayer);
                                 controller.playAITurns();
                                 refreshWindow();
                             }
@@ -581,9 +523,9 @@ public class JavaFxView {
 		complexTileReuse.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                	if(controller.model.userPlayer.initial30Played) {
-	                	if(controller.reuseBoardTiles(controller.model.userPlayer, selectedTilesFromBoard, selectedTiles)) {
-	                		controller.model.userPlayer.playedTilesOnTurn = true;
+                	if(controller.model.currentUserPlayer.initial30Played) {
+	                	if(controller.reuseBoardTiles(controller.model.currentUserPlayer, selectedTilesFromBoard, selectedTiles)) {
+	                		controller.model.currentUserPlayer.playedTilesOnTurn = true;
 	                	}
 	                	else {
 	                		indicateInvalidMeld();
@@ -601,8 +543,12 @@ public class JavaFxView {
         playCreatedMelds.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    if (controller.playMeldsToTable(controller.model.userPlayer)) {
-                        controller.model.userPlayer.playedTilesOnTurn = true;
+                    if (controller.playMeldsToTable(controller.model.currentUserPlayer)) {
+                        controller.model.currentUserPlayer.playedTilesOnTurn = true;
+                        if (controller.model.gameWinCheck()) {
+                            displayWinner(controller.model.gameWinner);
+                        }
+                        
                         refreshWindow();
                     } else {
                         indicateMeldsLessThan30();
@@ -617,17 +563,7 @@ public class JavaFxView {
         endTurn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    if (controller.playAITurns()) {// AI wins on this turn
-                        //Game over
-                        displayWinner(controller.model.gameWinner);
-                    }
-                    controller.model.userPlayer.playedTilesOnTurn = false;
-                    if(time) {
-	                    controller.model.stopClock();
-	                    controller.model.startClock();
-                    }
-                    
-                    refreshWindow();
+                    endTurnProcess();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -644,6 +580,52 @@ public class JavaFxView {
     //     for (int i = 0; i < 3; i++) controller.drawTile();
     // }
 
+    public void endTurnProcess() {
+    	
+	
+    	boolean next = false;
+    	
+    	//Find next player
+    	Iterator it = controller.model.playerOrder.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Player player = (Player) pair.getKey();
+            
+            if(next) {
+            	if(player instanceof AIPlayer) {
+            		if (controller.playAITurn((AIPlayer) player)) {// AI wins on this turn
+                        //Game over
+                        displayWinner(controller.model.gameWinner);
+                    }
+            	}
+            	else {
+            		controller.model.currentUserPlayer = (UserPlayer) player;
+            		break;
+            	}
+            	        	
+            }
+            
+            if(player.equals(controller.model.currentUserPlayer)) {
+            	next = true;
+            }
+            
+            if(!it.hasNext()) {//Loop back to start
+        		it = controller.model.playerOrder.entrySet().iterator();
+        	}
+        }
+    	
+    	
+    	
+        controller.model.currentUserPlayer.playedTilesOnTurn = false;
+        
+        if(time) {
+            controller.model.stopClock();
+            controller.model.startClock();
+        }
+        
+        refreshWindow();
+    }
+    
     public void indicateMeldsLessThan30() {
         Label label = new Label("Total value of Melds less than 30");
         label.setStyle("-fx-font: normal bold 30px 'serif'");
