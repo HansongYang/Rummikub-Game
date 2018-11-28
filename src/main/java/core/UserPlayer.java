@@ -97,8 +97,6 @@ public class UserPlayer extends Player{
 	
 	public ArrayList<Tile> findOther(ArrayList<Tile> remainingTiles){
 		
-		System.out.println(remainingTiles);
-		
 		ArrayList<Tile> returnArray = new ArrayList<Tile>();
 		
 		ArrayList<ArrayList<Tile>> setsOfTwo = this.hand.getSetsOfTwo(remainingTiles);
@@ -149,6 +147,61 @@ public class UserPlayer extends Player{
 					}	
 				}
 			}
+		}
+		
+		for (ArrayList<Tile> run: runsOfTwo) {
+			int oneRankLower = run.get(0).getRank() - 1;
+			int oneRankHigher = run.get(1).getRank() + 1;
+			char sameColour = run.get(0).getColour();
+			
+			int oneRankLowerCounter = 0;
+			int oneRankHigherCounter = 0;
+			
+			boolean boolOneRankLower = false;
+			boolean boolOneRankHigher = false;
+			
+			for (Meld meld: model.getBoard().currentMelds) {
+				for (Tile tile: meld.getTiles()) {
+					if (tile.getRank() == oneRankLower) {
+						boolOneRankLower = true;
+						oneRankLowerCounter++;
+					}
+					if (tile.getRank() == oneRankHigher) {
+						boolOneRankHigher = true;
+						oneRankHigherCounter++;
+					}
+				}
+			}
+			
+			if (boolOneRankHigher || boolOneRankLower) {
+				//both sides of the run are already on the board
+				for (int i = 0 ; i < model.getBoard().currentMelds.size(); i++) {
+					ArrayList<Tile> tempMeld = new ArrayList<Tile>(model.getBoard().currentMelds.get(i).getTiles());
+					tempMeld.add(0, remainingTiles.get(0));
+					if (meldValidatorService.isValidMeld(tempMeld)) {
+						Meld newMeld = new Meld();
+						newMeld.add(remainingTiles.get(0));
+						model.getBoard().addTileToMeldBeginning(i, newMeld);
+						hand.remove(remainingTiles.get(0));
+					} else {
+						// if it doesn't fit at the front, remove from the front and add to the back
+						tempMeld.remove(0);
+						tempMeld.add(remainingTiles.get(0));
+						if (meldValidatorService.isValidMeld(tempMeld)) {
+							Meld newMeld = new Meld();
+							newMeld.add(remainingTiles.get(0));
+							model.getBoard().addTileToMeldEnd(i, newMeld);
+							hand.remove(remainingTiles.get(0));
+						}
+					}
+					
+				}
+			}
+			
+			
+			
+			
+			
 		}
 		
 		return returnArray;

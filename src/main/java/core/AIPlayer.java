@@ -213,7 +213,7 @@ public class AIPlayer extends Player{
 				}
 			}
 			
-			if (boolOneRankHigher && boolOneRankLower) {
+			if (boolOneRankHigher || boolOneRankLower) {
 				//both sides of the run are already on the board
 				for (int i = 0 ; i < model.getBoard().currentMelds.size(); i++) {
 					ArrayList<Tile> tempMeld = new ArrayList<Tile>(model.getBoard().currentMelds.get(i).getTiles());
