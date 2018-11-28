@@ -61,9 +61,9 @@ public class AIStrategyThreeTest extends TestCase{
 		
 		game.observers = new ArrayList<Observer>();
 		game.playerHandCount = new HashMap<String, Integer>();
-		game.aiPlayer1 = aiPlayer1;
-		game.aiPlayer2 = aiPlayer2;
-		game.aiPlayer3 = aiPlayer3;
+		game.player2 = aiPlayer1;
+		game.player3 = aiPlayer2;
+		game.player4 = aiPlayer3;
 		game.userPlayer = userPlayer;
 		game.addObserver(aiPlayer1);
         game.addObserver(aiPlayer2);

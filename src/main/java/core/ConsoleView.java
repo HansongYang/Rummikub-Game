@@ -37,7 +37,7 @@ public class ConsoleView implements View{
     }
     
     public void displayFinalTileCounts() {
-    	System.out.println("User has "+model.userPlayer.getHand().size() +" tiles. Player 1 has " + model.aiPlayer1.getHand().size()+" tiles. Player 2 has " + model.aiPlayer2.getHand().size() + " tiles. Player 3 has " + model.aiPlayer3.getHand().size() + " tiles.");
+    	//System.out.println("User has "+model.userPlayer.getHand().size() +" tiles. Player 1 has " + model.aiPlayer1.getHand().size()+" tiles. Player 2 has " + model.aiPlayer2.getHand().size() + " tiles. Player 3 has " + model.aiPlayer3.getHand().size() + " tiles.");
     }
     
     public void displayTurnOptions_Pass() {

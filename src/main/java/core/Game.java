@@ -131,20 +131,20 @@ public class Game extends Application {
         final ComboBox aiComboBox1 = new ComboBox();
         final ComboBox aiComboBox2 = new ComboBox();
         final ComboBox aiComboBox3 = new ComboBox();
-        final Label ai1 = new Label("AI player 1:  ");
-        final Label ai2 = new Label("AI player 2:  ");
-        final Label ai3 = new Label("AI player 3:  ");
-        final Text label5 = new Text("Please select strategy for each AI player.");
+        final Label ai1 = new Label(" 1:  ");
+        final Label ai2 = new Label(" 2:  ");
+        final Label ai3 = new Label(" 3:  ");
+        final Text label5 = new Text("Please select strategy for each remaining player.");
         label5.setStyle("-fx-font: normal 20px 'serif'");
 
         aiComboBox1.getItems().addAll(
-                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4"
+                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
         );
         aiComboBox2.getItems().addAll(
-                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4"
+                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
         );
         aiComboBox3.getItems().addAll(
-                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4"
+                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
         );
         strategy[0] = (String) aiComboBox1.getValue();
 
@@ -391,7 +391,7 @@ public class Game extends Application {
         return flowPane;
     }
 
-    public void gameLoop() {
+  /*  public void gameLoop() {
         view.printTurns(model.playerOrder);
         while (model.gameState == GameStates.PLAY) {
             Iterator it = model.playerOrder.entrySet().iterator();
@@ -431,7 +431,7 @@ public class Game extends Application {
 
             if (model.gameWinCheck()) view.displayWinner(model.gameWinner);
         }
-    }
+    }*/
 
     public void loop() {
         view.printTurns(model.playerOrder);

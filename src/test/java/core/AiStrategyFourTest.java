@@ -121,10 +121,9 @@ public class AiStrategyFourTest extends TestCase {
 		Model game = new Model();
 		game.observers = new ArrayList<Observer>();
 		game.playerHandCount = new HashMap<String, Integer>();
-		game.aiPlayer1 = aiPlayer1;
-		game.aiPlayer2 = aiPlayer2;
-		game.aiPlayer3 = aiPlayer3;
-		game.aiPlayer4 = aiPlayer4;
+		game.player2 = aiPlayer1;
+		game.player3 = aiPlayer2;
+		game.player4 = aiPlayer4;
 		game.userPlayer = userPlayer;
 		game.addObserver(aiPlayer1);
 	    game.addObserver(aiPlayer2);
@@ -177,10 +176,10 @@ public class AiStrategyFourTest extends TestCase {
 		Model game = new Model();
 		game.observers = new ArrayList<Observer>();
 		game.playerHandCount = new HashMap<String, Integer>();
-		game.aiPlayer1 = aiPlayer1;
-		game.aiPlayer2 = aiPlayer2;
-		game.aiPlayer3 = aiPlayer3;
-		game.aiPlayer4 = aiPlayer4;
+		game.player2 = aiPlayer1;
+		game.player3 = aiPlayer2;
+		game.player4 = aiPlayer4;
+
 		game.userPlayer = userPlayer;
 		game.addObserver(aiPlayer1);
 	    game.addObserver(aiPlayer2);
@@ -234,10 +233,10 @@ public class AiStrategyFourTest extends TestCase {
 		Model game = new Model();
 		game.observers = new ArrayList<Observer>();
 		game.playerHandCount = new HashMap<String, Integer>();
-		game.aiPlayer1 = aiPlayer1;
-		game.aiPlayer2 = aiPlayer2;
-		game.aiPlayer3 = aiPlayer3;
-		game.aiPlayer4 = aiPlayer4;
+		game.player2 = aiPlayer1;
+		game.player3 = aiPlayer2;
+		game.player4 = aiPlayer4;
+
 		game.userPlayer = userPlayer;
 		game.addObserver(aiPlayer1);
 	    game.addObserver(aiPlayer2);
