@@ -162,11 +162,11 @@ public class UserPlayer extends Player{
 			
 			for (Meld meld: model.getBoard().currentMelds) {
 				for (Tile tile: meld.getTiles()) {
-					if (tile.getRank() == oneRankLower) {
+					if (tile.getRank() == oneRankLower && tile.getColour() == sameColour) {
 						boolOneRankLower = true;
 						oneRankLowerCounter++;
 					}
-					if (tile.getRank() == oneRankHigher) {
+					if (tile.getRank() == oneRankHigher && tile.getColour() == sameColour ) {
 						boolOneRankHigher = true;
 						oneRankHigherCounter++;
 					}
@@ -177,30 +177,32 @@ public class UserPlayer extends Player{
 				//both sides of the run are already on the board
 				for (int i = 0 ; i < model.getBoard().currentMelds.size(); i++) {
 					ArrayList<Tile> tempMeld = new ArrayList<Tile>(model.getBoard().currentMelds.get(i).getTiles());
-					tempMeld.add(0, remainingTiles.get(0));
+					tempMeld.add(0, run.get(0));
 					if (meldValidatorService.isValidMeld(tempMeld)) {
-						Meld newMeld = new Meld();
-						newMeld.add(remainingTiles.get(0));
-						model.getBoard().addTileToMeldBeginning(i, newMeld);
-						hand.remove(remainingTiles.get(0));
+						returnArray.add(run.get(0));
 					} else {
 						// if it doesn't fit at the front, remove from the front and add to the back
 						tempMeld.remove(0);
-						tempMeld.add(remainingTiles.get(0));
+						tempMeld.add(run.get(0));
 						if (meldValidatorService.isValidMeld(tempMeld)) {
-							Meld newMeld = new Meld();
-							newMeld.add(remainingTiles.get(0));
-							model.getBoard().addTileToMeldEnd(i, newMeld);
-							hand.remove(remainingTiles.get(0));
+							returnArray.add(run.get(0));
 						}
 					}
+					if (tempMeld.get(0).equals(run.get(0))) tempMeld.remove(0);
 					
+					tempMeld.add(0, run.get(1));
+					if (meldValidatorService.isValidMeld(tempMeld)) {
+						returnArray.add(run.get(1));
+					} else {
+						// if it doesn't fit at the front, remove from the front and add to the back
+						tempMeld.remove(0);
+						tempMeld.add(run.get(1));
+						if (meldValidatorService.isValidMeld(tempMeld)) {
+							returnArray.add(run.get(1));
+						}
+					}
 				}
 			}
-			
-			
-			
-			
 			
 		}
 		

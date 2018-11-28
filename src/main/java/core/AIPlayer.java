@@ -202,11 +202,11 @@ public class AIPlayer extends Player{
 			//go through the board and find how many of the tiles you need have already been played
 			for (Meld meld: model.getBoard().currentMelds) {
 				for (Tile tile: meld.getTiles()) {
-					if (tile.getRank() == oneRankLower) {
+					if (tile.getRank() == oneRankLower && tile.getColour() == sameColour) {
 						boolOneRankLower = true;
 						oneRankLowerCounter++;
 					}
-					if (tile.getRank() == oneRankHigher) {
+					if (tile.getRank() == oneRankHigher && tile.getColour() == sameColour ) {
 						boolOneRankHigher = true;
 						oneRankHigherCounter++;
 					}
@@ -235,11 +235,34 @@ public class AIPlayer extends Player{
 							hand.remove(remainingTiles.get(0));
 							tilesPlayed++;
 						}
+						tempMeld.remove(tempMeld.size()-1);
 					}
 					
+					if (tempMeld.get(0).equals(remainingTiles.get(0))) tempMeld.remove(0); //make sure to remove 0th element
+					
+					tempMeld.add(0, remainingTiles.get(1));
+					if (meldValidatorService.isValidMeld(tempMeld)) {
+						Meld newMeld = new Meld();
+						newMeld.add(remainingTiles.get(1));
+						model.getBoard().addTileToMeldBeginning(i, newMeld);
+						hand.remove(remainingTiles.get(1));
+						tilesPlayed++;
+					}
+					else {
+						// if it doesn't fit at the front, remove from the front and add to the back
+						tempMeld.remove(0);
+						tempMeld.add(remainingTiles.get(1));
+						if (meldValidatorService.isValidMeld(tempMeld)) {
+							Meld newMeld = new Meld();
+							newMeld.add(remainingTiles.get(1));
+							model.getBoard().addTileToMeldEnd(i, newMeld);
+							hand.remove(remainingTiles.get(1));
+							tilesPlayed++;
+						}
+						tempMeld.remove(tempMeld.size()-1);
+					}
 				}
-			}
-			
+			}	
 		}
 		
 		return tilesPlayed;

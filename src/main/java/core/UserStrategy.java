@@ -56,6 +56,7 @@ public class UserStrategy implements PlayerStrategy<UserPlayer>{
 				}
 				
 				otherSuggestions = player.findOther(remainingTiles);
+				System.out.println("OTHER SUGGESTIONS: " + otherSuggestions);
 				
 				System.out.println("(1) Draw Tile, (2) Create Meld, (3) Play tiles on the table.  Enter -1 to quit.");
 			}
