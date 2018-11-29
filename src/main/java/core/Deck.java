@@ -45,6 +45,18 @@ public class Deck {
     	}
     }
 
+    public Tile customDraw(Tile tile) {
+        if (tile == null) return null;
+        for (Tile t : getDeck()) {
+            if (t.getColour() == tile.getColour() && t.getRank() == tile.getRank()) {
+                deck.remove(t);
+                return t;
+            }
+        }
+
+        return null;
+    }
+
     public void dealTiles(Player player) {
         Hand playerHand = player.getHand();
         for (int i = 0; i < 14; i++) {

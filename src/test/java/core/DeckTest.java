@@ -56,4 +56,12 @@ public class DeckTest extends TestCase {
 
         assertEquals(2, numOfJokers);
     }
+
+    public void testCustomDraw() {
+        Deck deck = new Deck();
+        Tile tile = new Tile('R', 7);
+        Tile drawnTile = deck.customDraw(tile);
+        assertEquals(7, drawnTile.getRank());
+        assertEquals('R', drawnTile.getColour());
+    }
 }

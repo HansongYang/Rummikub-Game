@@ -239,6 +239,37 @@ public class JavaFxView {
                 }
             });
         }
+
+        if (controller.model.rigged) {
+
+            HBox tileRigInputBox = new HBox(5);
+            TextField tileRigTextField = new TextField();
+            tileRigTextField.setPromptText("Draw");
+            tileRigInputBox.getChildren().add(tileRigTextField);
+            tileRigTextField.setMinHeight(50);
+            tileRigTextField.setMaxWidth(50);
+
+            tileRigTextField.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    String text = tileRigTextField.getText();
+                    Character textColour = text.charAt(0);
+                    String textRank = text.substring(1);
+                    Tile tileToGet = new Tile(textColour, Integer.parseInt(textRank));
+                    Tile drawnTile = controller.model.getDeck().customDraw(tileToGet);
+
+                    if (drawnTile != null) {
+                        player.hand.add(drawnTile);
+                        refreshWindow();
+                    } else {
+                        System.out.println("Invalid input!");
+                    }
+                    tileRigTextField.clear();
+                }
+            });
+
+            flowPane.getChildren().add(tileRigInputBox);
+        }
     }
 
     public void displayHand(Hand hand) {
