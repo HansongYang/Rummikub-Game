@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -193,6 +194,14 @@ public class JavaFxView {
                 break;
         }
 
+        if (player == controller.model.currentUserPlayer) {
+            Circle circle = new Circle();
+            circle.setRadius(10f);
+            circle.setFill(Color.ORANGE);
+
+            flowPane.getChildren().add(circle);
+        }
+
         for (int i = 0; i < player.getHand().size(); i++) {
 
             final Tile tile = player.getHand().getTile(i);
@@ -212,12 +221,6 @@ public class JavaFxView {
                 tileLabel.setTextFill(Color.BLACK);
             }
 
-            if (num == 4) {
-                tileLabel.setRotate(-90);
-            }
-            if (num == 2) {
-                tileLabel.setRotate(90);
-            }
 
             tileLabel.setStyle("-fx-background-color: WHITE; -fx-font-size: 20px");
 
