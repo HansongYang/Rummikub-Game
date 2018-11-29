@@ -202,6 +202,27 @@ public class Game extends Application {
         rig.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+            	name = nameText.getText();
+                view.setName(name);
+                String[] toggle = playerGroup.getSelectedToggle().toString().split("\\'");
+                playername = toggle[1];
+                view.setPlayerName(playername);
+                toggle = timer.getSelectedToggle().toString().split("\\'");
+                if (toggle[1].equals("yes")) {
+                    time = true;
+                } else {
+                    time = false;
+                }
+                view.setTime(time);
+                numPlayer = (int) playerComboBox.getValue();
+                strategy[0] = (String) aiComboBox1.getValue();
+                strategy[1] = (String) aiComboBox2.getValue();
+                strategy[2] = (String) aiComboBox3.getValue();
+                view.setNumPlayer(numPlayer);
+                view.setStrategy(strategy);
+                model.setNumPlayer(numPlayer);
+                model.setStrategy(strategy);
+            	
                 gameRigging();
             }
         });
@@ -333,7 +354,10 @@ public class Game extends Application {
         start.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                // TODO: initialize game with all rigged player hands
+            	model.initGameRigged(player1Tiles, player2Tiles, player3Tiles, player4Tiles);
+            	model.rigged = true;
+                view.refreshWindow();
+                loop();
             }
         });
 

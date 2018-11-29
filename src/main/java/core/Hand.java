@@ -32,6 +32,12 @@ public class Hand {
 		hands.add(t);
 	}
 	
+	public void addAll(ArrayList<Tile> tiles) {
+		for(Tile t: tiles) {
+			hands.add(t);
+		}
+	}
+	
 	public void remove(Tile t) {
 		for(int i = 0; i < hands.size(); i++) {
 			if(hands.get(i).getRank() == t.getRank() && hands.get(i).getColour() == t.getColour()) {

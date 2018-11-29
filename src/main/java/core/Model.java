@@ -18,6 +18,7 @@ public class Model implements Observable {
 	private int times = 1;
 	public int numPlayer;
 	public String [] strategy = new String[3]; 
+	public boolean rigged = false;
 	
 	public enum GameStates { PLAY, END }
 	public GameStates gameState;
@@ -84,6 +85,37 @@ public class Model implements Observable {
         	deck.dealTiles(player3);
             deck.dealTiles(player4);
         }
+        settleTurns();
+        
+        Iterator it = playerOrder.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Player player = (Player) pair.getKey();
+            
+            if(player instanceof UserPlayer) {
+            	currentUserPlayer = (UserPlayer) player;
+            	break;
+            }
+ 
+        }
+        
+        gameState = GameStates.PLAY;
+    }
+    
+    public void initGameRigged(ArrayList<Tile> p1Hand, ArrayList<Tile> p2Hand, ArrayList<Tile> p3Hand, ArrayList<Tile> p4Hand ) {
+        createGamePlayers();
+        
+        userPlayer.hand.addAll(p1Hand);
+        if(player2 != null) {
+        	player2.hand.addAll(p2Hand);
+        }
+        if(player3 != null) {
+        	player3.hand.addAll(p3Hand);
+        }
+        if(player4 != null) {
+        	player4.hand.addAll(p4Hand);
+        }
+        
         settleTurns();
         
         Iterator it = playerOrder.entrySet().iterator();
