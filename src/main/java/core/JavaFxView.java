@@ -1,5 +1,6 @@
 package core;
 
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -46,6 +47,7 @@ public class JavaFxView {
     public String name;
     public int numPlayer;
     public String[] strategy;
+    private boolean suggestion;
 
 
     public JavaFxView(JavaFxController controller, BorderPane panel) {
@@ -59,6 +61,7 @@ public class JavaFxView {
         this.name = "";
         this.playername = "";
         strategy = new String[3];
+        suggestion = false;
     }
 
     public JavaFxView() {
@@ -238,10 +241,139 @@ public class JavaFxView {
                 	}
                 }
             });
+            
+            if(suggestion) {
+            	int value = 0;
+            	Color colour;
+            	ArrayList<ArrayList<Tile>> meld = controller.model.currentUserPlayer.findSets();
+            	if(meld.size() == 0) {
+            		meld = controller.model.currentUserPlayer.findRuns();
+                	if(meld.size() == 0) {
+                		indicateSuggestion();
+                	}else {
+                		if(!controller.model.currentUserPlayer.initial30Played) {
+                			for(int j = 0; j < meld.size(); j++) {
+                				for(int k = 0; k < meld.size(); k++) {
+	                				value += meld.get(j).get(k).getRank();
+                				}
+                			}
+                			if(value >= 30) {
+                				if(player == controller.model.currentUserPlayer) {
+                    				System.out.println("run");
+                					for(int k = 0; k < meld.size(); k++) {
+    	            					if (meld.get(k).get(0).getColour() == 'G') {
+    	            		                colour = Color.GREEN;
+    	            		            } else if (meld.get(k).get(0).getColour()== 'R') {
+    	            		                colour = Color.RED;
+    	            		            } else if (meld.get(k).get(0).getColour() == 'B') {
+    	            		                colour = Color.BLUE;
+    	            		            } else if (meld.get(k).get(0).getColour() == 'O') {
+    	            		                colour = Color.ORANGE;
+    	            		            } else {
+    	            		                colour = Color.BLACK;
+    	            		            }
+    	            					if(tileLabel.getTextFill() == colour) {
+    	            						for(int l = 0; l < meld.get(k).size(); l++) {
+    		                					if(Integer.parseInt(tileLabel.getText()) == meld.get(k).get(l).getRank()) {
+    		                						tileLabel.setStyle("-fx-border-color: RED; -fx-border-width: 3px; -fx-background-color: WHITE; -fx-font-size: 20px");
+    		                					}
+    	            						}
+    	            					}
+                					}
+                				}else {
+                					tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+                				}
+                			}else {
+                				indicateSuggestion();
+                			}
+                		}else {
+                			if(player == controller.model.currentUserPlayer) {
+            					if (meld.get(0).get(0).getColour() == 'G') {
+            		                colour = Color.GREEN;
+            		            } else if (meld.get(0).get(0).getColour()== 'R') {
+            		                colour = Color.RED;
+            		            } else if (meld.get(0).get(0).getColour() == 'B') {
+            		                colour = Color.BLUE;
+            		            } else if (meld.get(0).get(0).getColour() == 'O') {
+            		                colour = Color.ORANGE;
+            		            } else {
+            		                colour = Color.BLACK;
+            		            }
+            					if(tileLabel.getTextFill() == colour) {
+            						for(int k = 0; k < meld.get(0).size(); k++) {
+    	        						if(Integer.parseInt(tileLabel.getText()) == meld.get(0).get(k).getRank()) {
+    	            						tileLabel.setStyle("-fx-border-color: RED; -fx-border-width: 3px; -fx-background-color: WHITE; -fx-font-size: 20px");
+    	            					}
+            						}
+            					}else {
+            						indicateSuggestion();
+            					}
+            				}else {
+            					tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+            				}
+                  		}
+                	}
+            	}else {
+            		if(!controller.model.currentUserPlayer.initial30Played) {
+            			for(int j = 0; j < meld.size(); j++) {
+            				for(int k = 0; k < meld.get(j).size(); k++) {
+	            				value += meld.get(j).get(k).getRank();
+            				}
+            			}
+            			if(value >= 30) {
+            				if(player == controller.model.currentUserPlayer) {
+            					for(int k = 0; k < meld.size(); k++) {
+            						for(int l = 0; l < meld.get(k).size(); l++) {
+	                    				if (meld.get(k).get(l).getColour() == 'G') {
+	                		                colour = Color.GREEN;
+	                		            } else if (meld.get(k).get(l).getColour()== 'R') {
+	                		                colour = Color.RED;
+	                		            } else if (meld.get(k).get(l).getColour() == 'B') {
+	                		                colour = Color.BLUE;
+	                		            } else if (meld.get(k).get(l).getColour() == 'O') {
+	                		                colour = Color.ORANGE;
+	                		            } else {
+	                		                colour = Color.BLACK;
+	                		            }
+
+	                    				if(tileLabel.getTextFill() == colour && Integer.parseInt(tileLabel.getText()) == meld.get(k).get(l).getRank()) {
+	                    					tileLabel.setStyle("-fx-border-color: RED; -fx-border-width: 3px; -fx-background-color: WHITE; -fx-font-size: 20px");
+	                					}
+            						}
+            					}
+            				}else {
+            					tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+            				}
+            			}else {
+            				indicateSuggestion();
+            			}
+            		}else {
+            			if(player == controller.model.currentUserPlayer) {
+            				for(int k = 0; k < meld.get(0).size(); k++) {
+            					if (meld.get(0).get(k).getColour() == 'G') {
+            		                colour = Color.GREEN;
+            		            } else if (meld.get(0).get(k).getColour()== 'R') {
+            		                colour = Color.RED;
+            		            } else if (meld.get(0).get(k).getColour() == 'B') {
+            		                colour = Color.BLUE;
+            		            } else if (meld.get(0).get(k).getColour() == 'O') {
+            		                colour = Color.ORANGE;
+            		            } else {
+            		                colour = Color.BLACK;
+            		            }
+            					if(tileLabel.getTextFill() == colour && Integer.parseInt(tileLabel.getText()) == meld.get(0).get(k).getRank()) {
+                					tileLabel.setStyle("-fx-border-color: RED; -fx-border-width: 3px; -fx-background-color: WHITE; -fx-font-size: 20px");
+            					}
+            				}
+        				}else {
+        					tileLabel.setStyle("-fx-border-color: WHITE; -fx-background-color: WHITE; -fx-font-size: 20px");
+        				}
+            		}
+            	}
+            }
         }
 
         if (controller.model.rigged) {
-
             HBox tileRigInputBox = new HBox(5);
             TextField tileRigTextField = new TextField();
             tileRigTextField.setPromptText("Draw");
@@ -337,14 +469,12 @@ public class JavaFxView {
 
 				tileLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
 	    	        public void handle(MouseEvent e) {
-	    	        	
 	    	        	if(!selectedTilesFromBoard.containsKey(meld)) {
 	    	        		selectedTilesFromBoard.put(meld, new ArrayList<Tile>());
 	    	        		selectedTilesFromBoard.get(meld).add(tile);
 	    	        		tileLabel.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 14px");
 	    	        		
 	    	        	}else {
-	    	        		
 	    	        		if(!selectedTilesFromBoard.get(meld).contains(tile)) {
 	    	        			tileLabel.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE; -fx-font-size: 14px");
 	    	        			selectedTilesFromBoard.get(meld).add(tile);
@@ -357,7 +487,6 @@ public class JavaFxView {
 	    	        				selectedTilesFromBoard.remove(meld);
 	    	        			}
 	    	        		}
-	    	        		
 	    	        	}
 	    	        }
 	    	    });
@@ -394,7 +523,7 @@ public class JavaFxView {
     }
 
     public void displayWinner(Player player) {
-        Label label = new Label(player.name + " wins the game!");
+        label = new Label(player.name + " wins the game!");
         label.setStyle("-fx-font: normal bold 30px 'serif'");
         centerGamePane.setTop(label);
         label.setAlignment(Pos.CENTER);
@@ -415,6 +544,15 @@ public class JavaFxView {
         final Button endTurn = new Button("End turn");
         endTurn.setStyle("-fx-background-color: #f5f6fa");
         
+        final Button suggestionTiles;
+        if(suggestion) {
+        	suggestionTiles = new Button("Hide Suggestion");
+        }else {
+        	suggestionTiles = new Button("Show Suggestion");
+        }
+        
+        suggestionTiles.setStyle("-fx-background-color: #f5f6fa");
+        
         final Button playCreatedMelds = new Button("Play created melds");
         playCreatedMelds.setStyle("-fx-background-color: #f5f6fa");
 		final Button complexTileReuse = new Button("Reuse board tiles");
@@ -433,8 +571,10 @@ public class JavaFxView {
         } else {
             hbox.getChildren().add(endTurn);
         }
+        
         hbox.getChildren().add(createMeld);
         hbox.getChildren().add(playToTable);
+        hbox.getChildren().add(suggestionTiles);
         hbox.getChildren().add(playCreatedMelds);
 		hbox.getChildren().add(complexTileReuse);
         hbox.getChildren().add(restart);
@@ -543,6 +683,23 @@ public class JavaFxView {
             }
         });
 		
+        suggestionTiles.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                try {
+                	if(suggestion) {
+                		suggestion = false;
+                		suggestionTiles.setText("Show Suggestion");
+                	}else {
+                		suggestion = true;
+                		suggestionTiles.setText("Hide Suggestion");
+                		displayPlayerHand(controller.model.currentUserPlayer,1);
+                	}
+                }catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
+        });
+        
 		complexTileReuse.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
@@ -615,8 +772,7 @@ public class JavaFxView {
             	else {
             		controller.model.currentUserPlayer = (UserPlayer) player;
             		break;
-            	}
-            	        	
+            	} 	
             }
             
             if(player.equals(controller.model.currentUserPlayer)) {
@@ -641,6 +797,7 @@ public class JavaFxView {
     public void indicateMeldsLessThan30() {
         label = new Label("Total value of Melds less than 30");
         label.setStyle("-fx-font: normal bold 30px 'serif'");
+        label.setTextFill(Color.RED);
         centerGamePane.setTop(label);
         label.setAlignment(Pos.CENTER);
     }
@@ -660,20 +817,26 @@ public class JavaFxView {
         centerGamePane.setTop(label);
         label.setAlignment(Pos.CENTER);
     }
+    
+    public void indicateSuggestion() {
+    	label = new Label("No valid meld, please draw a tile.");
+        label.setStyle("-fx-font: normal bold 30px 'serif'");
+        label.setTextFill(Color.RED);
+        centerGamePane.setTop(label);
+        label.setAlignment(Pos.CENTER);
+    }
 
     public void printTurns(Map<Player, Integer> order) {
-    	
     	String turnOrderString = "Turn Order: ";
-    	
         Iterator it = order.entrySet().iterator();
-
+        
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             Player player = (Player) pair.getKey();
-            turnOrderString += player.name + " ";
+            turnOrderString += player.name + ", ";
         }
         
-        Label label = new Label(turnOrderString);
+        label = new Label(turnOrderString);
         label.setStyle("-fx-font: normal bold 30px 'serif'");
         centerGamePane.setTop(label);
         label.setAlignment(Pos.CENTER);
