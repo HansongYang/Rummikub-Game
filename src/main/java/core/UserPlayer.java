@@ -18,7 +18,11 @@ public class UserPlayer extends Player{
 		super(name, model);
 		this.strategy = strategy;
 	}
-	
+
+	public void setHand(Hand hand) {
+		this.hand = hand;
+	}
+
 	public void playTurn() {
 		strategy.executeStrategy(this);
 		meldsInHand.clear();
@@ -212,7 +216,7 @@ public class UserPlayer extends Player{
 	
 	public Meld createMeld(ArrayList<Tile> selectedTiles, Hand availableTiles) {
 		
-		if(meldValidatorService.isValidMeld(selectedTiles)) {
+//		if(meldValidatorService.isValidMeld(selectedTiles)) {
 			Meld meld = new Meld();
 			
 			for(int i = 0; i < selectedTiles.size();i++) {
@@ -220,9 +224,9 @@ public class UserPlayer extends Player{
 				availableTiles.remove(selectedTiles.get(i));
 			}
 			return meld;
-		}
+//		}
 
-		return null;
+//		return null;
 	}
 	
 	public ArrayList<Tile> selectTiles(ArrayList<Integer> tileIndices, Hand availableTiles){

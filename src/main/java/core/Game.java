@@ -458,6 +458,7 @@ public class Game extends Application {
     }*/
 
     public void loop() {
+        this.controller.saveGame();
         view.printTurns(model.playerOrder);
         view.displayBoard(model.getBoard());
         view.restart.setOnAction(new EventHandler<ActionEvent>() {

@@ -619,10 +619,6 @@ public class JavaFxView {
             public void handle(ActionEvent event) {
                 try {
                     if (!controller.createMeld(controller.model.currentUserPlayer,selectedTiles)) {
-                        controller.saveGame();
-                        Meld meld = new Meld(selectedTiles);
-                        controller.model.getBoard().addMeld(meld);
-                        controller.restoreGame();
                         indicateInvalidMove();
                         for (int i = 0; i < 3; i++) controller.drawTile(controller.model.currentUserPlayer);
                         
@@ -648,28 +644,18 @@ public class JavaFxView {
                                 controller.model.currentUserPlayer.playedTilesOnTurn = true;
                                 centerGamePane.getChildren().remove(label);
                             } else {
-                                controller.saveGame();
-                                Meld meld = new Meld(selectedTiles);
-                                controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
-                                controller.restoreGame();
                                 indicateInvalidMove();
                                 for (int i = 0; i < 3; i++) controller.drawTile(controller.model.currentUserPlayer);
-                                controller.playAITurns();
-                                refreshWindow();
+                                endTurnProcess();
                             }
                         } else {//Add to back
                             if (controller.playTilestoMeldBack(controller.model.currentUserPlayer, selectedTiles, selectedMeldID)) {
                                 controller.model.currentUserPlayer.playedTilesOnTurn = true;
                                 centerGamePane.getChildren().remove(label);
                             } else {
-                                controller.saveGame();
-                                Meld meld = new Meld(selectedTiles);
-                                controller.model.getBoard().addTileToMeldBeginning(selectedMeldID, meld);
-                                controller.restoreGame();
                                 indicateInvalidMove();
                                 for (int i = 0; i < 3; i++) controller.drawTile(controller.model.currentUserPlayer);
-                                controller.playAITurns();
-                                refreshWindow();
+                                endTurnProcess();
                             }
                         }
                         selectedTiles.clear();
@@ -755,7 +741,16 @@ public class JavaFxView {
 
     public void endTurnProcess() {
     	boolean next = false;
-    	
+
+    	// Memento check
+        if (this.controller.meldValidatorService.validateBoard(this.controller.model.getBoard())) {
+            this.controller.saveGame();
+        } else {
+            this.controller.restoreGame();
+            this.indicateInvalidMeld();
+            for (int i = 0; i < 3; i++) controller.drawTile(controller.model.currentUserPlayer);
+        }
+
     	//Find next player
     	Iterator it = controller.model.playerOrder.entrySet().iterator();
         while (it.hasNext()) {
