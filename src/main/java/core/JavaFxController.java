@@ -213,19 +213,19 @@ public class JavaFxController implements Controller {
 		return true;
 	}
 
-	
-	
 	public void saveGame() {
-		Board temp = new Board(this.model.getBoard());
-		this.originator.setGame(temp);
+		Board tempBoard = new Board(this.model.getBoard());
+		Hand tempHand = new Hand(this.model.currentUserPlayer.getHand().getTiles());
+		this.originator.setGame(tempBoard);
+		this.originator.setPlayerHand(tempHand);
 		this.savedGame = this.originator.saveStateToMemento();
-
 		System.out.println("SAVING GAME");
 	}
 
 	public void restoreGame() {
+		this.model.setBoard(this.originator.restoreBoardFromMemento(this.savedGame));
+		this.model.currentUserPlayer.setHand(this.originator.restoreHandFromMemento(this.savedGame));
 		System.out.println("RESTORING GAME");
-		this.model.setBoard(this.originator.restoreFromMemento(this.savedGame));
 	}
 
 

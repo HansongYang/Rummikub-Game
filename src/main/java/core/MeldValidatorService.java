@@ -102,4 +102,17 @@ public class MeldValidatorService {
 
         return value;
     }
+
+    public boolean validateBoard(Board board) {
+        boolean boardCheck = true;
+
+        for (Meld meld : board.getCurrentMelds()) {
+            if (!this.isValidMeld(meld.getTiles())) {
+                boardCheck = false;
+                break;
+            }
+        }
+
+        return boardCheck;
+    }
 }
