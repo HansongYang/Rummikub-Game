@@ -153,7 +153,7 @@ public class JavaFxController implements Controller {
 	@Override
 	public boolean reuseBoardTiles(UserPlayer player, Map<Meld, ArrayList<Tile>> tilesFromBoard, ArrayList<Tile> playerTiles) {
 		
-		ArrayList<ArrayList<Tile>> meldsToValidate = new ArrayList<ArrayList<Tile>>();
+		ArrayList<ArrayList<Tile>> newMelds = new ArrayList<ArrayList<Tile>>();
 		Meld newMeld = null;
 		Hand potentialNewMeld = new Hand();//Hand used so we can call sort
 		
@@ -170,36 +170,27 @@ public class JavaFxController implements Controller {
 			}		
 			
 			if(updatedBoardMeld.getTiles().size() > 0) {
-				meldsToValidate.add(updatedBoardMeld.getTiles());
+				newMelds.add(updatedBoardMeld.getTiles());
 			}
 			
 		}
 		potentialNewMeld.getTiles().addAll(playerTiles);
 		potentialNewMeld.sortTilesByNumber();
 		
-		meldsToValidate.add(potentialNewMeld.getTiles());
+		newMelds.add(potentialNewMeld.getTiles());
+				
 		
-		
-		//Validate melds 
-		for(int i  = 0; i < meldsToValidate.size(); i++) {
-					
-			if(!meldValidatorService.isValidMeld(meldsToValidate.get(i))){
-				return false;
-			}
-		}
-		
-		
-		//All are valid, remove old version of melds on board
+		//remove old version of melds on board
 		for(Meld meld : tilesFromBoard.keySet()) {
 			model.getBoard().currentMelds.remove(meld);
 		}
 		
 		//Update board with new melds
-		for(int i  = 0; i < meldsToValidate.size(); i++) {
+		for(int i  = 0; i < newMelds.size(); i++) {
 			
 			Meld meld = new Meld();
-			for(int j = 0; j < meldsToValidate.get(i).size();j++) {
-				meld.add(meldsToValidate.get(i).get(j));
+			for(int j = 0; j < newMelds.get(i).size();j++) {
+				meld.add(newMelds.get(i).get(j));
 			}
 			
 			model.getBoard().addMeld(meld);

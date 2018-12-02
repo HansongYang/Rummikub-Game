@@ -573,10 +573,10 @@ public class JavaFxView {
         }
         
         hbox.getChildren().add(createMeld);
-        hbox.getChildren().add(playToTable);
-        hbox.getChildren().add(suggestionTiles);
         hbox.getChildren().add(playCreatedMelds);
-		hbox.getChildren().add(complexTileReuse);
+        hbox.getChildren().add(playToTable);
+    	hbox.getChildren().add(complexTileReuse);
+        hbox.getChildren().add(suggestionTiles);
         hbox.getChildren().add(restart);
 
         if (time & controller.model.interval == 120) {
@@ -690,13 +690,12 @@ public class JavaFxView {
             public void handle(ActionEvent event) {
                 try {
                 	if(controller.model.currentUserPlayer.initial30Played) {
-	                	if(controller.reuseBoardTiles(controller.model.currentUserPlayer, selectedTilesFromBoard, selectedTiles)) {
-	                		controller.model.currentUserPlayer.playedTilesOnTurn = true;
-                            centerGamePane.getChildren().remove(label);
-	                	}
-	                	else {
-	                		indicateInvalidMeld();
-	                	}
+	                	controller.reuseBoardTiles(controller.model.currentUserPlayer, selectedTilesFromBoard, selectedTiles);
+	                	controller.model.currentUserPlayer.playedTilesOnTurn = true;
+                        centerGamePane.getChildren().remove(label);
+	            	
+                	}else {
+                		indicateInitial30NotPlayedYet();
                 	}
                 	selectedTiles.clear();
                 	selectedTilesFromBoard.clear();
@@ -820,6 +819,14 @@ public class JavaFxView {
         centerGamePane.setTop(label);
         label.setAlignment(Pos.CENTER);
     }
+    
+    public void indicateInitial30NotPlayedYet() {
+    	label = new Label("Initial 30 points not played yet");
+        label.setStyle("-fx-font: normal bold 30px 'serif'");
+        label.setTextFill(Color.RED);
+        centerGamePane.setTop(label);
+        label.setAlignment(Pos.CENTER);
+    }
 
     public void printTurns(Map<Player, Integer> order) {
     	String turnOrderString = "Turn Order: ";
@@ -828,7 +835,7 @@ public class JavaFxView {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             Player player = (Player) pair.getKey();
-            turnOrderString += player.name + ", ";
+            turnOrderString += player.name + " drew:" + pair.getValue() + ", ";
         }
         
         label = new Label(turnOrderString);
