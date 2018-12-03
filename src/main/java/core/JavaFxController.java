@@ -71,14 +71,12 @@ public class JavaFxController implements Controller {
 
 	//Returns true if an AI player wins on this turn
 	public boolean playAITurns() {
-	
 			Iterator it = model.playerOrder.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry pair = (Map.Entry) it.next();
                 Player player = (Player) pair.getKey();
                 
                 if(player instanceof AIPlayer) {
-                
 	                player.playTurn();
 	                model.messageObservers();
 	                if (model.gameWinCheck()) {
