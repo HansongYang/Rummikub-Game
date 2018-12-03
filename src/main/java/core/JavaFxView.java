@@ -136,19 +136,7 @@ public class JavaFxView {
 	        	if(controller.playAITurn((AIPlayer)player)) {
 	        		 displayWinner(controller.model.gameWinner);
 	        	}else { 
-	                if(controller.model.player5 != null) {
-	                	displayPlayerHand(controller.model.player5, 1);
-	                }
-	                if(controller.model.player2 != null) {
-	                	displayPlayerHand(controller.model.player2, 2);
-	                }
-	                if(controller.model.player3 != null) {
-	                	displayPlayerHand(controller.model.player3, 3);
-	                }
-	                if(controller.model.player4 != null) {
-	                	displayPlayerHand(controller.model.player4, 4);
-	                }
-	        		displayBoard(controller.model.getBoard());
+	                refreshWindow();
 	        	
 	        	}
             }
