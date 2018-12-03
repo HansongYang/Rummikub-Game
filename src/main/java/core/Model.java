@@ -17,8 +17,9 @@ public class Model implements Observable {
 	private Timer timer;
 	private int times = 1;
 	public int numPlayer;
-	public String [] strategy = new String[3]; 
+	public String [] strategy = new String[4]; 
 	public boolean rigged = false;
+	public boolean withoutPlay = false;
 	
 	public enum GameStates { PLAY, END }
 	public GameStates gameState;
@@ -28,10 +29,9 @@ public class Model implements Observable {
 	public Player player2;
 	public Player player3;
 	public Player player4;
+	public Player player5;
 	public UserPlayer currentUserPlayer;
-	
-
-	
+		
 	private SimpleStringProperty value = new SimpleStringProperty(this, "");
 
     public Model() {
@@ -74,17 +74,30 @@ public class Model implements Observable {
 	// Start function which initializes players, deals tiles, and begins main game loop
     public void initGame() {
         createGamePlayers();
-        deck.dealTiles(userPlayer);
+
         if(numPlayer == 2) {
         	deck.dealTiles(player2);
+        	if(withoutPlay) {
+            	deck.dealTiles(player3);
+            }
         }else if(numPlayer == 3) {
         	deck.dealTiles(player2);
         	deck.dealTiles(player3);
+        	if(withoutPlay) {
+            	deck.dealTiles(player4);
+            }
         }else {
         	deck.dealTiles(player2);
         	deck.dealTiles(player3);
             deck.dealTiles(player4);
+            if(withoutPlay) {
+            	deck.dealTiles(player5);
+            }
         }
+        if(!withoutPlay) {
+        	deck.dealTiles(userPlayer);
+        }
+        
         settleTurns();
         
         Iterator it = playerOrder.entrySet().iterator();
@@ -104,8 +117,12 @@ public class Model implements Observable {
     
     public void initGameRigged(ArrayList<Tile> p1Hand, ArrayList<Tile> p2Hand, ArrayList<Tile> p3Hand, ArrayList<Tile> p4Hand ) {
         createGamePlayers();
+        if(!withoutPlay) {
+        	userPlayer.hand.addAll(p1Hand);
+        }else {
+        	player5.hand.addAll(p1Hand);
+        }
         
-        userPlayer.hand.addAll(p1Hand);
         if(player2 != null) {
         	player2.hand.addAll(p2Hand);
         }
@@ -127,7 +144,6 @@ public class Model implements Observable {
             	currentUserPlayer = (UserPlayer) player;
             	break;
             }
- 
         }
         
         gameState = GameStates.PLAY;
@@ -142,7 +158,10 @@ public class Model implements Observable {
     	PlayerStrategy<? super AIPlayer> aiStrategyThree = new AIStrategyThree();
     	PlayerStrategy<? super AIPlayer> aiStrategyFour = new AIStrategyFour();
     	
-        userPlayer = new UserPlayer("USER", this, userStrategy);
+    	if(!withoutPlay) {
+    		userPlayer = new UserPlayer("USER", this, userStrategy);
+            this.players.add(userPlayer);
+    	}
         if(numPlayer == 2) {
         	if(strategy[0].equals("AI Strategy 1")) {
         		player2 = new AIPlayer("AI1", this, aiStrategyOne);
@@ -155,7 +174,23 @@ public class Model implements Observable {
         	}else {
         		player2 = new UserPlayer("User2", this, userStrategy);
         	}
-        	 this.players.add(player2);
+        	this.players.add(player2);
+        	this.addObserver(player2);
+        	if(withoutPlay) {
+        		if(strategy[1].equals("AI Strategy 1")) {
+            		player3 = new AIPlayer("AI2", this, aiStrategyOne);
+            	}else if(strategy[1].equals("AI Strategy 2")) {
+            		player3 = new AIPlayer("AI2", this, aiStrategyTwo);
+            	}else if(strategy[1].equals("AI Strategy 3")){
+            		player3 = new AIPlayer("AI2", this, aiStrategyThree);
+            	}else if(strategy[1].equals("AI Strategy 4")) {
+            		player3 = new AIPlayer("AI2", this, aiStrategyFour);
+            	}else {
+            		player3 = new UserPlayer("User3", this, userStrategy);
+            	}
+        		this.players.add(player3);
+        		this.addObserver(player3);
+        	}
         }else if(numPlayer == 3) {
         	if(strategy[0].equals("AI Strategy 1")) {
         		player2 = new AIPlayer("AI1", this, aiStrategyOne);
@@ -183,6 +218,21 @@ public class Model implements Observable {
         	this.players.add(player3);
         	this.addObserver(player2);
         	this.addObserver(player3);
+        	if(withoutPlay) {
+        		if(strategy[2].equals("AI Strategy 1")) {
+            		player4 = new AIPlayer("AI3", this, aiStrategyOne);
+            	}else if(strategy[2].equals("AI Strategy 2")) {
+            		player4 = new AIPlayer("AI3", this, aiStrategyTwo);
+            	}else if(strategy[2].equals("AI Strategy 3")){
+            		player4 = new AIPlayer("AI3", this, aiStrategyThree);
+            	}else if(strategy[2].equals("AI Strategy 4")){
+            		player4 = new AIPlayer("AI3", this, aiStrategyFour);
+            	}else {
+            		player4 = new UserPlayer("User4", this, userStrategy);
+            	}
+        		this.players.add(player4);
+        		this.addObserver(player4);
+        	}
         }else {
         	if(strategy[0].equals("AI Strategy 1")) {
         		player2 = new AIPlayer("AI1", this, aiStrategyOne);
@@ -223,8 +273,22 @@ public class Model implements Observable {
         	this.addObserver(player2);
         	this.addObserver(player3);
         	this.addObserver(player4);
+        	if(withoutPlay) {
+	        	if(strategy[3].equals("AI Strategy 1")) {
+	        		player5 = new AIPlayer("AI4", this, aiStrategyOne);
+	        	}else if(strategy[3].equals("AI Strategy 2")) {
+	        		player5 = new AIPlayer("AI4", this, aiStrategyTwo);
+	        	}else if(strategy[3].equals("AI Strategy 3")){
+	        		player5 = new AIPlayer("AI4", this, aiStrategyThree);
+	        	}else if(strategy[3].equals("AI Strategy 4")){
+	        		player5 = new AIPlayer("AI4", this, aiStrategyFour);
+	        	}else {
+	        		player5 = new UserPlayer("User", this, userStrategy);
+	        	}
+	        	this.players.add(player5);
+	        	this.addObserver(player5);
+        	}
         }
-        this.players.add(userPlayer);
     }
     
 	public void setNumPlayer(int numPlayer) {
@@ -247,7 +311,7 @@ public class Model implements Observable {
 
     public boolean gameWinCheck() {
     	if(numPlayer == 2) {
-	        if (userPlayer.hand.size() == 0) {
+	        if (!withoutPlay && userPlayer.hand.size() == 0) {
 	        	gameState = GameStates.END;
 	            gameWinner = userPlayer;
 	            return true;
@@ -255,11 +319,15 @@ public class Model implements Observable {
 	        	gameState = GameStates.END;
 	            gameWinner = player2;
 	            return true;
+	        }else if(withoutPlay && player3.hand.size() == 0){
+	        	gameState = GameStates.END;
+	            gameWinner = player3;
+	            return true;
 	        }else {
 	        	return false;
 	        }
     	}else if(numPlayer == 3) {
-    		 if (userPlayer.hand.size() == 0) {
+    		 if (!withoutPlay && userPlayer.hand.size() == 0) {
  	        	gameState = GameStates.END;
  	            gameWinner = userPlayer;
  	            return true;
@@ -271,11 +339,15 @@ public class Model implements Observable {
  	        	gameState = GameStates.END;
  	        	gameWinner = player3;
  	            return true;
+ 	        }else if(withoutPlay && player4.hand.size() == 0){
+ 	        	gameState = GameStates.END;
+ 	        	gameWinner = player4;
+ 	            return true;
  	        }else {
  	        	return false;
  	        }
     	}else {
-    		 if (userPlayer.hand.size() == 0) {
+    		 if (!withoutPlay && userPlayer.hand.size() == 0) {
   	        	gameState = GameStates.END;
   	            gameWinner = userPlayer;
   	            return true;
@@ -292,6 +364,10 @@ public class Model implements Observable {
             	gameState = GameStates.END;
             	gameWinner = player4;
                 return true;
+            }else if(withoutPlay && player5.hand.size() == 0){
+            	gameState = GameStates.END;
+            	gameWinner = player5;
+                return true;
             }else {
                 return false;
             }
@@ -299,20 +375,31 @@ public class Model implements Observable {
     }
     
     public void endGame() {
-   	 gameState = GameStates.END;
+   	 	gameState = GameStates.END;
     }
     
     public void updatePlayerHashMap() {
-        this.playerHandCount.put(userPlayer.name, userPlayer.getHand().size());
+    	if(!withoutPlay) {
+    		this.playerHandCount.put(userPlayer.name, userPlayer.getHand().size());
+    	}
         if(numPlayer == 2) {
         	this.playerHandCount.put(player2.name, player2.getHand().size());
+        	if(withoutPlay) {
+        		this.playerHandCount.put(player3.name, player3.getHand().size());
+        	}
         }else if (numPlayer == 3) {
         	this.playerHandCount.put(player2.name, player2.getHand().size());
         	this.playerHandCount.put(player3.name, player3.getHand().size());
+        	if(withoutPlay) {
+        		this.playerHandCount.put(player4.name, player4.getHand().size());
+        	}
         }else {
         	this.playerHandCount.put(player2.name, player2.getHand().size());
         	this.playerHandCount.put(player3.name, player3.getHand().size());
         	this.playerHandCount.put(player4.name, player4.getHand().size());
+        	if(withoutPlay) {
+        		this.playerHandCount.put(player5.name, player4.getHand().size());
+        	}
         }
     }
 
