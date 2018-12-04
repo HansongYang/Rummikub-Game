@@ -150,17 +150,4 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 	
 		return playableTiles == remainingTiles.size();
 	}
-	
-	public void getBoardTileColours(AIPlayer player) {
-		
-		for (Meld meld: player.model.getBoard().currentMelds) {
-			for (Tile tile: meld.getTiles()) {
-				if (tile.getColour() == 'R') player.red++;
-				else if (tile.getColour() == 'B') player.blue++;
-				else if (tile.getColour() == 'G') player.green++;
-				else if (tile.getColour() == 'O') player.orange++;
-			}
-		}
-	}
-
 }
