@@ -39,6 +39,7 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 					if(!otherPlayerHas3FewerTiles(player)) {
 						
 						//System.out.println("Strategy4 can do its strategy with remaining tiles!");
+
 						
 						int tilesPlayed = 0;
 						
@@ -47,9 +48,18 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 						
 						// Try to do the strategy with board tile probabilities, if you can't just do playWithTableTiles() like in Strategy3
 						if (!setsOfTwo.isEmpty()) { 
-							tilesPlayed = player.strategyFourPlayWithTableTiles(setsOfTwo.get(0));
+							int n = 0;
+							while (tilesPlayed == 0) {
+								if (setsOfTwo.get(n) == null) break;
+								tilesPlayed = player.strategyFourPlayWithTableTiles(setsOfTwo.get(n));
+								n++;
+							}
 						} else if (!runsOfTwo.isEmpty()) {
-							tilesPlayed = player.strategyFourPlayWithTableTiles(runsOfTwo.get(0));
+							int n = 0;
+							while (tilesPlayed == 0) {
+								if (runsOfTwo.get(n) == null) break;
+								tilesPlayed = player.strategyFourPlayWithTableTiles(runsOfTwo.get(n));
+							}
 						}
 						else {
 							tilesPlayed = player.playWithTableTiles(remainingTiles);
@@ -150,17 +160,4 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 	
 		return playableTiles == remainingTiles.size();
 	}
-	
-	public void getBoardTileColours(AIPlayer player) {
-		
-		for (Meld meld: player.model.getBoard().currentMelds) {
-			for (Tile tile: meld.getTiles()) {
-				if (tile.getColour() == 'R') player.red++;
-				else if (tile.getColour() == 'B') player.blue++;
-				else if (tile.getColour() == 'G') player.green++;
-				else if (tile.getColour() == 'O') player.orange++;
-			}
-		}
-	}
-
 }

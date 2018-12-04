@@ -137,7 +137,6 @@ public class JavaFxView {
 	        		 displayWinner(controller.model.gameWinner);
 	        	}else { 
 	                refreshWindow();
-	        	
 	        	}
             }
         }
@@ -641,8 +640,9 @@ public class JavaFxView {
         controller.model.valueProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 timer.textProperty().bind(Bindings.convert(controller.model.valueProperty()));
-                if (Integer.parseInt(controller.model.getValue()) < 1) {
+                if (Integer.parseInt(controller.model.getValue()) <= 1) {
                     controller.model.stopClock();
+                    endTurnProcess();
                 }
             }
         });

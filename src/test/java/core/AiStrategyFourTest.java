@@ -18,10 +18,6 @@ public class AiStrategyFourTest extends TestCase {
 		
 		aiPlayer4.initial30Played = true;
 		
-		System.out.println("RED " + aiPlayer4.red);
-		System.out.println("ORANGE " + aiPlayer4.orange);
-		System.out.println("GREEN " + aiPlayer4.green);
-		System.out.println("BLUE " + aiPlayer4.blue);
 		//assertEquals(1, aiPlayer4.blue);
 		
 	}

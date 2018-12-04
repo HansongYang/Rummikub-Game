@@ -4,13 +4,6 @@ import java.util.ArrayList;
 
 public class AIPlayer extends Player{
 	
-	public int tilesUsedOnTurn = 0;
-	
-	public int blue = 0;
-	public int red = 0;
-	public int orange = 0;
-	public int green = 0;
-	
 	PlayerStrategy<? super AIPlayer> strategy;
 	
 	public AIPlayer() {

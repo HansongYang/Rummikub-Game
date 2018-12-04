@@ -56,7 +56,7 @@ public class Model implements Observable {
             public void run() {
             	Platform.runLater(() ->setValue(Integer.toString(setInterval())));
             }
-        }, 1000L, 3500L * times);
+        }, 1000L, 2500L * times);
     	times++;
     }
     

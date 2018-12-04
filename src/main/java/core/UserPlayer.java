@@ -46,6 +46,8 @@ public class UserPlayer extends Player{
 			initialColour = t.getColour();
 		
 			int currentNum = t.getRank();
+			
+			
 			for (Tile possibleTile: this.hand.getTiles()) {
 				if (possibleTile.getColour() == initialColour) {
 					if (possibleTile.getRank() == currentNum+1) {
