@@ -54,7 +54,7 @@ public class Game extends Application {
         time = false;
         playername = "";
         numPlayer = 0;
-        strategy = new String[3];
+        strategy = new String[4];
     }
 
     @Override
@@ -96,17 +96,12 @@ public class Game extends Application {
 
         playerComboBox.getSelectionModel().selectFirst();
         final Text label2 = new Text("Which player do you want to choose?");
-        final ToggleGroup playerGroup = new ToggleGroup();
-        final RadioButton player1 = new RadioButton("Player 1");
-
-        player1.setToggleGroup(playerGroup);
-        player1.setSelected(true);
-        RadioButton player2 = new RadioButton("Player 2");
-        player2.setToggleGroup(playerGroup);
-        RadioButton player3 = new RadioButton("Player 3");
-        player3.setToggleGroup(playerGroup);
-        RadioButton player4 = new RadioButton("Player 4");
-        player4.setToggleGroup(playerGroup);
+        
+        final ComboBox choosePlayerComboBox = new ComboBox();        
+        choosePlayerComboBox.getItems().addAll(
+                "Player 1", "Player 2", "Player 3", "Player 4", "Watch the game without playing"
+        );
+        choosePlayerComboBox.getSelectionModel().selectFirst();
 
         label.setStyle("-fx-font: normal bold 30px 'serif'");
         label2.setStyle("-fx-font: normal 20px 'serif'");
@@ -131,9 +126,11 @@ public class Game extends Application {
         final ComboBox aiComboBox1 = new ComboBox();
         final ComboBox aiComboBox2 = new ComboBox();
         final ComboBox aiComboBox3 = new ComboBox();
+        final ComboBox aiComboBox4 = new ComboBox();
         final Label ai1 = new Label(" 1:  ");
         final Label ai2 = new Label(" 2:  ");
         final Label ai3 = new Label(" 3:  ");
+        final Label ai4 = new Label(" 4:  ");
         final Text label5 = new Text("Please select strategy for each remaining player.");
         label5.setStyle("-fx-font: normal 20px 'serif'");
 
@@ -146,37 +143,44 @@ public class Game extends Application {
         aiComboBox3.getItems().addAll(
                 "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
         );
+        aiComboBox4.getItems().addAll(
+                "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
+        );
         strategy[0] = (String) aiComboBox1.getValue();
 
         aiComboBox1.getSelectionModel().selectFirst();
         aiComboBox2.getSelectionModel().selectFirst();
         aiComboBox3.getSelectionModel().selectFirst();
+        aiComboBox4.getSelectionModel().selectFirst();
 
         boardGrid.add(label, 0, 0);
         boardGrid.add(nameText, 0, 1);
         boardGrid.add(label4, 0, 2);
         boardGrid.add(playerComboBox, 0, 3);
         boardGrid.add(label2, 0, 4);
-        boardGrid.add(player1, 0, 5);
-        boardGrid.add(player2, 0, 6);
-        boardGrid.add(player3, 0, 7);
-        boardGrid.add(player4, 0, 8);
-        boardGrid.add(label5, 0, 9);
-        boardGrid.add(ai1, 0, 10);
-        boardGrid.add(aiComboBox1, 0, 11);
-        boardGrid.add(label3, 0, 16);
-        boardGrid.add(yes, 0, 17);
-        boardGrid.add(no, 0, 18);
-        boardGrid.add(start, 2, 20);
-        boardGrid.add(rig, 2, 22);
+        boardGrid.add(choosePlayerComboBox, 0, 5);
+        boardGrid.add(label5, 0, 6);
+        boardGrid.add(ai1, 0, 7);
+        boardGrid.add(aiComboBox1, 0, 8);
+        boardGrid.add(label3, 0, 15);
+        boardGrid.add(yes, 0, 16);
+        boardGrid.add(no, 0, 17);
+        boardGrid.add(start, 2, 19);
+        boardGrid.add(rig, 2, 21);
 
         start.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 name = nameText.getText();
                 view.setName(name);
-                String[] toggle = playerGroup.getSelectedToggle().toString().split("\\'");
-                playername = toggle[1];
+                String [] toggle;
+                playername = (String) choosePlayerComboBox.getValue();
                 view.setPlayerName(playername);
+                if(playername.equals("Watch the game without playing")) {
+                	model.withoutPlay = true;
+                }else {
+                	model.withoutPlay = false;
+                }
+                
                 toggle = timer.getSelectedToggle().toString().split("\\'");
                 if (toggle[1].equals("yes")) {
                     time = true;
@@ -184,10 +188,12 @@ public class Game extends Application {
                     time = false;
                 }
                 view.setTime(time);
+                
                 numPlayer = (int) playerComboBox.getValue();
                 strategy[0] = (String) aiComboBox1.getValue();
                 strategy[1] = (String) aiComboBox2.getValue();
                 strategy[2] = (String) aiComboBox3.getValue();
+                strategy[3] = (String) aiComboBox4.getValue();
                 view.setNumPlayer(numPlayer);
                 view.setStrategy(strategy);
                 model.setNumPlayer(numPlayer);
@@ -204,8 +210,8 @@ public class Game extends Application {
             public void handle(ActionEvent actionEvent) {
             	name = nameText.getText();
                 view.setName(name);
-                String[] toggle = playerGroup.getSelectedToggle().toString().split("\\'");
-                playername = toggle[1];
+                String[] toggle;
+                playername = (String) choosePlayerComboBox.getValue();
                 view.setPlayerName(playername);
                 toggle = timer.getSelectedToggle().toString().split("\\'");
                 if (toggle[1].equals("yes")) {
@@ -218,6 +224,7 @@ public class Game extends Application {
                 strategy[0] = (String) aiComboBox1.getValue();
                 strategy[1] = (String) aiComboBox2.getValue();
                 strategy[2] = (String) aiComboBox3.getValue();
+                strategy[3] = (String) aiComboBox4.getValue();
                 view.setNumPlayer(numPlayer);
                 view.setStrategy(strategy);
                 model.setNumPlayer(numPlayer);
@@ -230,30 +237,197 @@ public class Game extends Application {
         playerComboBox.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 // TODO Auto-generated method stub
-                if ((int) playerComboBox.getValue() == 2) {
-                    boardGrid.getChildren().remove(ai2);
-                    boardGrid.getChildren().remove(ai3);
-                    boardGrid.getChildren().remove(aiComboBox2);
-                    boardGrid.getChildren().remove(aiComboBox3);
-                } else if ((int) playerComboBox.getValue() == 3) {
-                    boardGrid.getChildren().remove(ai3);
-                    boardGrid.getChildren().remove(aiComboBox3);
-                    boardGrid.getChildren().remove(ai2);
-                    boardGrid.getChildren().remove(aiComboBox2);
+            	if(((String) choosePlayerComboBox.getValue()).equals("Watch the game without playing")) {
+            		aiComboBox1.getItems().remove("User Player");
+ 					aiComboBox2.getItems().remove("User Player");
+ 					aiComboBox3.getItems().remove("User Player");
+ 					aiComboBox4.getItems().remove("User Player");
+           		 	if ((int) playerComboBox.getValue() == 2) {
+                        boardGrid.getChildren().remove(ai3);
+                        boardGrid.getChildren().remove(aiComboBox3);
+                        boardGrid.getChildren().remove(ai4);
+                        boardGrid.getChildren().remove(aiComboBox4);
+                        boardGrid.getChildren().remove(ai2);
+                        boardGrid.getChildren().remove(aiComboBox2);
+                        boardGrid.add(ai2, 0, 9);
+                        boardGrid.add(aiComboBox2, 0, 10);
+                    } else if ((int) playerComboBox.getValue() == 3) {
+                   	 	boardGrid.getChildren().remove(ai4);
+                        boardGrid.getChildren().remove(aiComboBox4);
+                   	 	boardGrid.getChildren().remove(aiComboBox2);
+                   	 	boardGrid.getChildren().remove(ai2);
+                        boardGrid.getChildren().remove(ai3);
+                        boardGrid.getChildren().remove(aiComboBox3);
+                        
+                        boardGrid.add(ai2, 0, 9);
+                        boardGrid.add(aiComboBox2, 0, 10);
+                        boardGrid.add(ai3, 0, 11);
+                        boardGrid.add(aiComboBox3, 0, 12);
+                    } else {
+                        boardGrid.getChildren().remove(aiComboBox2);
+                        boardGrid.getChildren().remove(ai2);
+                        boardGrid.getChildren().remove(ai3);
+                        boardGrid.getChildren().remove(aiComboBox3);
+                        boardGrid.getChildren().remove(ai4);
+                        boardGrid.getChildren().remove(aiComboBox4);
+                        boardGrid.add(ai2, 0, 9);
+                        boardGrid.add(aiComboBox2, 0, 10);
+                        boardGrid.add(ai3, 0, 11);
+                        boardGrid.add(aiComboBox3, 0, 12);
+                        boardGrid.add(ai4, 0, 13);
+                        boardGrid.add(aiComboBox4, 0, 14);
+                    }
+                }else {
+                	aiComboBox1.getItems().clear();
+                	aiComboBox2.getItems().clear();
+               	 	aiComboBox3.getItems().clear();
+               	 	aiComboBox4.getItems().clear();
+                    aiComboBox1.getItems().addAll(
+                            "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
+                    );
+                    aiComboBox2.getItems().addAll(
+                            "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
+                    );
+                    aiComboBox3.getItems().addAll(
+                            "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
+                    );
+                    aiComboBox4.getItems().addAll(
+                            "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
+                    );
+                    aiComboBox1.getSelectionModel().selectFirst();
                     aiComboBox2.getSelectionModel().selectFirst();
-                    boardGrid.add(ai2, 0, 12);
-                    boardGrid.add(aiComboBox2, 0, 13);
-                } else {
-                    boardGrid.getChildren().remove(aiComboBox2);
-                    boardGrid.getChildren().remove(ai2);
-                    boardGrid.add(ai2, 0, 12);
-                    boardGrid.add(aiComboBox2, 0, 13);
-                    boardGrid.add(ai3, 0, 14);
-                    boardGrid.add(aiComboBox3, 0, 15);
+                    aiComboBox3.getSelectionModel().selectFirst();
+                    aiComboBox4.getSelectionModel().selectFirst();
+
+                    if ((int) playerComboBox.getValue() == 2) {
+                        boardGrid.getChildren().remove(ai2);
+                        boardGrid.getChildren().remove(ai3);
+                        boardGrid.getChildren().remove(ai4);
+                        boardGrid.getChildren().remove(aiComboBox2);
+                        boardGrid.getChildren().remove(aiComboBox3);
+                        boardGrid.getChildren().remove(aiComboBox4);
+                    } else if ((int) playerComboBox.getValue() == 3) {
+                    	boardGrid.getChildren().remove(ai4);
+                   	 	boardGrid.getChildren().remove(aiComboBox4);
+                        boardGrid.getChildren().remove(ai3);
+                        boardGrid.getChildren().remove(aiComboBox3);
+                        boardGrid.getChildren().remove(ai2);
+                        boardGrid.getChildren().remove(aiComboBox2);
+                        aiComboBox2.getSelectionModel().selectFirst();
+                        boardGrid.add(ai2, 0, 9);
+                        boardGrid.add(aiComboBox2, 0, 10);
+                    } else {
+                        boardGrid.getChildren().remove(ai3);
+                        boardGrid.getChildren().remove(aiComboBox3);
+                   	 	boardGrid.getChildren().remove(ai4);
+                   	 	boardGrid.getChildren().remove(aiComboBox4);
+                        boardGrid.getChildren().remove(aiComboBox2);
+                        boardGrid.getChildren().remove(ai2);
+                        boardGrid.add(ai2, 0, 9);
+                        boardGrid.add(aiComboBox2, 0, 10);
+                        boardGrid.add(ai3, 0, 11);
+                        boardGrid.add(aiComboBox3, 0, 12);
+                    }
                 }
             }
         });
-    }
+        
+        choosePlayerComboBox.valueProperty().addListener(new ChangeListener<String>() {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if(((String) choosePlayerComboBox.getValue()).equals("Watch the game without playing")) {
+					aiComboBox1.getItems().remove("User Player");
+					aiComboBox2.getItems().remove("User Player");
+					aiComboBox3.getItems().remove("User Player");
+					aiComboBox4.getItems().remove("User Player");
+            		 if ((int) playerComboBox.getValue() == 2) {
+                         boardGrid.getChildren().remove(ai3);
+                         boardGrid.getChildren().remove(aiComboBox3);
+                         boardGrid.getChildren().remove(ai4);
+                         boardGrid.getChildren().remove(aiComboBox4);
+                         boardGrid.getChildren().remove(ai2);
+                         boardGrid.getChildren().remove(aiComboBox2);
+                         boardGrid.add(ai2, 0, 9);
+                         boardGrid.add(aiComboBox2, 0, 10);
+                     } else if ((int) playerComboBox.getValue() == 3) {
+                    	 boardGrid.getChildren().remove(ai4);
+                         boardGrid.getChildren().remove(aiComboBox4);
+                    	 boardGrid.getChildren().remove(aiComboBox2);
+                         boardGrid.getChildren().remove(ai3);
+                         boardGrid.getChildren().remove(aiComboBox3);
+                         boardGrid.getChildren().remove(ai2);
+                         boardGrid.add(ai2, 0, 9);
+                         boardGrid.add(aiComboBox2, 0, 10);
+                         boardGrid.add(ai3, 0, 11);
+                         boardGrid.add(aiComboBox3, 0, 12);
+                     } else {
+                         boardGrid.getChildren().remove(aiComboBox2);
+                         boardGrid.getChildren().remove(ai2);
+                         boardGrid.getChildren().remove(ai3);
+                         boardGrid.getChildren().remove(aiComboBox3);
+                         boardGrid.getChildren().remove(ai4);
+                         boardGrid.getChildren().remove(aiComboBox4);
+                         boardGrid.add(ai2, 0, 9);
+                         boardGrid.add(aiComboBox2, 0, 10);
+                         boardGrid.add(ai3, 0, 11);
+                         boardGrid.add(aiComboBox3, 0, 12);
+                         boardGrid.add(ai4, 0, 13);
+                         boardGrid.add(aiComboBox4, 0, 14);
+                     }
+                 }else {
+                	 aiComboBox1.getItems().clear();
+                	 aiComboBox2.getItems().clear();
+                	 aiComboBox3.getItems().clear();
+                	 aiComboBox4.getItems().clear();
+                     aiComboBox1.getItems().addAll(
+                             "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
+                     );
+                     aiComboBox2.getItems().addAll(
+                             "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
+                     );
+                     aiComboBox3.getItems().addAll(
+                             "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
+                     );
+                     aiComboBox4.getItems().addAll(
+                             "AI Strategy 1", "AI Strategy 2", "AI Strategy 3", "AI Strategy 4", "User Player"
+                     );
+                     aiComboBox1.getSelectionModel().selectFirst();
+                     aiComboBox2.getSelectionModel().selectFirst();
+                     aiComboBox3.getSelectionModel().selectFirst();
+                     aiComboBox4.getSelectionModel().selectFirst();
+
+                	 if ((int) playerComboBox.getValue() == 2) {
+                         boardGrid.getChildren().remove(ai2);
+                         boardGrid.getChildren().remove(ai3);
+                         boardGrid.getChildren().remove(ai4);
+                         boardGrid.getChildren().remove(aiComboBox2);
+                         boardGrid.getChildren().remove(aiComboBox3);
+                         boardGrid.getChildren().remove(aiComboBox4);
+                     } else if ((int) playerComboBox.getValue() == 3) {
+                    	 boardGrid.getChildren().remove(ai4);
+                    	 boardGrid.getChildren().remove(aiComboBox4);
+                         boardGrid.getChildren().remove(ai3);
+                         boardGrid.getChildren().remove(aiComboBox3);
+                         boardGrid.getChildren().remove(ai2);
+                         boardGrid.getChildren().remove(aiComboBox2);
+                         aiComboBox2.getSelectionModel().selectFirst();
+                         boardGrid.add(ai2, 0, 9);
+                         boardGrid.add(aiComboBox2, 0, 10);
+                     } else {
+                         boardGrid.getChildren().remove(ai3);
+                         boardGrid.getChildren().remove(aiComboBox3);
+                    	 boardGrid.getChildren().remove(ai4);
+                    	 boardGrid.getChildren().remove(aiComboBox4);
+                         boardGrid.getChildren().remove(aiComboBox2);
+                         boardGrid.getChildren().remove(ai2);
+                         boardGrid.add(ai2, 0, 9);
+                         boardGrid.add(aiComboBox2, 0, 10);
+                         boardGrid.add(ai3, 0, 11);
+                         boardGrid.add(aiComboBox3, 0, 12);
+                     }
+                 }
+            }      
+        });
+   }
 
     public void gameRigging() {
         panel.getChildren().clear();
@@ -415,50 +589,11 @@ public class Game extends Application {
         return flowPane;
     }
 
-  /*  public void gameLoop() {
-        view.printTurns(model.playerOrder);
-        while (model.gameState == GameStates.PLAY) {
-            Iterator it = model.playerOrder.entrySet().iterator();
-
-            while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry) it.next();
-                Player player = (Player) pair.getKey();
-                view.indicateTurn(player);
-                //view.displayPlayerHands();
-                if (player instanceof UserPlayer) userPlayerTurnLoop(model.userPlayer);
-                else player.playTurn();
-                view.displayBoard(model.getBoard());
-                model.messageObservers();
-                if (model.gameState == GameStates.END) break;
-            }
-
-            if (model.getDeck().getDeckSize() == 0) {
-                System.out.println("The deck is empty.");
-                int value1 = Math.min(model.userPlayer.getHand().size(), model.aiPlayer1.getHand().size());
-                int value2 = Math.min(model.aiPlayer2.getHand().size(), model.aiPlayer3.getHand().size());
-                int minimum = Math.min(value1, value2);
-                if (minimum == model.userPlayer.getHand().size()) {
-                    view.displayFinalTileCounts();
-                    view.displayWinner(model.userPlayer);
-                } else if (minimum == model.aiPlayer1.getHand().size()) {
-                    view.displayFinalTileCounts();
-                    view.displayWinner(model.aiPlayer1);
-                } else if (minimum == model.aiPlayer2.getHand().size()) {
-                    view.displayFinalTileCounts();
-                    view.displayWinner(model.aiPlayer2);
-                } else {
-                    view.displayFinalTileCounts();
-                    view.displayWinner(model.aiPlayer3);
-                }
-                model.gameState = GameStates.END;
-            }
-
-            if (model.gameWinCheck()) view.displayWinner(model.gameWinner);
-        }
-    }*/
-
     public void loop() {
-        view.printTurns(model.playerOrder);
+    	 view.printTurns(model.playerOrder);
+        if(!playername.equals("Watch the game without playing")) {
+            this.controller.saveGame();
+        }
         view.displayBoard(model.getBoard());
         view.restart.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -473,8 +608,6 @@ public class Game extends Application {
     }
 
     public void userPlayerTurnLoop(UserPlayer player) {
-
-        //Scanner reader = new Scanner(System.in);
         int choice = 0;
         int numOfTiles = player.getHand().size();
         boolean pass = false;
@@ -484,16 +617,6 @@ public class Game extends Application {
             } else {
                 view.displayTurnOptions();
             }
-			
-			/*while(!reader.hasNextInt()) {
-				System.out.println("Wrong input. Please input again.");
-				if(pass) {
-					System.out.println("(1) Pass, (2) Create Meld, (3) Play tiles on the table. Enter -1 to quit.");
-				}else {
-					System.out.println("(1) Draw Tile, (2) Create Meld, (3) Play tiles on the table.  Enter -1 to quit.");
-				}
-				reader.nextLine();
-			}*/
 
             choice = controller.turnOptionInput();
 
@@ -525,11 +648,7 @@ public class Game extends Application {
                 tileSelectionLoop(player, availableTiles);
 
                 view.displayCreateAnotherMeldOption();
-				/*while(!reader.hasNextInt()) {
-					System.out.println("Wrong input. Please input again.");
-					System.out.println("Create another meld? (1)Yes (2)No");
-					reader.nextLine();
-				}*/
+
                 createAdditionalMelds = controller.turnOptionInput();
 
                 while (createAdditionalMelds == 1) {
@@ -539,11 +658,7 @@ public class Game extends Application {
                     tileSelectionLoop(player, availableTiles);
 
                     view.displayCreateAnotherMeldOption();
-					/*while(!reader.hasNextInt()) {
-						System.out.println("Wrong input. Please input again.");
-						System.out.println("Create another meld? (1)Yes (2)No");
-						reader.nextLine();
-					}*/
+
                     createAdditionalMelds = controller.turnOptionInput();
 
                 }

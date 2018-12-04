@@ -71,14 +71,12 @@ public class JavaFxController implements Controller {
 
 	//Returns true if an AI player wins on this turn
 	public boolean playAITurns() {
-	
 			Iterator it = model.playerOrder.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry pair = (Map.Entry) it.next();
                 Player player = (Player) pair.getKey();
                 
                 if(player instanceof AIPlayer) {
-                
 	                player.playTurn();
 	                model.messageObservers();
 	                if (model.gameWinCheck()) {
@@ -153,7 +151,7 @@ public class JavaFxController implements Controller {
 	@Override
 	public boolean reuseBoardTiles(UserPlayer player, Map<Meld, ArrayList<Tile>> tilesFromBoard, ArrayList<Tile> playerTiles) {
 		
-		ArrayList<ArrayList<Tile>> meldsToValidate = new ArrayList<ArrayList<Tile>>();
+		ArrayList<ArrayList<Tile>> newMelds = new ArrayList<ArrayList<Tile>>();
 		Meld newMeld = null;
 		Hand potentialNewMeld = new Hand();//Hand used so we can call sort
 		
@@ -170,36 +168,27 @@ public class JavaFxController implements Controller {
 			}		
 			
 			if(updatedBoardMeld.getTiles().size() > 0) {
-				meldsToValidate.add(updatedBoardMeld.getTiles());
+				newMelds.add(updatedBoardMeld.getTiles());
 			}
 			
 		}
 		potentialNewMeld.getTiles().addAll(playerTiles);
 		potentialNewMeld.sortTilesByNumber();
 		
-		meldsToValidate.add(potentialNewMeld.getTiles());
+		newMelds.add(potentialNewMeld.getTiles());
+				
 		
-		
-		//Validate melds 
-		for(int i  = 0; i < meldsToValidate.size(); i++) {
-					
-			if(!meldValidatorService.isValidMeld(meldsToValidate.get(i))){
-				return false;
-			}
-		}
-		
-		
-		//All are valid, remove old version of melds on board
+		//remove old version of melds on board
 		for(Meld meld : tilesFromBoard.keySet()) {
 			model.getBoard().currentMelds.remove(meld);
 		}
 		
 		//Update board with new melds
-		for(int i  = 0; i < meldsToValidate.size(); i++) {
+		for(int i  = 0; i < newMelds.size(); i++) {
 			
 			Meld meld = new Meld();
-			for(int j = 0; j < meldsToValidate.get(i).size();j++) {
-				meld.add(meldsToValidate.get(i).get(j));
+			for(int j = 0; j < newMelds.get(i).size();j++) {
+				meld.add(newMelds.get(i).get(j));
 			}
 			
 			model.getBoard().addMeld(meld);
@@ -213,19 +202,19 @@ public class JavaFxController implements Controller {
 		return true;
 	}
 
-	
-	
 	public void saveGame() {
-		Board temp = new Board(this.model.getBoard());
-		this.originator.setGame(temp);
+		Board tempBoard = new Board(this.model.getBoard());
+		Hand tempHand = new Hand(this.model.currentUserPlayer.getHand().getTiles());
+		this.originator.setGame(tempBoard);
+		this.originator.setPlayerHand(tempHand);
 		this.savedGame = this.originator.saveStateToMemento();
-
 		System.out.println("SAVING GAME");
 	}
 
 	public void restoreGame() {
+		this.model.setBoard(this.originator.restoreBoardFromMemento(this.savedGame));
+		this.model.currentUserPlayer.setHand(this.originator.restoreHandFromMemento(this.savedGame));
 		System.out.println("RESTORING GAME");
-		this.model.setBoard(this.originator.restoreFromMemento(this.savedGame));
 	}
 
 
