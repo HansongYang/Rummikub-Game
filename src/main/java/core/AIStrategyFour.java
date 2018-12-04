@@ -16,7 +16,7 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 			// If Strategy 4 is able to play 30, play the 30
 			if(initial.size() == 0) {
 				Tile newTile = player.model.getDeck().drawTile();
-				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
+				//System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}
 			else {
@@ -38,8 +38,8 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 					
 					if(!otherPlayerHas3FewerTiles(player)) {
 						
-						System.out.println("Strategy4 can do its strategy with remaining tiles!");
-						System.out.println("HAND: " + player.hand.getTiles());
+						//System.out.println("Strategy4 can do its strategy with remaining tiles!");
+
 						
 						int tilesPlayed = 0;
 						
@@ -70,14 +70,14 @@ public class AIStrategyFour implements PlayerStrategy<AIPlayer> {
 								return;
 							}
 							Tile newTile = player.model.getDeck().drawTile();
-							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
+							//System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 							player.hand.add(newTile);
 						}
 					}
 					
 					// This means Strategy4 can do its strategy
 					else {
-						System.out.println("Player has 3 tiles fewer than S4");
+						//System.out.println("Player has 3 tiles fewer than S4");
 						player.meldsInHand = meldsToPlay;
 						for(int i = 0; i < meldsToPlay.size(); i++) {
 							for(int j = 0; j < meldsToPlay.get(i).size();j++) {

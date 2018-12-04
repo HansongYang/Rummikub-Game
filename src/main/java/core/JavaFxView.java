@@ -459,10 +459,6 @@ public class JavaFxView {
         }
     }
 
-    public void displayHand(Hand hand) {
-        // TODO Auto-generated method stub
-
-    }
 
     public void displayBoard(Board board) {
         GridPane boardGrid = new GridPane();
@@ -572,10 +568,6 @@ public class JavaFxView {
         }
     }
 
-    public void displayMeld(Meld meld) {
-        // TODO Auto-generated method stub
-
-    }
 
     public void displayWinner(Player player) {
         label = new Label(player.name + " wins the game!");
@@ -890,62 +882,4 @@ public class JavaFxView {
 
     }
 
-    public void indicateWrongInput() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void indicateUserEndsGame(Player player) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void displayCreateAnotherMeldOption() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void indicateAvailableTiles() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void indicateNoTileOnBoard() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void displayTileToExistingMeldOptions() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void displayTileToMeldSelection() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void displayMeldSelection() {
-        // TODO Auto-generated method stub
-
-    }
-
-
-    public void displayTileInSelectedMeldSelection() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void displayTileToMeldPositionSelection() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void displayTileSelection() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void displayInitialScreen() {
-    }
 }

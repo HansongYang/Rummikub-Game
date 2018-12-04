@@ -133,7 +133,15 @@ public class Model implements Observable {
         	player4.hand.addAll(p4Hand);
         }
         
-        settleTurns();
+       // Standard order
+        Map<Player, Integer> sortedPlayerOrder = new LinkedHashMap<Player, Integer>();
+        sortedPlayerOrder.put(this.userPlayer, 5);
+        sortedPlayerOrder.put(this.player2, 4);
+        sortedPlayerOrder.put(this.player3, 3);
+        sortedPlayerOrder.put(this.player4, 2);
+    
+
+        this.playerOrder = sortedPlayerOrder;
         
         Iterator it = playerOrder.entrySet().iterator();
         while (it.hasNext()) {
