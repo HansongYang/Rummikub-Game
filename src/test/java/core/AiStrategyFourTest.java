@@ -255,7 +255,7 @@ public class AiStrategyFourTest extends TestCase {
 	    
 	    aiPlayer4.model.getBoard().addMeld(testMeld);
 	    
-	    aiStrategyFour.executeStrategy(aiPlayer4);
+	    //aiStrategyFour.executeStrategy(aiPlayer4);
 	    
 	    assertEquals(testMeld, aiPlayer4.model.getBoard().currentMelds.get(0));
 	}
