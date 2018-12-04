@@ -54,8 +54,8 @@ public class Player implements Observer {
 		for(int i = 0; i < melds.size(); i++) {
 			board.addMeld(melds.get(i));
 		}
-		System.out.println(this.name + " played tiles");
-		hand.printHand();
+		//System.out.println(this.name + " played tiles");
+		//hand.printHand();
 	}
 	
 	public int totalAllMelds(ArrayList<Meld> melds) {

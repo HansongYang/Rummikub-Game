@@ -59,9 +59,7 @@ public class Game extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // TODO Auto-generated method stub
         this.stage = primaryStage;
-        System.out.println("Start");
 
         panel = new BorderPane();
         panel.setPadding(new Insets(10, 10, 10, 10));
@@ -449,9 +447,9 @@ public class Game extends Application {
 
         FlowPane flowPane = refreshDeck(tempRigDeck, selectedTiles, tickerLabel);
 
-        Label amountSelected = new Label("Amount Selected (must be >= 14): ");
-        amountSelected.setStyle("-fx-font-size: 15px");
-        ticker.getChildren().add(amountSelected);
+       // Label amountSelected = new Label("Amount Selected (must be >= 14): ");
+       // amountSelected.setStyle("-fx-font-size: 15px");
+       // ticker.getChildren().add(amountSelected);
         ticker.getChildren().add(tickerLabel);
         ticker.setPadding(new Insets(0, 0, 100, 0));
 
@@ -472,7 +470,7 @@ public class Game extends Application {
         oneBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if (tickerNum >= 14 || player1Tiles.size() >= 14) player1Tiles.addAll(selectedTiles);
+                player1Tiles.addAll(selectedTiles);
                 new Hand(player1Tiles).printHand();
                 tempRigDeck.getDeck().removeAll(selectedTiles);
                 selectedTiles.clear();
@@ -486,7 +484,7 @@ public class Game extends Application {
         twoBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if (tickerNum >= 14 || player2Tiles.size() >= 14) player2Tiles.addAll(selectedTiles);
+                player2Tiles.addAll(selectedTiles);
                 new Hand(player2Tiles).printHand();
                 tempRigDeck.getDeck().removeAll(selectedTiles);
                 selectedTiles.clear();
@@ -500,7 +498,7 @@ public class Game extends Application {
         threeBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if (tickerNum >= 14 || player3Tiles.size() >= 14) player3Tiles.addAll(selectedTiles);
+                player3Tiles.addAll(selectedTiles);
                 new Hand(player3Tiles).printHand();
                 tempRigDeck.getDeck().removeAll(selectedTiles);
                 selectedTiles.clear();
@@ -514,7 +512,7 @@ public class Game extends Application {
         fourBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if (tickerNum >= 14 || player4Tiles.size() >= 14) player4Tiles.addAll(selectedTiles);
+                player4Tiles.addAll(selectedTiles);
                 new Hand(player4Tiles).printHand();
                 tempRigDeck.getDeck().removeAll(selectedTiles);
                 selectedTiles.clear();
@@ -607,7 +605,7 @@ public class Game extends Application {
         });
     }
 
-    public void userPlayerTurnLoop(UserPlayer player) {
+  /*  public void userPlayerTurnLoop(UserPlayer player) {
         int choice = 0;
         int numOfTiles = player.getHand().size();
         boolean pass = false;
@@ -688,7 +686,7 @@ public class Game extends Application {
 						System.out.println("Wrong input. Please input again.");
 						System.out.println("Choose an option: 1. Add a tile to the end of a meld. 2. Add a tile to the beginning of a meld. 3. Add a tile to create a new meld. Enter -1 to go back.");
 						reader.nextLine();
-					}*/
+					}
                     int option = controller.turnOptionInput();
                     if (option == -1) {
                         break;
@@ -846,7 +844,7 @@ public class Game extends Application {
 				System.out.println("Wrong input. Please input again.");
 				System.out.println("Enter the index of the Tile you want to select. (-1) to stop selecting");
 				reader.nextLine();
-			}*/
+			}
             tileSelected = controller.turnOptionInput();
 
             if (tileSelected >= availableTiles.size() || tileSelected < -1) {//Invalid Tile
@@ -865,7 +863,7 @@ public class Game extends Application {
                 tileIndices.add(tileSelected);
             }
         }
-    }
+    }*/
 
 
 }

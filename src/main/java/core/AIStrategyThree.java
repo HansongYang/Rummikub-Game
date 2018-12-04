@@ -11,7 +11,7 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 			ArrayList<Meld> initial = player.hand.getInitialTiles();
 			if(initial.size() == 0) {
 				Tile newTile = player.model.getDeck().drawTile();
-				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
+				//System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}
 			else {
@@ -40,7 +40,7 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 								return;
 							}
 							Tile newTile = player.model.getDeck().drawTile();
-							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
+							//System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 							player.hand.add(newTile);
 						}
 					}else {//Play most tiles possible
@@ -51,9 +51,9 @@ public class AIStrategyThree implements PlayerStrategy<AIPlayer>{
 							if(player.model.getDeck().getDeckSize() == 0) {
 								return;
 							}
-							System.out.println(player.name + " could play but has no tile to play");
+							//System.out.println(player.name + " could play but has no tile to play");
 							Tile newTile = player.model.getDeck().drawTile();
-							System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
+							//System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 							player.hand.add(newTile);
 
 						}else {//Play all melds

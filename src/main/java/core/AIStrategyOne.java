@@ -10,7 +10,7 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 			ArrayList<Meld> initial = player.hand.getInitialTiles();
 			if(initial.size() == 0) {
 				Tile newTile = player.model.getDeck().drawTile();
-				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
+				//System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}
 			else {
@@ -48,7 +48,7 @@ public class AIStrategyOne implements PlayerStrategy<AIPlayer>{
 				}
 				//Draw tile
 				Tile newTile = player.model.getDeck().drawTile();
-				System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
+				//System.out.println(player.name + " drew: " + newTile.getColour() + ", " + newTile.getRank());
 				player.hand.add(newTile);
 			}
 		}
